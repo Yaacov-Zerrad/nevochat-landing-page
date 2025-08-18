@@ -101,6 +101,10 @@
       "messagePlaceholder": "תאמו את הפרויקט והדרישות שלכם..."
     }
   },
+  "whatsapp": {
+    "message": "שלום! אני מעוניין בשירותי Nevochat.",
+    "tooltip": "צור קשר ב-WhatsApp"
+  },
   "footer": {
     "company": "Nevochat",
     "tagline": "פתרונות דיגיטליים שעובדים",

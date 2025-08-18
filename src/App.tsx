@@ -9,6 +9,7 @@ import Hero from './components/sections/Hero';
 import Services from './components/sections/Services';
 import Integrations from './components/sections/Integrations';
 import Contact from './components/sections/Contact';
+import WhatsAppButton from './components/ui/WhatsAppButton';
 
 function App() {
   const { i18n } = useTranslation();
@@ -30,6 +31,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }
