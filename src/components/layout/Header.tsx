@@ -25,6 +25,9 @@ const Header: React.FC = () => {
     { key: 'about', href: '#about' },
     { key: 'contact', href: '#contact' },
   ];
+  if (isRTL) {
+    navItems.reverse();
+  }
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -43,6 +46,7 @@ const Header: React.FC = () => {
           ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50' 
           : 'bg-transparent'
       }`}
+      dir="ltr"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={`flex justify-between items-center h-16 ${isRTL ? 'flex-row-reverse' : ''}`}>
