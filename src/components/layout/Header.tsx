@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -8,6 +8,7 @@ const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const isRTL = i18n.language === 'he';
 
   useEffect(() => {
@@ -18,6 +19,24 @@ const Header: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Fermer le menu mobile quand on clique en dehors
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('touchstart', handleClickOutside);
+      };
+    }
+  }, [isMobileMenuOpen]);
 
   const navItems = [
     { key: 'home', href: '#home' },
@@ -30,15 +49,26 @@ const Header: React.FC = () => {
   }
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    try {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    } catch (error) {
+      console.warn('Error scrolling to section:', error);
     }
-    setIsMobileMenuOpen(false);
+    // Fermer le menu mobile après navigation avec un petit délai pour éviter les conflits
+    setTimeout(() => {
+      setIsMobileMenuOpen(false);
+    }, 100);
   };
 
   return (
     <motion.header
+      ref={headerRef}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -102,19 +132,21 @@ const Header: React.FC = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-200 shadow-lg"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 right-0 md:hidden bg-white border-t border-gray-200 shadow-lg z-50"
           >
-            <div className="px-4 py-4 space-y-4">
+            <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => (
                 <button
                   key={item.key}
                   onClick={() => scrollToSection(item.href)}
-                  className={`block w-full text-left py-2 text-gray-700 hover:text-primary-500 transition-colors duration-300 ${
+                  className={`block w-full py-4 px-4 text-gray-700 hover:text-primary-500 hover:bg-primary-50 active:bg-primary-100 transition-all duration-200 rounded-lg font-medium ${
                     isRTL ? 'text-right' : 'text-left'
                   }`}
+                  style={{ minHeight: '48px' }} // Assure une zone tactile suffisante
                 >
                   {t(`nav.${item.key}`)}
                 </button>
