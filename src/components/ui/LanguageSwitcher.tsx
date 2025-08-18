@@ -2,7 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 
-const LanguageSwitcher: React.FC = () => {
+interface LanguageSwitcherProps {
+  isScrolled?: boolean;
+}
+
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ isScrolled = false }) => {
   const { i18n } = useTranslation();
 
   const languages = [
@@ -18,10 +22,18 @@ const LanguageSwitcher: React.FC = () => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300"
+        className={`flex items-center space-x-2 px-3 py-2 rounded-lg backdrop-blur-sm border transition-all duration-300 ${
+          isScrolled 
+            ? 'bg-gray-100 border-gray-300 hover:bg-gray-200' 
+            : 'bg-white/10 border-white/20 hover:bg-white/20'
+        }`}
       >
         <span className="text-lg">{currentLanguage.flag}</span>
-        <span className="text-white font-medium">{currentLanguage.name}</span>
+        <span className={`font-medium transition-colors duration-300 ${
+          isScrolled ? 'text-gray-700' : 'text-white'
+        }`}>
+          {currentLanguage.name}
+        </span>
       </motion.button>
       
       <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">

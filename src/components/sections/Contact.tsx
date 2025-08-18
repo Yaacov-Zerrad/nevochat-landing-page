@@ -82,26 +82,26 @@ const Contact: React.FC = () => {
           >
             <div>
               <h3 className="text-2xl font-bold text-white mb-6">
-                Get in Touch
+                {t('contact.getInTouch')}
               </h3>
               <div className="space-y-6">
-                <div className="flex items-center space-x-4">
+                <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                   <div className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center">
                     <EnvelopeIcon className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-300">Email</p>
-                    <p className="text-white font-semibold">contact@nevochat.com</p>
+                    <p className="text-gray-300">{t('contact.emailLabel')}</p>
+                    <p className="text-white font-semibold">yaazerrad@gmail.com</p>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-4">
+                <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                   <div className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center">
                     <PhoneIcon className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-300">Phone</p>
-                    <p className="text-white font-semibold">+972-XX-XXX-XXXX</p>
+                    <p className="text-gray-300">{t('contact.phoneLabel')}</p>
+                    <p className="text-white font-semibold" dir="ltr">+972-54-556-4449</p>
                   </div>
                 </div>
               </div>
@@ -120,7 +120,7 @@ const Contact: React.FC = () => {
                 ].map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center space-x-2 bg-white/10 px-3 py-2 rounded-lg"
+                    className={`flex items-center bg-white/10 px-3 py-2 rounded-lg ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}
                   >
                     <span className="text-lg">{item.flag}</span>
                     <span className="text-white text-sm">{item.lang}</span>
@@ -231,9 +231,9 @@ const Contact: React.FC = () => {
                 className="w-full bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Sending...
+                  <div className={`flex items-center justify-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Sending...</span>
                   </div>
                 ) : (
                   t('contact.form.submit')

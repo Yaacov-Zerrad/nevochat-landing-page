@@ -45,11 +45,50 @@
   },
   "integrations": {
     "title": "אינטגרציות עוצמתיות",
-    "subtitle": "התחברו לכלים שאתם כבר אוהבים"
+    "subtitle": "התחברו לכלים שאתם כבר אוהבים",
+    "callToAction": "צריכים אינטגרציה מותאמת אישית? אנחנו יכולים להתחבר לכל API או שירות.",
+    "customButton": "בקשו אינטגרציה מותאמת אישית",
+    "items": {
+      "whatsapp": {
+        "name": "WhatsApp",
+        "description": "אינטגרציית צ'אטבוט ישירה"
+      },
+      "wordpress": {
+        "name": "WordPress",
+        "description": "ניהול אתרים"
+      },
+      "googleSheets": {
+        "name": "Google Sheets",
+        "description": "סנכרון נתונים"
+      },
+      "googleCalendar": {
+        "name": "Google Calendar",
+        "description": "קביעת פגישות"
+      },
+      "facebook": {
+        "name": "Facebook",
+        "description": "אינטגרציית רשתות חברתיות"
+      },
+      "instagram": {
+        "name": "Instagram",
+        "description": "אוטומציה ברשתות חברתיות"
+      },
+      "telegram": {
+        "name": "Telegram",
+        "description": "פלטפורמת הודעות"
+      },
+      "customApis": {
+        "name": "APIs מותאמים",
+        "description": "כל אינטגרציה מותאמת אישית"
+      }
+    }
   },
   "contact": {
     "title": "מוכנים להתחיל?",
     "subtitle": "בואו נדון איך אנחנו יכולים לעזור לשנות את העסק שלכם",
+    "getInTouch": "יצירת קשר",
+    "emailLabel": "אימייל",
+    "phoneLabel": "טלפון",
     "form": {
       "name": "שם מלא",
       "email": "כתובת אימייל",

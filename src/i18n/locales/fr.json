@@ -45,11 +45,50 @@
   },
   "integrations": {
     "title": "Intégrations Puissantes",
-    "subtitle": "Connectez-vous aux outils que vous aimez déjà"
+    "subtitle": "Connectez-vous aux outils que vous aimez déjà",
+    "callToAction": "Besoin d'une intégration personnalisée ? Nous pouvons nous connecter à n'importe quelle API ou service.",
+    "customButton": "Demander une Intégration Personnalisée",
+    "items": {
+      "whatsapp": {
+        "name": "WhatsApp",
+        "description": "Intégration directe de chatbot"
+      },
+      "wordpress": {
+        "name": "WordPress",
+        "description": "Gestion de site web"
+      },
+      "googleSheets": {
+        "name": "Google Sheets",
+        "description": "Synchronisation des données"
+      },
+      "googleCalendar": {
+        "name": "Google Calendar",
+        "description": "Réservation de rendez-vous"
+      },
+      "facebook": {
+        "name": "Facebook",
+        "description": "Intégration des réseaux sociaux"
+      },
+      "instagram": {
+        "name": "Instagram",
+        "description": "Automatisation des réseaux sociaux"
+      },
+      "telegram": {
+        "name": "Telegram",
+        "description": "Plateforme de messagerie"
+      },
+      "customApis": {
+        "name": "APIs Personnalisées",
+        "description": "Toute intégration personnalisée"
+      }
+    }
   },
   "contact": {
     "title": "Prêt à commencer ?",
     "subtitle": "Discutons de la façon dont nous pouvons aider à transformer votre entreprise",
+    "getInTouch": "Entrer en contact",
+    "emailLabel": "E-mail",
+    "phoneLabel": "Téléphone",
     "form": {
       "name": "Nom complet",
       "email": "Adresse e-mail",

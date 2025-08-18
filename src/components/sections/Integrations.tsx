@@ -8,51 +8,59 @@ const Integrations: React.FC = () => {
 
   const integrations = [
     {
-      name: 'WhatsApp',
+      key: 'whatsapp',
+      name: t('integrations.items.whatsapp.name'),
       logo: '/images/whatsapp-logo.png', // You can add this image later
-      description: 'Direct chatbot integration',
+      description: t('integrations.items.whatsapp.description'),
       color: 'bg-green-100 border-green-200',
     },
     {
-      name: 'WordPress',
+      key: 'wordpress',
+      name: t('integrations.items.wordpress.name'),
       logo: '/images/wordpress-logo.png',
-      description: 'Website management',
+      description: t('integrations.items.wordpress.description'),
       color: 'bg-blue-100 border-blue-200',
     },
     {
-      name: 'Google Sheets',
+      key: 'googleSheets',
+      name: t('integrations.items.googleSheets.name'),
       logo: '/images/google-sheets-logo.png',
-      description: 'Data synchronization',
+      description: t('integrations.items.googleSheets.description'),
       color: 'bg-green-100 border-green-200',
     },
     {
-      name: 'Google Calendar',
+      key: 'googleCalendar',
+      name: t('integrations.items.googleCalendar.name'),
       logo: '/images/google-calendar-logo.png',
-      description: 'Appointment booking',
+      description: t('integrations.items.googleCalendar.description'),
       color: 'bg-yellow-100 border-yellow-200',
     },
     {
-      name: 'Facebook',
+      key: 'facebook',
+      name: t('integrations.items.facebook.name'),
       logo: '/images/facebook-logo.png',
-      description: 'Social media integration',
+      description: t('integrations.items.facebook.description'),
       color: 'bg-blue-100 border-blue-200',
     },
     {
-      name: 'Instagram',
+      key: 'instagram',
+      name: t('integrations.items.instagram.name'),
       logo: '/images/instagram-logo.png',
-      description: 'Social media automation',
+      description: t('integrations.items.instagram.description'),
       color: 'bg-pink-100 border-pink-200',
     },
     {
-      name: 'Telegram',
+      key: 'telegram',
+      name: t('integrations.items.telegram.name'),
       logo: '/images/telegram-logo.png',
-      description: 'Messaging platform',
+      description: t('integrations.items.telegram.description'),
       color: 'bg-blue-100 border-blue-200',
     },
     {
-      name: 'Custom APIs',
+      key: 'customApis',
+      name: t('integrations.items.customApis.name'),
       logo: '/images/api-logo.png',
-      description: 'Any custom integration',
+      description: t('integrations.items.customApis.description'),
       color: 'bg-purple-100 border-purple-200',
     },
   ];
@@ -118,14 +126,14 @@ const Integrations: React.FC = () => {
           className="text-center mt-16"
         >
           <p className="text-lg text-gray-600 mb-6">
-            Need a custom integration? We can connect with any API or service.
+            {t('integrations.callToAction')}
           </p>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-3 bg-primary-500 text-white font-semibold rounded-full hover:bg-primary-600 transition-colors duration-300 shadow-lg hover:shadow-xl"
           >
-            Request Custom Integration
+            {t('integrations.customButton')}
           </motion.button>
         </motion.div>
       </div>

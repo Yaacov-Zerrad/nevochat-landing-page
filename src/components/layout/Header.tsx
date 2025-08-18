@@ -75,7 +75,7 @@ const Header: React.FC = () => {
 
           {/* Right side items */}
           <div className={`flex items-center space-x-4 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-            <LanguageSwitcher />
+            <LanguageSwitcher isScrolled={isScrolled} />
             
             {/* Mobile menu button */}
             <button
