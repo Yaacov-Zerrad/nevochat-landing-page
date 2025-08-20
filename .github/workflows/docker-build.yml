@@ -1,0 +1,95 @@
+name: 🚀 Build & Deploy Landing Page
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths-ignore:
+      - 'README.md'
+      - 'PROJECT_COMPLETE.md'
+      - '.vscode/**'
+  pull_request:
+    branches: [ main ]
+
+env:
+  PROJECT_ID: infinty-chat
+  REGION: europe-west1
+  REPO_NAME: infinity-chat-repo
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔍 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: 📦 Install dependencies
+      run: npm ci
+
+    - name: 🏗️ Build Next.js application
+      run: npm run build
+
+    - name: 🧪 Run linting
+      run: npm run lint
+
+    - name: Debug credential secret
+      run: |
+        if [ -z "${{ secrets.GCP_SA_KEY }}" ]; then
+          echo "❌ GCP_SA_KEY is NOT defined"
+          exit 1
+        else
+          echo "✅ GCP_SA_KEY is defined"
+        fi
+
+    - name: 🔐 Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: 🔧 Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: 🐳 Configure Docker for Artifact Registry
+      run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+    - name: 🏗️ Build Docker image
+      run: |
+        docker build \
+          -t landing-page:${{ github.sha }} \
+          -t landing-page:latest \
+          .
+
+    - name: 🏷️ Tag image for registry
+      run: |
+        docker tag landing-page:${{ github.sha }} \
+          ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:${{ github.sha }}
+        docker tag landing-page:latest \
+          ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest
+
+    - name: 📤 Push image to Artifact Registry
+      run: |
+        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:${{ github.sha }}
+        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest
+
+    - name: ✅ Success notification
+      run: |
+        echo "🎉 Landing page image built and pushed successfully!"
+        echo "📦 Image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest"
+        echo "🔗 SHA: ${{ github.sha }}"
+
+    - name: 🚀 Deploy on remote server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.REMOTE_SSH_KEY }}
+        script: |
+          cd app
+          docker compose pull landing-page
+          docker compose up -d --no-deps landing-page

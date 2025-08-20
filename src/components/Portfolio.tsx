@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
-import { ExternalLinkIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
+import { ArrowTopRightOnSquareIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
 
 const Portfolio = () => {
   const projects = [
@@ -136,7 +136,7 @@ const Portfolio = () => {
                     </span>
                     <div className="flex space-x-2">
                       <button className="p-2 bg-gray-700 rounded-lg hover:bg-neon-green hover:text-black transition-colors">
-                        <ExternalLinkIcon className="h-4 w-4" />
+                        <ArrowTopRightOnSquareIcon className="h-4 w-4" />
                       </button>
                       <button className="p-2 bg-gray-700 rounded-lg hover:bg-neon-green hover:text-black transition-colors">
                         <CodeBracketIcon className="h-4 w-4" />
