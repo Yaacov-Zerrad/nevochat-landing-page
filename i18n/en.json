@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "portfolio": "Portfolio"
+  },
+  "hero": {
+    "title": "NevoChat - Advanced Digital Solutions",
+    "subtitle": "We develop professional websites and smart chatbots that elevate your business",
+    "cta": "Get Started",
+    "cta_secondary": "Learn More"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Custom solutions for every business need",
+    "learnMore": "Learn More",
+    "integrationsTitle": "Integrations We Support",
+    "websites": {
+      "title": "Website Development",
+      "description": "Professional, mobile-responsive websites with modern design and advanced functionality"
+    },
+    "chatbots": {
+      "title": "Smart Chatbots",
+      "description": "Advanced bots with WhatsApp integration, social networks, WordPress, Google Sheets and more"
+    },
+    "integrations": {
+      "title": "Integrations",
+      "description": "Connect to existing systems, databases, calendars and external services"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "description": "We are a team of experienced developers and designers who speak Hebrew, English and French. We specialize in creating digital solutions that deliver real results.",
+    "languages": "Languages: Hebrew, English, French",
+    "features": {
+      "websites": "Professional websites",
+      "chatbots": "Smart chatbots",
+      "integrations": "Custom integrations",
+      "multiLanguage": "Multi-language support",
+      "support": "24/7 Technical support",
+      "design": "Modern design"
+    },
+    "stats": {
+      "projectsCompleted": "Projects Completed",
+      "languagesSupported": "Languages Supported",
+      "clientSatisfaction": "Client Satisfaction",
+      "supportAvailable": "Support Available"
+    },
+    "cta": "Start Your Project",
+    "buildingTogether": "Building Digital Solutions Together"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Let's talk about your next project",
+    "getInTouch": "Get in Touch",
+    "chatWhatsApp": "Chat on WhatsApp",
+    "contactInfo": {
+      "email": "Email",
+      "phone": "Phone",
+      "location": "Location"
+    },
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone (Optional)",
+      "message": "Project Description",
+      "submit": "Send Message",
+      "placeholders": {
+        "name": "Your full name",
+        "email": "your@email.com",
+        "phone": "+972-XX-XXX-XXXX",
+        "message": "Tell us about your project..."
+      }
+    }
+  },
+  "whatsapp": {
+    "message": "Hello! I'm interested in NevoChat services.",
+    "tooltip": "Contact us on WhatsApp"
+  },
+  "footer": {
+    "description": "Advanced digital solutions for businesses of all sizes",
+    "rights": "All rights reserved"
+  }
+}

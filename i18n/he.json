@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "home": "בית",
+    "services": "שירותים",
+    "about": "אודות",
+    "contact": "צור קשר",
+    "portfolio": "תיק עבודות"
+  },
+  "hero": {
+    "title": "NevoChat - פתרונות דיגיטליים מתקדמים",
+    "subtitle": "אנחנו מפתחים אתרים מקצועיים וצ'אטבוטים חכמים שמשדרגים את העסק שלכם",
+    "cta": "בואו נתחיל",
+    "cta_secondary": "למד עוד"
+  },
+  "services": {
+    "title": "השירותים שלנו",
+    "subtitle": "פתרונות מותאמים אישית לכל צורך עסקי",
+    "learnMore": "למד עוד",
+    "integrationsTitle": "אינטגרציות שאנחנו תומכים",
+    "websites": {
+      "title": "פיתוח אתרים",
+      "description": "אתרים מקצועיים ומותאמים לנייד עם עיצוב מודרני ופונקציונליות מתקדמת"
+    },
+    "chatbots": {
+      "title": "צ'אטבוטים חכמים",
+      "description": "בוטים מתקדמים עם אינטגרציה לווטסאפ, רשתות חברתיות, WordPress, Google Sheets ועוד"
+    },
+    "integrations": {
+      "title": "אינטגרציות",
+      "description": "חיבור למערכות קיימות, בסיסי נתונים, יומנים ושירותים חיצוניים"
+    }
+  },
+  "about": {
+    "title": "קצת עלינו",
+    "description": "אנחנו צוות של מפתחים ומעצבים מנוסים הדוברים עברית, אנגלית וצרפתית. אנחנו מתמחים ביצירת פתרונות דיגיטליים שמביאים תוצאות אמיתיות.",
+    "languages": "שפות: עברית, אנגלית, צרפתית",
+    "features": {
+      "websites": "אתרים מקצועיים",
+      "chatbots": "צ'אטבוטים חכמים",
+      "integrations": "אינטגרציות מותאמות",
+      "multiLanguage": "תמיכה רב-לשונית",
+      "support": "תמיכה טכנית 24/7",
+      "design": "עיצוב מודרני"
+    },
+    "stats": {
+      "projectsCompleted": "פרויקטים הושלמו",
+      "languagesSupported": "שפות נתמכות",
+      "clientSatisfaction": "שביעות רצון לקוחות",
+      "supportAvailable": "תמיכה זמינה"
+    },
+    "cta": "התחל את הפרויקט שלך",
+    "buildingTogether": "בונים פתרונות דיגיטליים יחד"
+  },
+  "contact": {
+    "title": "צור קשר",
+    "subtitle": "בואו נדבר על הפרויקט הבא שלכם",
+    "getInTouch": "ליצירת קשר",
+    "chatWhatsApp": "צ'אט בוואטסאפ",
+    "contactInfo": {
+      "email": "אימייל",
+      "phone": "טלפון",
+      "location": "מיקום"
+    },
+    "form": {
+      "name": "שם מלא",
+      "email": "כתובת מייל",
+      "phone": "טלפון (אופציונלי)",
+      "message": "תיאור הפרויקט",
+      "submit": "שלח הודעה",
+      "placeholders": {
+        "name": "השם המלא שלך",
+        "email": "your@email.com",
+        "phone": "+972-XX-XXX-XXXX",
+        "message": "ספר לנו על הפרויקט שלך..."
+      }
+    }
+  },
+  "whatsapp": {
+    "message": "שלום! אני מעוניין בשירותי NevoChat.",
+    "tooltip": "צור קשר ב-WhatsApp"
+  },
+  "footer": {
+    "description": "פתרונות דיגיטליים מתקדמים לעסקים מכל הגדלים",
+    "rights": "כל הזכויות שמורות"
+  }
+}
