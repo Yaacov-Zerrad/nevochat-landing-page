@@ -67,6 +67,9 @@
       "phone": "Phone (Optional)",
       "message": "Project Description",
       "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully! We'll get back to you soon.",
+      "error": "Failed to send message. Please try again or contact us directly.",
       "placeholders": {
         "name": "Your full name",
         "email": "your@email.com",

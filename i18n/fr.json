@@ -67,6 +67,9 @@
       "phone": "Téléphone (Optionnel)",
       "message": "Description du projet",
       "submit": "Envoyer le message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé avec succès ! Nous vous recontacterons bientôt.",
+      "error": "Échec de l'envoi du message. Veuillez réessayer ou nous contacter directement.",
       "placeholders": {
         "name": "Votre nom complet",
         "email": "votre@email.com",
