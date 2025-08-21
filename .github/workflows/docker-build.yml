@@ -63,6 +63,9 @@ jobs:
       run: |
         docker build \
           --no-cache \
+          --build-arg NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_zpo7irx \
+          --build-arg NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_66oaa3u \
+          --build-arg NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=RBW3tyDxwgpsulVha \
           -t landing-page:${{ github.sha }} \
           -t landing-page:latest \
           .
