@@ -37,6 +37,7 @@ jobs:
 
     - name: 🧪 Run linting
       run: npm run lint
+      continue-on-error: false
 
     - name: Debug credential secret
       run: |

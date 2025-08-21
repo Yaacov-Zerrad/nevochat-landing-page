@@ -179,7 +179,7 @@ const Portfolio = () => {
             Ready to Start Your Project?
           </h3>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Let's discuss how we can help bring your digital vision to life with our expertise in web development and chatbot solutions.
+            Let&apos;s discuss how we can help bring your digital vision to life with our expertise in web development and chatbot solutions.
           </p>
           <button className="px-8 py-4 bg-gradient-to-r from-neon-green to-emerald-500 text-black font-bold rounded-lg hover:shadow-lg hover:shadow-neon-green/50 transition-all duration-300 transform hover:scale-105">
             Start Your Project
