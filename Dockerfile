@@ -16,6 +16,9 @@ COPY . .
 # Build the Next.js application
 RUN npm run build
 
+# Verify the build outputs exist
+RUN ls -la .next/ && ls -la public/
+
 # Production image, copy all the files and run next
 FROM node:18-alpine AS runner
 WORKDIR /app
@@ -25,8 +28,8 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy public folder from source (not from builder since standalone doesn't include it)
-COPY --chown=nextjs:nodejs public ./public
+# Copy public folder from builder (where the source was copied)
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
