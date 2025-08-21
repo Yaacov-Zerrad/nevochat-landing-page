@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   creator: 'NevoChat',
   publisher: 'NevoChat',
   robots: 'index, follow',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   openGraph: {
     type: 'website',
     locale: 'he_IL',
