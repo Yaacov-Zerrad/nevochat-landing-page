@@ -14,7 +14,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
 # Verify build outputs
-RUN ls -la .next/ && ls -la public/
+RUN ls -la .next/
 
 # Stage 3: Run the Next.js application
 FROM node:20-alpine AS runner
@@ -24,8 +24,10 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nextjs
 RUN adduser --system --uid 1001 nextjs
 
+# Copy public folder from source (required for standalone)
+COPY --chown=nextjs:nextjs public ./public
+
 # Copy essential files from the builder stage
-COPY --from=builder --chown=nextjs:nextjs /app/public ./public
 COPY --from=builder --chown=nextjs:nextjs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
 
