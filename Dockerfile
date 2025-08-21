@@ -1,45 +1,33 @@
-# Use the official Node.js runtime as the base image
-FROM node:18-alpine AS deps
-RUN apk add --no-cache libc6-compat
+# Stage 1: Install dependencies
+FROM node:20-alpine AS deps
 WORKDIR /app
+COPY package.json yarn.lock* ./
+RUN yarn install --frozen-lockfile
 
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
-RUN npm ci
-
-# Rebuild the source code only when needed
-FROM node:18-alpine AS builder
+# Stage 2: Build the Next.js application
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN yarn build
 
-# Build the Next.js application
-RUN npm run build
-
-# Verify the build outputs exist
-RUN ls -la .next/ && ls -la public/
-
-# Production image, copy all the files and run next
-FROM node:18-alpine AS runner
+# Stage 3: Run the Next.js application
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
-
-RUN addgroup --system --gid 1001 nodejs
+# Create a non-privileged user for security
+RUN addgroup --system --gid 1001 nextjs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy public folder from builder (where the source was copied)
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# Copy essential files from the builder stage
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
+# Set the user and expose the port
 USER nextjs
-
 EXPOSE 3000
 
-ENV PORT=3000
-
+# Start the Next.js application
 CMD ["node", "server.js"]
