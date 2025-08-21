@@ -59,9 +59,13 @@ jobs:
     - name: 🐳 Configure Docker for Artifact Registry
       run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
+    - name: 🧹 Clean Docker cache
+      run: docker system prune -f
+
     - name: 🏗️ Build Docker image
       run: |
         docker build \
+          --no-cache \
           -t landing-page:${{ github.sha }} \
           -t landing-page:latest \
           .
