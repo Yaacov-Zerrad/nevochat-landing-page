@@ -1,0 +1,30 @@
+import React from 'react';
+import { NodeProps } from 'reactflow';
+import BaseNode from './BaseNode';
+
+export default function DelayNode(props: NodeProps) {
+  const { data } = props;
+
+  const icon = (
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+
+  return (
+    <BaseNode 
+      {...props} 
+      icon={icon} 
+      color="pink-500"
+      onSetAsEntry={data.onSetAsEntry}
+      isEntryNode={data.isEntryNode}
+    >
+      <div className="space-y-2">
+        <div className="text-xs text-gray-400">Delay</div>
+        <div className="text-sm text-white bg-gray-700 p-2 rounded">
+          {data.config?.delay_seconds || 1} seconds
+        </div>
+      </div>
+    </BaseNode>
+  );
+}

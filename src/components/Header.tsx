@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Bars3Icon, XMarkIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import LanguageSwitcher from './LanguageSwitcher';
+import LoginButton from './LoginButton';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -71,6 +72,7 @@ const Header = () => {
               </motion.a>
             ))}
             {currentLocale !== 'he' && <LanguageSwitcher />}
+            <LoginButton />
           </div>
 
           {/* Mobile menu button */}
@@ -110,6 +112,9 @@ const Header = () => {
                 {t(item.key as any)}
               </motion.a>
             ))}
+            <div className="mt-4 pt-4 border-t border-neon-green/20">
+              <LoginButton />
+            </div>
           </motion.div>
         )}
       </nav>
