@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Edge } from 'reactflow';
+import AdvancedConditionsBuilder, { ConditionsConfig } from './AdvancedConditionsBuilder';
+import ConditionsDocumentation from './ConditionsDocumentation';
 
 interface EdgePropertiesPanelProps {
   edge: Edge | null;
@@ -9,7 +11,7 @@ interface EdgePropertiesPanelProps {
 
 const CONDITION_TYPES = [
   { value: 'always', label: 'Always' },
-  { value: 'condition', label: 'Conditional' },
+  { value: 'condition', label: 'Advanced Conditions' },
   { value: 'intent', label: 'Intent Match' },
   { value: 'keyword', label: 'Keyword Match' },
   { value: 'user_input', label: 'User Input' },
@@ -20,6 +22,11 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
   const [label, setLabel] = useState(edge?.data?.label || '');
   const [priority, setPriority] = useState(edge?.data?.priority || 0);
   const [conditionConfig, setConditionConfig] = useState(edge?.data?.condition_config || {});
+  const [activeTab, setActiveTab] = useState<'config' | 'docs'>('config');
+  const [advancedConditions, setAdvancedConditions] = useState<ConditionsConfig>({
+    operator: 'AND',
+    rules: []
+  });
 
   useEffect(() => {
     if (edge) {
@@ -27,6 +34,13 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
       setLabel(edge.data?.label || '');
       setPriority(edge.data?.priority || 0);
       setConditionConfig(edge.data?.condition_config || {});
+      
+      // Load advanced conditions if they exist
+      if (edge.data?.condition_config?.conditions) {
+        setAdvancedConditions(edge.data.condition_config.conditions);
+      } else {
+        setAdvancedConditions({ operator: 'AND', rules: [] });
+      }
     }
   }, [edge]);
 
@@ -35,11 +49,21 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
   }
 
   const handleSave = () => {
+    let finalConditionConfig = { ...conditionConfig };
+    
+    // If using advanced conditions, include them in the config
+    if (conditionType === 'condition') {
+      finalConditionConfig = {
+        ...conditionConfig,
+        conditions: advancedConditions
+      };
+    }
+
     onUpdateEdge(edge.id, {
       condition_type: conditionType,
       label: label,
       priority: priority,
-      condition_config: conditionConfig,
+      condition_config: finalConditionConfig,
     });
   };
 
@@ -50,21 +74,25 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
     }));
   };
 
+  const handleAdvancedConditionsChange = (conditions: ConditionsConfig) => {
+    setAdvancedConditions(conditions);
+  };
+
   const renderConditionConfig = () => {
     switch (conditionType) {
       case 'condition':
         return (
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-300">
-              Expression
-            </label>
-            <textarea
-              value={conditionConfig.expression || ''}
-              onChange={(e) => handleConditionConfigChange('expression', e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
-              placeholder="e.g., user_input === 'yes'"
-              rows={3}
-            />
+          <div className="space-y-4">
+            <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
+              <AdvancedConditionsBuilder
+                conditions={advancedConditions}
+                onChange={handleAdvancedConditionsChange}
+              />
+            </div>
+            <div className="text-xs text-gray-400 bg-gray-700 rounded p-2 border border-gray-600">
+              <strong>Advanced Conditions:</strong> Create complex validation rules using multiple condition types 
+              with AND/OR logic. These conditions will be evaluated when the flow reaches this edge.
+            </div>
           </div>
         );
       
@@ -81,22 +109,44 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
               className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
               placeholder="e.g., yes, ok, sure"
             />
+            <div className="text-xs text-gray-400">
+              The edge will be taken if the user message contains any of these keywords.
+            </div>
           </div>
         );
       
       case 'intent':
         return (
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-300">
-              Intent
-            </label>
-            <input
-              type="text"
-              value={conditionConfig.intent || ''}
-              onChange={(e) => handleConditionConfigChange('intent', e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
-              placeholder="e.g., greeting, support"
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Intent Name
+              </label>
+              <input
+                type="text"
+                value={conditionConfig.intent_name || ''}
+                onChange={(e) => handleConditionConfigChange('intent_name', e.target.value)}
+                className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                placeholder="e.g., greeting, support, booking"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Confidence Threshold
+              </label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                step="0.1"
+                value={conditionConfig.confidence_threshold || 0.8}
+                onChange={(e) => handleConditionConfigChange('confidence_threshold', parseFloat(e.target.value))}
+                className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+              />
+            </div>
+            <div className="text-xs text-gray-400">
+              The edge will be taken if the detected intent matches with sufficient confidence.
+            </div>
           </div>
         );
       
@@ -111,13 +161,20 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
               value={conditionConfig.expected_input || ''}
               onChange={(e) => handleConditionConfigChange('expected_input', e.target.value)}
               className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
-              placeholder="e.g., yes"
+              placeholder="Leave empty to accept any user input"
             />
+            <div className="text-xs text-gray-400">
+              The edge will be taken if the user provides any input (or specific input if specified).
+            </div>
           </div>
         );
       
       default:
-        return null;
+        return (
+          <div className="text-sm text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+            This edge will always be taken when the flow reaches this point.
+          </div>
+        );
     }
   };
 
@@ -169,7 +226,44 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
         </div>
 
         {/* Condition Configuration */}
-        {renderConditionConfig()}
+        {conditionType === 'condition' ? (
+          <div>
+            {/* Tab Navigation for Advanced Conditions */}
+            <div className="flex space-x-1 mb-4">
+              <button
+                onClick={() => setActiveTab('config')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  activeTab === 'config'
+                    ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Configuration
+              </button>
+              <button
+                onClick={() => setActiveTab('docs')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                  activeTab === 'docs'
+                    ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Help
+              </button>
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === 'config' ? (
+              renderConditionConfig()
+            ) : (
+              <div className="bg-gray-800 rounded-lg p-3 max-h-60 overflow-y-auto">
+                <ConditionsDocumentation />
+              </div>
+            )}
+          </div>
+        ) : (
+          renderConditionConfig()
+        )}
 
         {/* Priority */}
         <div className="space-y-2">

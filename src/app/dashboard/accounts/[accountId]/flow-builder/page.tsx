@@ -586,6 +586,11 @@ function FlowBuilderContent() {
                 onUpdateNode={updateNodeData}
                 onClose={() => setShowPropertiesPanel(false)}
                 accountId={parseInt(accountId)}
+                availableNodes={nodes.map(n => ({
+                  id: n.id,
+                  label: n.data.label || n.id,
+                  type: n.type || 'unknown'
+                }))}
               />
             )}
             {selectedEdge && (

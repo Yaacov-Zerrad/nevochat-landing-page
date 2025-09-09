@@ -1,0 +1,30 @@
+# Development Dockerfile for Next.js with hot reload
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies for better development experience
+RUN apk add --no-cache \
+    git \
+    curl
+
+# Copy package files first (for better caching)
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Expose the development port
+EXPOSE 3001
+
+# Set environment variables for development
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Start the development server with hot reload (run as root in dev for simplicity)
+# in 3001 and make 0.0.0.0 the host
+CMD ["npm", "run", "dev", "--", "-p", "3001"]

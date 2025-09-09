@@ -19,9 +19,7 @@ export default function AccountSettingsPage() {
       const mockAccount: Account = {
         id: parseInt(accountId),
         name: accountId === '1' ? 'Mon Entreprise' : 'Projet Client A',
-        description: accountId === '1' ? 'Compte principal de mon entreprise' : 'Compte pour le client A',
-        status: 'active',
-        role: 'owner',
+        status: 1,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       }
@@ -107,24 +105,14 @@ export default function AccountSettingsPage() {
                     Statut
                   </label>
                   <div className={`inline-flex px-3 py-2 text-sm rounded-full ${
-                    account.status === 'active' ? 'bg-green-500/20 text-green-400' :
-                    account.status === 'inactive' ? 'bg-gray-500/20 text-gray-400' :
+                    account.status === 1 ? 'bg-green-500/20 text-green-400' :
+                    account.status === 0 ? 'bg-gray-500/20 text-gray-400' :
                     'bg-red-500/20 text-red-400'
                   }`}>
                     {account.status}
                   </div>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Description
-                  </label>
-                  <textarea
-                    value={account.description}
-                    rows={3}
-                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-neon-green focus:outline-none"
-                    readOnly
-                  />
-                </div>
+               
               </div>
             </div>
 

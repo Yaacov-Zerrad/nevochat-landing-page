@@ -1,0 +1,516 @@
+import React, { useState, useEffect } from 'react';
+
+export interface ConditionRule {
+  id: string;
+  type: string;
+  operator: string;
+  value: any;
+  field?: string;
+  variable_path?: string;
+  case_sensitive?: boolean;
+  intent_name?: string;
+  confidence_threshold?: number;
+  pattern?: string;
+  target?: string;
+  node_id?: string;
+  visited?: boolean;
+  start_time?: string;
+  end_time?: string;
+  timezone?: string;
+}
+
+export interface ConditionsConfig {
+  operator: 'AND' | 'OR';
+  rules: ConditionRule[];
+}
+
+interface AdvancedConditionsBuilderProps {
+  conditions: ConditionsConfig;
+  onChange: (conditions: ConditionsConfig) => void;
+  className?: string;
+}
+
+const CONDITION_TYPES = [
+  { value: 'contact', label: 'Contact Data', description: 'Evaluate contact information' },
+  { value: 'context_variable', label: 'Context Variable', description: 'Check variables in execution context' },
+  { value: 'user_input', label: 'User Input', description: 'Analyze user message content' },
+  { value: 'intent', label: 'Intent', description: 'Check detected user intent' },
+  { value: 'time_condition', label: 'Time Condition', description: 'Time-based conditions' },
+  { value: 'regex', label: 'Regex Pattern', description: 'Pattern matching with regex' },
+  { value: 'previous_node', label: 'Previous Node', description: 'Check visited nodes' },
+  { value: 'conversation', label: 'Conversation', description: 'Conversation metadata' },
+];
+
+const OPERATORS = [
+  { value: 'equals', label: 'Equals' },
+  { value: 'not_equals', label: 'Not Equals' },
+  { value: 'contains', label: 'Contains' },
+  { value: 'not_contains', label: 'Not Contains' },
+  { value: 'starts_with', label: 'Starts With' },
+  { value: 'ends_with', label: 'Ends With' },
+  { value: 'greater_than', label: 'Greater Than' },
+  { value: 'less_than', label: 'Less Than' },
+  { value: 'greater_equal', label: 'Greater or Equal' },
+  { value: 'less_equal', label: 'Less or Equal' },
+  { value: 'is_empty', label: 'Is Empty' },
+  { value: 'not_empty', label: 'Not Empty' },
+  { value: 'in_list', label: 'In List' },
+  { value: 'not_in_list', label: 'Not In List' },
+  { value: 'matches_regex', label: 'Matches Regex' },
+];
+
+const CONTACT_FIELDS = [
+  { value: 'name', label: 'Name' },
+  { value: 'email', label: 'Email' },
+  { value: 'phone_number', label: 'Phone Number' },
+  { value: 'blocked', label: 'Blocked Status' },
+  { value: 'country_code', label: 'Country Code' },
+  { value: 'location', label: 'Location' },
+];
+
+const TIME_OPERATORS = [
+  { value: 'between', label: 'Between' },
+  { value: 'after', label: 'After' },
+  { value: 'before', label: 'Before' },
+];
+
+const CONVERSATION_FIELDS = [
+  { value: 'message_count', label: 'Message Count' },
+  { value: 'duration_minutes', label: 'Duration (minutes)' },
+  { value: 'status', label: 'Status' },
+];
+
+export default function AdvancedConditionsBuilder({ 
+  conditions, 
+  onChange, 
+  className = '' 
+}: AdvancedConditionsBuilderProps) {
+  const [localConditions, setLocalConditions] = useState<ConditionsConfig>(conditions);
+
+  useEffect(() => {
+    setLocalConditions(conditions);
+  }, [conditions]);
+
+  const updateConditions = (newConditions: ConditionsConfig) => {
+    setLocalConditions(newConditions);
+    onChange(newConditions);
+  };
+
+  const addRule = () => {
+    const newRule: ConditionRule = {
+      id: `rule_${Date.now()}`,
+      type: 'contact',
+      operator: 'equals',
+      value: '',
+    };
+    
+    updateConditions({
+      ...localConditions,
+      rules: [...localConditions.rules, newRule],
+    });
+  };
+
+  const removeRule = (ruleId: string) => {
+    updateConditions({
+      ...localConditions,
+      rules: localConditions.rules.filter(rule => rule.id !== ruleId),
+    });
+  };
+
+  const updateRule = (ruleId: string, updates: Partial<ConditionRule>) => {
+    updateConditions({
+      ...localConditions,
+      rules: localConditions.rules.map(rule => 
+        rule.id === ruleId ? { ...rule, ...updates } : rule
+      ),
+    });
+  };
+
+  const renderRuleFields = (rule: ConditionRule) => {
+    switch (rule.type) {
+      case 'contact':
+        return (
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Field</label>
+                <select
+                  value={rule.field || ''}
+                  onChange={(e) => updateRule(rule.id, { field: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                >
+                  <option value="">Select field</option>
+                  {CONTACT_FIELDS.map(field => (
+                    <option key={field.value} value={field.value}>{field.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <select
+                  value={rule.operator}
+                  onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                >
+                  {OPERATORS.map(op => (
+                    <option key={op.value} value={op.value}>{op.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {!['is_empty', 'not_empty'].includes(rule.operator) && (
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+                <input
+                  type="text"
+                  value={rule.value || ''}
+                  onChange={(e) => updateRule(rule.id, { value: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  placeholder="Expected value"
+                />
+              </div>
+            )}
+            <div>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={rule.case_sensitive !== false}
+                  onChange={(e) => updateRule(rule.id, { case_sensitive: e.target.checked })}
+                  className="rounded"
+                />
+                <span className="text-xs text-gray-400">Case sensitive</span>
+              </label>
+            </div>
+          </>
+        );
+
+      case 'context_variable':
+        return (
+          <>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Variable Path</label>
+              <input
+                type="text"
+                value={rule.variable_path || ''}
+                onChange={(e) => updateRule(rule.id, { variable_path: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                placeholder="e.g., user.age, preferences.language"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <select
+                  value={rule.operator}
+                  onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                >
+                  {OPERATORS.map(op => (
+                    <option key={op.value} value={op.value}>{op.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+                <input
+                  type="text"
+                  value={rule.value || ''}
+                  onChange={(e) => updateRule(rule.id, { value: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  placeholder="Expected value"
+                />
+              </div>
+            </div>
+          </>
+        );
+
+      case 'user_input':
+        return (
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <select
+                  value={rule.operator}
+                  onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                >
+                  {OPERATORS.map(op => (
+                    <option key={op.value} value={op.value}>{op.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+                <input
+                  type="text"
+                  value={rule.value || ''}
+                  onChange={(e) => updateRule(rule.id, { value: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  placeholder="Text to match"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={rule.case_sensitive !== false}
+                  onChange={(e) => updateRule(rule.id, { case_sensitive: e.target.checked })}
+                  className="rounded"
+                />
+                <span className="text-xs text-gray-400">Case sensitive</span>
+              </label>
+            </div>
+          </>
+        );
+
+      case 'intent':
+        return (
+          <>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Intent Name</label>
+              <input
+                type="text"
+                value={rule.intent_name || ''}
+                onChange={(e) => updateRule(rule.id, { intent_name: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                placeholder="e.g., confirm_booking, support_request"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Confidence Threshold</label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                step="0.1"
+                value={rule.confidence_threshold || 0.8}
+                onChange={(e) => updateRule(rule.id, { confidence_threshold: parseFloat(e.target.value) })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+              />
+            </div>
+          </>
+        );
+
+      case 'time_condition':
+        return (
+          <>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Time Operator</label>
+              <select
+                value={rule.operator}
+                onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+              >
+                {TIME_OPERATORS.map(op => (
+                  <option key={op.value} value={op.value}>{op.label}</option>
+                ))}
+              </select>
+            </div>
+            {rule.operator === 'between' ? (
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">Start Time</label>
+                  <input
+                    type="time"
+                    value={rule.start_time || ''}
+                    onChange={(e) => updateRule(rule.id, { start_time: e.target.value })}
+                    className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">End Time</label>
+                  <input
+                    type="time"
+                    value={rule.end_time || ''}
+                    onChange={(e) => updateRule(rule.id, { end_time: e.target.value })}
+                    className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Time</label>
+                <input
+                  type="time"
+                  value={rule.value || ''}
+                  onChange={(e) => updateRule(rule.id, { value: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                />
+              </div>
+            )}
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Timezone</label>
+              <input
+                type="text"
+                value={rule.timezone || 'UTC'}
+                onChange={(e) => updateRule(rule.id, { timezone: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                placeholder="e.g., UTC, Europe/Paris"
+              />
+            </div>
+          </>
+        );
+
+      case 'regex':
+        return (
+          <>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Regex Pattern</label>
+              <input
+                type="text"
+                value={rule.pattern || ''}
+                onChange={(e) => updateRule(rule.id, { pattern: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                placeholder="e.g., ^[0-9]{10}$"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Target</label>
+              <select
+                value={rule.target || 'last_user_message'}
+                onChange={(e) => updateRule(rule.id, { target: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+              >
+                <option value="last_user_message">Last User Message</option>
+              </select>
+            </div>
+          </>
+        );
+
+      case 'previous_node':
+        return (
+          <>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Node ID</label>
+              <input
+                type="text"
+                value={rule.node_id || ''}
+                onChange={(e) => updateRule(rule.id, { node_id: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                placeholder="e.g., welcome_message"
+              />
+            </div>
+            <div>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={rule.visited !== false}
+                  onChange={(e) => updateRule(rule.id, { visited: e.target.checked })}
+                  className="rounded"
+                />
+                <span className="text-xs text-gray-400">Must have been visited</span>
+              </label>
+            </div>
+          </>
+        );
+
+      case 'conversation':
+        return (
+          <>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Field</label>
+                <select
+                  value={rule.field || ''}
+                  onChange={(e) => updateRule(rule.id, { field: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                >
+                  <option value="">Select field</option>
+                  {CONVERSATION_FIELDS.map(field => (
+                    <option key={field.value} value={field.value}>{field.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <select
+                  value={rule.operator}
+                  onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                >
+                  {OPERATORS.map(op => (
+                    <option key={op.value} value={op.value}>{op.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+              <input
+                type={rule.field === 'message_count' || rule.field === 'duration_minutes' ? 'number' : 'text'}
+                value={rule.value || ''}
+                onChange={(e) => updateRule(rule.id, { value: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                placeholder="Expected value"
+              />
+            </div>
+          </>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className={`space-y-4 ${className}`}>
+      <div className="flex items-center justify-between">
+        <h4 className="text-sm font-medium text-white">Advanced Conditions</h4>
+        <div className="flex items-center space-x-2">
+          <label className="text-xs text-gray-400">Logic:</label>
+          <select
+            value={localConditions.operator}
+            onChange={(e) => updateConditions({ ...localConditions, operator: e.target.value as 'AND' | 'OR' })}
+            className="bg-gray-600 border border-gray-500 rounded px-2 py-1 text-xs text-white focus:border-neon-green focus:outline-none"
+          >
+            <option value="AND">AND (All must be true)</option>
+            <option value="OR">OR (Any can be true)</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="space-y-3 max-h-64 overflow-y-auto">
+        {localConditions.rules.map((rule, index) => (
+          <div key={rule.id} className="bg-gray-700 rounded-lg p-3 space-y-3 border border-gray-600">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium text-neon-green">Rule {index + 1}</span>
+                <select
+                  value={rule.type}
+                  onChange={(e) => updateRule(rule.id, { type: e.target.value })}
+                  className="bg-gray-600 border border-gray-500 rounded px-2 py-1 text-xs text-white focus:border-neon-green focus:outline-none"
+                >
+                  {CONDITION_TYPES.map(type => (
+                    <option key={type.value} value={type.value}>{type.label}</option>
+                  ))}
+                </select>
+              </div>
+              <button
+                onClick={() => removeRule(rule.id)}
+                className="text-red-400 hover:text-red-300 text-sm"
+                title="Remove rule"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="space-y-2">
+              {renderRuleFields(rule)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={addRule}
+        className="w-full bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white px-3 py-2 rounded-lg transition-colors border border-gray-600 hover:border-gray-500 text-sm"
+      >
+        + Add Condition Rule
+      </button>
+    </div>
+  );
+}

@@ -30,6 +30,20 @@ interface CallToActionButton {
   phone_number?: string
 }
 
+interface TemplateData {
+  variables: TemplateVariable[]
+  body?: string
+  header_type?: string
+  header_url?: string
+  footer?: string
+  buttons?: QuickReplyButton[] | CallToActionButton[]
+  button_text?: string
+  sections?: any[]
+  code_length?: number
+  add_security_recommendation?: boolean
+  header?: string
+}
+
 export default function CreateTemplatePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -109,7 +123,7 @@ export default function CreateTemplatePage() {
   const locationBodyRef = useRef<HTMLTextAreaElement>(null)
 
   // Get current template data for preview
-  const getCurrentTemplateData = () => {
+  const getCurrentTemplateData = (): TemplateData => {
     switch (templateType) {
       case 'text':
         return textTemplateData
@@ -126,7 +140,7 @@ export default function CreateTemplatePage() {
       case 'location':
         return locationData
       default:
-        return {}
+        return { variables: [] }
     }
   }
 
@@ -297,20 +311,38 @@ export default function CreateTemplatePage() {
           templateData = textData
           break
         case 'media':
-          const { variables: mediaVars, ...mediaData } = mediaTemplateData
-          templateData = mediaData
+          const { variables: mediaVars, header_type, header_url, ...mediaData } = mediaTemplateData
+          // Transform field names to match backend expectations
+          templateData = {
+            ...mediaData,
+            media_type: header_type,
+            media_url: header_url
+          }
           break
         case 'quick-reply':
-          const { variables: quickVars, ...quickData } = quickReplyData
-          templateData = quickData
+          const { variables: quickVars, buttons: quickButtons, ...quickData } = quickReplyData
+          // Transform buttons to quick_replies format expected by backend
+          templateData = {
+            ...quickData,
+            quick_replies: quickButtons.map(button => button.text).filter(text => text.trim() !== '')
+          }
           break
         case 'list-picker':
-          const { variables: listVars, ...listData } = listPickerData
-          templateData = listData
+          const { variables: listVars, button_text, sections, ...listData } = listPickerData
+          // Transform button_text to button format expected by backend
+          templateData = {
+            ...listData,
+            button: button_text,
+            sections: sections
+          }
           break
         case 'call-to-action':
-          const { variables: ctaVars, ...ctaData } = callToActionData
-          templateData = ctaData
+          const { variables: ctaVars, buttons: ctaButtons, ...ctaData } = callToActionData
+          // Transform buttons to cta_buttons format expected by backend
+          templateData = {
+            ...ctaData,
+            cta_buttons: ctaButtons
+          }
           break
         case 'authentication':
           const { variables: authVars, ...authData } = authenticationData
@@ -368,7 +400,7 @@ export default function CreateTemplatePage() {
                 required
               />
               <p className="text-xs text-gray-500 mt-2">
-                Cliquez sur "Ajouter variable" pour insérer {'{'}{'{'}{'{'}1{'}'}{'}'}  à la position du curseur
+                Cliquez sur &quot;Ajouter variable&quot; pour insérer {'{'}{'{'}{'{'}1{'}'}{'}'}  à la position du curseur
               </p>
             </div>
           </div>
@@ -379,7 +411,7 @@ export default function CreateTemplatePage() {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-3">
-                Type d'en-tête
+                Type d&apos;en-tête
               </label>
               <select
                 value={mediaTemplateData.header_type}
@@ -769,7 +801,7 @@ export default function CreateTemplatePage() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <label className="block text-sm font-medium text-gray-300">
-                  Boutons d'action
+                  Boutons d&apos;action
                 </label>
                 <button
                   type="button"
@@ -923,7 +955,7 @@ export default function CreateTemplatePage() {
       default:
         return (
           <div className="text-center py-12">
-            <p className="text-gray-400">Ce type de template n'est pas encore implémenté</p>
+            <p className="text-gray-400">Ce type de template n&apos;est pas encore implémenté</p>
           </div>
         )
     }
@@ -1044,6 +1076,7 @@ export default function CreateTemplatePage() {
                       <option value="es">Espagnol</option>
                       <option value="de">Allemand</option>
                       <option value="it">Italien</option>
+                      <option value="he">Hébreu</option>
                     </select>
                   </div>
 
@@ -1102,7 +1135,7 @@ export default function CreateTemplatePage() {
                 <div className="space-y-2">
                   {Object.entries(getPreviewVariables()).map(([key, value]) => (
                     <div key={key} className="flex items-center justify-between text-sm">
-                      <code className="text-neon-green">{'{'}{'{'}{key}{'}'}{'{'}:'}</code>
+                      <code className="text-neon-green">{`{{${key}}}:`}</code>
                       <span className="text-gray-300">{value}</span>
                     </div>
                   ))}

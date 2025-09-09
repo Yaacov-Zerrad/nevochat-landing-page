@@ -15,7 +15,9 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth-token/`, {
+          const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL
+          
+          const response = await fetch(`${backendUrl}/api/auth-token/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -38,7 +40,7 @@ export const authOptions: NextAuthOptions = {
           console.log('Auth token response:', data)
 
           if (data.token) {
-            const userResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/me/`, {
+            const userResponse = await fetch(`${backendUrl}/api/users/me/`, {
               headers: {
                 'Authorization': `Token ${data.token}`,
               },

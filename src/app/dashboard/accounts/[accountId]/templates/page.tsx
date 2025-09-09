@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter, useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Plus, MessageSquare, Image, List, Phone, MapPin, Shield, Zap } from 'lucide-react'
 import { twilioTemplatesAPI } from '@/lib/api'
@@ -35,18 +35,19 @@ export default function TemplatesPage() {
   const [loading, setLoading] = useState(true)
   const [templatesLoading, setTemplatesLoading] = useState(false)
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin')
-      return
+  const fetchTemplates = useCallback(async (messagingServiceSid: string) => {
+    try {
+      setTemplatesLoading(true)
+      const data = await twilioTemplatesAPI.getTemplates(messagingServiceSid)
+      setTemplates(data.templates || [])
+    } catch (error) {
+      console.error('Failed to fetch templates:', error)
+    } finally {
+      setTemplatesLoading(false)
     }
+  }, [])
 
-    if (status === 'authenticated') {
-      fetchMessagingServices()
-    }
-  }, [status, router, accountId])
-
-  const fetchMessagingServices = async () => {
+  const fetchMessagingServices = useCallback(async () => {
     try {
       setLoading(true)
       const data = await twilioTemplatesAPI.getMessagingServices(parseInt(accountId))
@@ -60,19 +61,18 @@ export default function TemplatesPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [accountId, fetchTemplates])
 
-  const fetchTemplates = async (messagingServiceSid: string) => {
-    try {
-      setTemplatesLoading(true)
-      const data = await twilioTemplatesAPI.getTemplates(messagingServiceSid)
-      setTemplates(data.templates || [])
-    } catch (error) {
-      console.error('Failed to fetch templates:', error)
-    } finally {
-      setTemplatesLoading(false)
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin')
+      return
     }
-  }
+
+    if (status === 'authenticated') {
+      fetchMessagingServices()
+    }
+  }, [status, router, accountId, fetchMessagingServices])
 
   const handleServiceChange = (service: MessagingService) => {
     setSelectedService(service)

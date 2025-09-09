@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter, useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Trash2, Copy, Download } from 'lucide-react'
 import { twilioTemplatesAPI } from '@/lib/api'
@@ -31,18 +31,7 @@ export default function TemplateDetailPage() {
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState(false)
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin')
-      return
-    }
-
-    if (status === 'authenticated') {
-      fetchTemplate()
-    }
-  }, [status, router, templateName, messagingServiceSid])
-
-  const fetchTemplate = async () => {
+  const fetchTemplate = useCallback(async () => {
     try {
       setLoading(true)
       const data = await twilioTemplatesAPI.getTemplateByName(messagingServiceSid, templateName)
@@ -52,7 +41,18 @@ export default function TemplateDetailPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [messagingServiceSid, templateName])
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin')
+      return
+    }
+
+    if (status === 'authenticated') {
+      fetchTemplate()
+    }
+  }, [status, router, templateName, messagingServiceSid, fetchTemplate])
+
 
   const handleDelete = async () => {
     if (!template || !confirm('Êtes-vous sûr de vouloir supprimer ce template ?')) {

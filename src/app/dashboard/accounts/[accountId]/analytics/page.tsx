@@ -19,9 +19,7 @@ export default function AccountAnalyticsPage() {
       const mockAccount: Account = {
         id: parseInt(accountId),
         name: accountId === '1' ? 'Mon Entreprise' : 'Projet Client A',
-        description: accountId === '1' ? 'Compte principal de mon entreprise' : 'Compte pour le client A',
-        status: 'active',
-        role: 'owner',
+        status: 1,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       }

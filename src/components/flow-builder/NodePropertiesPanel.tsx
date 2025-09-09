@@ -1,30 +1,84 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Node } from 'reactflow';
 import { twilioTemplatesAPI } from '@/lib/api';
+import AdvancedConditionsBuilder, { ConditionsConfig } from './AdvancedConditionsBuilder';
+import ConditionsDocumentation from './ConditionsDocumentation';
+import DelayDocumentation from './DelayDocumentation';
+import DelayPresets from './DelayPresets';
+
+interface Branch {
+  name: string;
+  conditions_met: boolean;
+  next_node: string;
+  message?: string;
+}
 
 interface NodePropertiesPanelProps {
   node: Node;
   onUpdateNode: (nodeId: string, newData: any) => void;
   onClose: () => void;
   accountId?: number;
+  availableNodes?: { id: string; label: string; type: string }[];
 }
 
-export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accountId }: NodePropertiesPanelProps) {
+export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accountId, availableNodes = [] }: NodePropertiesPanelProps) {
   const [label, setLabel] = useState(node.data.label || '');
   const [description, setDescription] = useState(node.data.description || '');
   const [config, setConfig] = useState(node.data.config || {});
+  const [activeTab, setActiveTab] = useState<'config' | 'docs'>('config');
+  const [advancedConditions, setAdvancedConditions] = useState<ConditionsConfig>({
+    operator: 'AND',
+    rules: []
+  });
+  const [branches, setBranches] = useState<Branch[]>(config.branches || [
+    { name: 'success', conditions_met: true, next_node: '' },
+    { name: 'failure', conditions_met: false, next_node: '' }
+  ]);
 
   useEffect(() => {
     setLabel(node.data.label || '');
     setDescription(node.data.description || '');
     setConfig(node.data.config || {});
+    
+    // Reset active tab when switching nodes
+    setActiveTab('config');
+    
+    // Load advanced conditions and branches for condition nodes
+    if (node.type === 'condition') {
+      if (node.data.config?.conditions) {
+        setAdvancedConditions(node.data.config.conditions);
+      } else {
+        setAdvancedConditions({ operator: 'AND', rules: [] });
+      }
+      
+      if (node.data.config?.branches) {
+        setBranches(node.data.config.branches);
+      } else {
+        setBranches([
+          { name: 'success', conditions_met: true, next_node: '' },
+          { name: 'failure', conditions_met: false, next_node: '' }
+        ]);
+      }
+    }
   }, [node]);
 
   const handleSave = () => {
+    let finalConfig = { ...config };
+    
+    // For condition nodes, include advanced conditions and branches
+    if (node.type === 'condition') {
+      finalConfig = {
+        ...config,
+        conditions: advancedConditions,
+        branches: branches,
+        default_branch: branches.find(b => !b.conditions_met)?.name || 'failure'
+      };
+    }
+    
     onUpdateNode(node.id, {
       label,
       description,
-      config,
+      config: finalConfig,
     });
     // Close the panel after saving
     onClose();
@@ -137,18 +191,131 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
 
       case 'condition':
         return (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Condition Expression
-              </label>
-              <textarea
-                value={config.condition || ''}
-                onChange={(e) => updateConfig('condition', e.target.value)}
-                rows={3}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
-                placeholder="e.g. user_input == 'yes'"
+          <div className="space-y-6">
+            {/* Advanced Conditions Builder */}
+            <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
+              <AdvancedConditionsBuilder
+                conditions={advancedConditions}
+                onChange={setAdvancedConditions}
               />
+            </div>
+
+            {/* Branches Configuration */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium text-white">Flow Branches</h4>
+              <div className="space-y-3">
+                {branches.map((branch, index) => (
+                  <div key={index} className="bg-gray-700 rounded-lg p-3 border border-gray-600">
+                    <div className="grid grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1">
+                          Branch Name
+                        </label>
+                        <input
+                          type="text"
+                          value={branch.name}
+                          onChange={(e) => {
+                            const newBranches = [...branches];
+                            newBranches[index] = { ...branch, name: e.target.value };
+                            setBranches(newBranches);
+                          }}
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                          placeholder="Branch name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1">
+                          When Conditions
+                        </label>
+                        <select
+                          value={branch.conditions_met.toString()}
+                          onChange={(e) => {
+                            const newBranches = [...branches];
+                            newBranches[index] = { ...branch, conditions_met: e.target.value === 'true' };
+                            setBranches(newBranches);
+                          }}
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                        >
+                          <option value="true">Are Met</option>
+                          <option value="false">Are Not Met</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-1">
+                          Next Node
+                        </label>
+                        <select
+                          value={branch.next_node}
+                          onChange={(e) => {
+                            const newBranches = [...branches];
+                            newBranches[index] = { ...branch, next_node: e.target.value };
+                            setBranches(newBranches);
+                          }}
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                        >
+                          <option value="">Select next node...</option>
+                          {availableNodes.map((availableNode) => (
+                            <option key={availableNode.id} value={availableNode.id}>
+                              {availableNode.label} ({availableNode.type})
+                            </option>
+                          ))}
+                        </select>
+                        {/* Fallback input for manual entry */}
+                        <input
+                          type="text"
+                          value={branch.next_node}
+                          onChange={(e) => {
+                            const newBranches = [...branches];
+                            newBranches[index] = { ...branch, next_node: e.target.value };
+                            setBranches(newBranches);
+                          }}
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none mt-1"
+                          placeholder="Or enter node ID manually"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <label className="block text-xs font-medium text-gray-400 mb-1">
+                        Optional Message
+                      </label>
+                      <input
+                        type="text"
+                        value={branch.message || ''}
+                        onChange={(e) => {
+                          const newBranches = [...branches];
+                          newBranches[index] = { ...branch, message: e.target.value };
+                          setBranches(newBranches);
+                        }}
+                        className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                        placeholder="Optional message to display"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setBranches([...branches, { name: `branch_${branches.length + 1}`, conditions_met: true, next_node: '' }])}
+                  className="px-3 py-1 bg-gray-600 hover:bg-gray-500 text-gray-300 hover:text-white rounded text-sm transition-colors"
+                >
+                  + Add Branch
+                </button>
+                {branches.length > 2 && (
+                  <button
+                    onClick={() => setBranches(branches.slice(0, -1))}
+                    className="px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-sm transition-colors"
+                  >
+                    Remove Last
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Help Text */}
+            <div className="text-xs text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+              <strong>How it works:</strong> The advanced conditions above will be evaluated. 
+              Based on whether they pass or fail, the flow will follow the corresponding branch to the next node.
             </div>
           </div>
         );
@@ -245,20 +412,274 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
 
       case 'delay':
         return (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Delay (seconds)
-              </label>
-              <input
-                type="number"
-                value={config.delay_seconds || 1}
-                onChange={(e) => updateConfig('delay_seconds', parseInt(e.target.value))}
-                min="1"
-                max="3600"
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
-              />
+          <div className="space-y-6">
+            {/* Quick Presets */}
+            <div className="border-b border-gray-600 pb-6">
+              <DelayPresets onApplyPreset={(presetConfig) => {
+                setConfig({ ...config, ...presetConfig });
+              }} />
             </div>
+
+            {/* Basic Configuration */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Delay Duration
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-1">Hours</label>
+                    <input
+                      type="number"
+                      value={Math.floor((config.seconds || config.delay_seconds || 1) / 3600)}
+                      onChange={(e) => {
+                        const hours = parseInt(e.target.value) || 0;
+                        const currentSeconds = config.seconds || config.delay_seconds || 1;
+                        const mins = Math.floor((currentSeconds % 3600) / 60);
+                        const secs = currentSeconds % 60;
+                        updateConfig('seconds', hours * 3600 + mins * 60 + secs);
+                      }}
+                      min="0"
+                      max="23"
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-1">Minutes</label>
+                    <input
+                      type="number"
+                      value={Math.floor(((config.seconds || config.delay_seconds || 1) % 3600) / 60)}
+                      onChange={(e) => {
+                        const mins = parseInt(e.target.value) || 0;
+                        const currentSeconds = config.seconds || config.delay_seconds || 1;
+                        const hours = Math.floor(currentSeconds / 3600);
+                        const secs = currentSeconds % 60;
+                        updateConfig('seconds', hours * 3600 + mins * 60 + secs);
+                      }}
+                      min="0"
+                      max="59"
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-1">Seconds</label>
+                    <input
+                      type="number"
+                      value={(config.seconds || config.delay_seconds || 1) % 60}
+                      onChange={(e) => {
+                        const secs = parseInt(e.target.value) || 0;
+                        const currentSeconds = config.seconds || config.delay_seconds || 1;
+                        const hours = Math.floor(currentSeconds / 3600);
+                        const mins = Math.floor((currentSeconds % 3600) / 60);
+                        updateConfig('seconds', hours * 3600 + mins * 60 + secs);
+                      }}
+                      min="0"
+                      max="59"
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Blocking Type */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Delay Type
+                </label>
+                <div className="space-y-2">
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      name="blocking"
+                      checked={config.blocking !== false}
+                      onChange={() => updateConfig('blocking', true)}
+                      className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                    />
+                    <div>
+                      <span className="text-white">Blocking Delay</span>
+                      <p className="text-xs text-gray-400">Flow stops and waits for the delay</p>
+                    </div>
+                  </label>
+                  <label className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      name="blocking"
+                      checked={config.blocking === false}
+                      onChange={() => updateConfig('blocking', false)}
+                      className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                    />
+                    <div>
+                      <span className="text-white">Non-blocking Delay</span>
+                      <p className="text-xs text-gray-400">Flow continues, delay runs in background</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {/* Advanced Configuration for Non-blocking */}
+            {config.blocking === false && (
+              <div className="border-t border-gray-600 pt-6 space-y-4">
+                <h4 className="text-sm font-medium text-white flex items-center">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Advanced Timing
+                </h4>
+
+                {/* Timing Mode */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Timing Mode
+                  </label>
+                  <select
+                    value={config.timing_mode || 'fixed_delay'}
+                    onChange={(e) => updateConfig('timing_mode', e.target.value)}
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                  >
+                    <option value="fixed_delay">Fixed Delay</option>
+                    <option value="delay_from_last_message">Reset on User Message</option>
+                    <option value="absolute_date">Absolute Date/Time</option>
+                  </select>
+                </div>
+
+                {/* Absolute Date Configuration */}
+                {config.timing_mode === 'absolute_date' && (
+                  <div className="space-y-4 bg-gray-700 p-4 rounded-lg border border-gray-600">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Execute At
+                      </label>
+                      <input
+                        type="text"
+                        value={config.execute_at || ''}
+                        onChange={(e) => updateConfig('execute_at', e.target.value)}
+                        className="w-full bg-gray-600 border border-gray-500 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none font-mono text-sm"
+                        placeholder="{{context.appointment_datetime}} or 2024-12-25T10:00:00"
+                      />
+                      <p className="text-xs text-gray-400 mt-1">
+                        Use template variables like {`{{context.appointment_datetime}}`} or ISO date format
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Timezone
+                      </label>
+                      <select
+                        value={config.timezone || 'UTC'}
+                        onChange={(e) => updateConfig('timezone', e.target.value)}
+                        className="w-full bg-gray-600 border border-gray-500 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                      >
+                        <option value="UTC">UTC</option>
+                        <option value="Europe/Paris">Europe/Paris</option>
+                        <option value="America/New_York">America/New_York</option>
+                        <option value="America/Los_Angeles">America/Los_Angeles</option>
+                        <option value="Asia/Tokyo">Asia/Tokyo</option>
+                        <option value="Australia/Sydney">Australia/Sydney</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {/* Dynamic Delay Configuration */}
+                {config.timing_mode === 'delay_from_last_message' && (
+                  <div className="space-y-4 bg-gray-700 p-4 rounded-lg border border-gray-600">
+                    <div className="flex items-center justify-between">
+                      <label className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          checked={config.reset_on_user_response !== false}
+                          onChange={(e) => updateConfig('reset_on_user_response', e.target.checked)}
+                          className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                        />
+                        <div>
+                          <span className="text-white">Reset on User Response</span>
+                          <p className="text-xs text-gray-400">Restart delay timer when user sends a message</p>
+                        </div>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <label className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          checked={config.cancel_on_user_response === true}
+                          onChange={(e) => updateConfig('cancel_on_user_response', e.target.checked)}
+                          className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                        />
+                        <div>
+                          <span className="text-white">Cancel on User Response</span>
+                          <p className="text-xs text-gray-400">Cancel delay entirely if user responds</p>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                )}
+
+                {/* Scheduled Action */}
+                <div className="space-y-4">
+                  <h5 className="text-sm font-medium text-gray-300">Scheduled Action (Optional)</h5>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Action Type
+                    </label>
+                    <select
+                      value={config.scheduled_action?.type || 'continue_flow'}
+                      onChange={(e) => updateConfig('scheduled_action', { 
+                        ...config.scheduled_action, 
+                        type: e.target.value 
+                      })}
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    >
+                      <option value="continue_flow">Continue Flow</option>
+                      <option value="message">Send Message</option>
+                      <option value="restart_flow">Restart from Node</option>
+                    </select>
+                  </div>
+
+                  {config.scheduled_action?.type === 'message' && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Message Content
+                      </label>
+                      <textarea
+                        value={config.scheduled_action?.content || ''}
+                        onChange={(e) => updateConfig('scheduled_action', { 
+                          ...config.scheduled_action, 
+                          content: e.target.value 
+                        })}
+                        rows={3}
+                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
+                        placeholder="Message to send after delay..."
+                      />
+                    </div>
+                  )}
+
+                  {config.scheduled_action?.type === 'restart_flow' && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Restart from Node
+                      </label>
+                      <select
+                        value={config.scheduled_action?.restart_from_node || ''}
+                        onChange={(e) => updateConfig('scheduled_action', { 
+                          ...config.scheduled_action, 
+                          restart_from_node: e.target.value 
+                        })}
+                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                      >
+                        <option value="">Select node...</option>
+                        {availableNodes.map(node => (
+                          <option key={node.id} value={node.id}>
+                            {node.label} ({node.type})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         );
 
@@ -340,12 +761,63 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
           </div>
 
           {/* Node Type Specific Configuration */}
-          <div>
-            <h4 className="text-sm font-medium text-gray-300 mb-3">
-              {node.type ? node.type.charAt(0).toUpperCase() + node.type.slice(1) : 'Node'} Configuration
-            </h4>
-            {renderConfigFields()}
-          </div>
+          {(node.type === 'condition' || node.type === 'delay') ? (
+            <div>
+              {/* Tab Navigation for Condition and Delay Nodes */}
+              <div className="flex space-x-1 mb-4">
+                <button
+                  onClick={() => setActiveTab('config')}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    activeTab === 'config'
+                      ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  Configuration
+                </button>
+                <button
+                  onClick={() => setActiveTab('docs')}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    activeTab === 'docs'
+                      ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  Documentation
+                </button>
+              </div>
+
+              {/* Tab Content */}
+              {activeTab === 'config' ? (
+                <div>
+                  <h4 className="text-sm font-medium text-gray-300 mb-3">
+                    {node.type === 'condition' ? 'Condition' : 'Delay'} Configuration
+                  </h4>
+                  {renderConfigFields()}
+                </div>
+              ) : (
+                <div>
+                  <h4 className="text-sm font-medium text-gray-300 mb-3">
+                    {node.type === 'condition' ? 'Advanced Conditions' : 'Delay'} Documentation
+                  </h4>
+                  <div className="bg-gray-800 rounded-lg p-4 max-h-96 overflow-y-auto">
+                    {node.type === 'condition' ? (
+                      <ConditionsDocumentation />
+                    ) : (
+                      <DelayDocumentation />
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <h4 className="text-sm font-medium text-gray-300 mb-3">
+                {node.type ? node.type.charAt(0).toUpperCase() + node.type.slice(1) : 'Node'} Configuration
+              </h4>
+              {renderConfigFields()}
+            </div>
+          )}
         </div>
       </div>
 

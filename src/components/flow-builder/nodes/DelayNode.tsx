@@ -11,18 +11,63 @@ export default function DelayNode(props: NodeProps) {
     </svg>
   );
 
+  const getDelayInfo = () => {
+    const config = data.config || {};
+    const blocking = config.blocking !== false; // default to true
+    const timingMode = config.timing_mode || 'fixed_delay';
+    const seconds = config.seconds || config.delay_seconds || 1;
+
+    let timeDisplay = '';
+    let typeDisplay = '';
+
+    // Determine time display
+    if (timingMode === 'absolute_date') {
+      timeDisplay = config.execute_at || 'At specific time';
+    } else {
+      const hours = Math.floor(seconds / 3600);
+      const mins = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+      
+      if (hours > 0) {
+        timeDisplay = `${hours}h ${mins}m`;
+      } else if (mins > 0) {
+        timeDisplay = `${mins}m ${secs}s`;
+      } else {
+        timeDisplay = `${secs}s`;
+      }
+    }
+
+    // Determine type display
+    if (!blocking) {
+      if (timingMode === 'delay_from_last_message') {
+        typeDisplay = 'Non-blocking (Resets)';
+      } else if (timingMode === 'absolute_date') {
+        typeDisplay = 'Non-blocking (Scheduled)';
+      } else {
+        typeDisplay = 'Non-blocking';
+      }
+    } else {
+      typeDisplay = 'Blocking';
+    }
+
+    return { timeDisplay, typeDisplay };
+  };
+
+  const { timeDisplay, typeDisplay } = getDelayInfo();
+
   return (
     <BaseNode 
       {...props} 
       icon={icon} 
-      color="pink-500"
+      color={data.config?.blocking !== false ? "pink-500" : "purple-500"}
       onSetAsEntry={data.onSetAsEntry}
       isEntryNode={data.isEntryNode}
     >
       <div className="space-y-2">
         <div className="text-xs text-gray-400">Delay</div>
         <div className="text-sm text-white bg-gray-700 p-2 rounded">
-          {data.config?.delay_seconds || 1} seconds
+          <div className="font-medium">{timeDisplay}</div>
+          <div className="text-xs text-gray-300 mt-1">{typeDisplay}</div>
         </div>
       </div>
     </BaseNode>
