@@ -75,6 +75,21 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
       };
     }
     
+    // For delay nodes, ensure all configuration is properly preserved
+    if (node.type === 'delay') {
+      finalConfig = {
+        seconds: config.seconds || 1,
+        blocking: config.blocking !== undefined ? config.blocking : true,
+        timing_mode: config.timing_mode || 'fixed_delay',
+        reset_on_user_response: config.reset_on_user_response !== undefined ? config.reset_on_user_response : true,
+        cancel_on_user_response: config.cancel_on_user_response || false,
+        scheduled_action: config.scheduled_action || null,
+        execute_at: config.execute_at || null,
+        timezone: config.timezone || 'UTC',
+        ...config // Spread any additional config properties
+      };
+    }
+    
     onUpdateNode(node.id, {
       label,
       description,
