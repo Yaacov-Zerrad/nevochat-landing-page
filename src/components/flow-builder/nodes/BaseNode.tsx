@@ -24,7 +24,7 @@ export default function BaseNode({ data, selected, icon, color, children, onSetA
   return (
     <div
       className={`
-        min-w-[200px] bg-gray-800 border-2 rounded-lg shadow-lg relative
+        min-w-[200px] max-w-sm bg-gray-800 border-2 rounded-lg shadow-lg relative
         ${borderClass}
         ${isEntryNode ? 'ring-2 ring-yellow-400' : ''}
         transition-all duration-200

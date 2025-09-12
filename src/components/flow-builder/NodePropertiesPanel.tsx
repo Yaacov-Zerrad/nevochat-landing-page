@@ -5,6 +5,7 @@ import AdvancedConditionsBuilder, { ConditionsConfig } from './AdvancedCondition
 import ConditionsDocumentation from './ConditionsDocumentation';
 import DelayDocumentation from './DelayDocumentation';
 import DelayPresets from './DelayPresets';
+import AINodeConfig from './AINodeConfig';
 
 interface Branch {
   name: string;
@@ -201,36 +202,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
         );
 
       case 'ai':
-        return (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                AI Prompt
-              </label>
-              <textarea
-                value={config.prompt || ''}
-                onChange={(e) => updateConfig('prompt', e.target.value)}
-                rows={4}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
-                placeholder="Enter AI prompt..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Model
-              </label>
-              <select
-                value={config.model || 'gpt-3.5-turbo'}
-                onChange={(e) => updateConfig('model', e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
-              >
-                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                <option value="gpt-4">GPT-4</option>
-                <option value="claude-3">Claude 3</option>
-              </select>
-            </div>
-          </div>
-        );
+        return <AINodeConfig config={config} updateConfig={updateConfig} />;
 
       case 'input':
         return (
