@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Edge } from 'reactflow';
+import { flowAPI } from '@/lib/api';
 import AdvancedConditionsBuilder, { ConditionsConfig } from './AdvancedConditionsBuilder';
 import ConditionsDocumentation from './ConditionsDocumentation';
 
@@ -7,6 +8,8 @@ interface EdgePropertiesPanelProps {
   edge: Edge | null;
   onUpdateEdge: (edgeId: string, newData: any) => void;
   onClose: () => void;
+  flowId?: number;
+  nodes?: any[]; // Pour trouver les nodes source et target
 }
 
 const CONDITION_TYPES = [
@@ -17,7 +20,7 @@ const CONDITION_TYPES = [
   { value: 'user_input', label: 'User Input' },
 ];
 
-export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: EdgePropertiesPanelProps) {
+export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, flowId, nodes = [] }: EdgePropertiesPanelProps) {
   const [conditionType, setConditionType] = useState(edge?.data?.condition_type || 'always');
   const [label, setLabel] = useState(edge?.data?.label || '');
   const [priority, setPriority] = useState(edge?.data?.priority || 0);
@@ -27,6 +30,8 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
     operator: 'AND',
     rules: []
   });
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     if (edge) {
@@ -34,6 +39,7 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
       setLabel(edge.data?.label || '');
       setPriority(edge.data?.priority || 0);
       setConditionConfig(edge.data?.condition_config || {});
+      setSaveError(null);
       
       // Load advanced conditions if they exist
       if (edge.data?.condition_config?.conditions) {
@@ -48,23 +54,120 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
     return null;
   }
 
-  const handleSave = () => {
-    let finalConditionConfig = { ...conditionConfig };
-    
-    // If using advanced conditions, include them in the config
-    if (conditionType === 'condition') {
-      finalConditionConfig = {
-        ...conditionConfig,
-        conditions: advancedConditions
-      };
+  const handleSave = async () => {
+    if (!edge || !flowId) {
+      console.warn('Cannot save edge - missing edge or flowId');
+      return;
     }
 
-    onUpdateEdge(edge.id, {
-      condition_type: conditionType,
-      label: label,
-      priority: priority,
-      condition_config: finalConditionConfig,
-    });
+    try {
+      setSaving(true);
+      setSaveError(null);
+
+      let finalConditionConfig = { ...conditionConfig };
+      
+      // If using advanced conditions, include them in the config
+      if (conditionType === 'condition') {
+        finalConditionConfig = {
+          ...conditionConfig,
+          conditions: advancedConditions
+        };
+      }
+
+      const edgeData = {
+        condition_type: conditionType,
+        label: label,
+        priority: priority,
+        condition_config: finalConditionConfig,
+      };
+
+      // Save to backend if edge has a database ID
+      if (edge.data?.dbId) {
+        // Find source and target node database IDs
+        const sourceNode = nodes.find(n => n.id === edge.source);
+        const targetNode = nodes.find(n => n.id === edge.target);
+        
+        if (!sourceNode?.data.dbId || !targetNode?.data.dbId) {
+          throw new Error('Cannot save edge - source or target node not found in database');
+        }
+
+        const backendEdgeData = {
+          edge_id: edge.id,
+          source_node: sourceNode.data.dbId,
+          target_node: targetNode.data.dbId,
+          source_handle: edge.sourceHandle || '',
+          target_handle: edge.targetHandle || '',
+          condition_type: conditionType,
+          condition_config: finalConditionConfig,
+          label: label,
+          style: edge.data?.style || {},
+          priority: priority,
+        };
+
+        // Update edge in backend
+        const updatedEdge = await flowAPI.updateFlowEdge(flowId, edge.data.dbId, backendEdgeData);
+        
+        // Update local edge data with backend response, preserving existing data
+        const updatedEdgeData = {
+          ...edge.data, // Preserve all existing data
+          ...edgeData, // Apply the new data
+          dbId: updatedEdge.id, // Ensure dbId is set
+        };
+
+        onUpdateEdge(edge.id, updatedEdgeData);
+        
+        console.log('Edge saved successfully to backend', { edgeId: edge.id, dbId: updatedEdge.id });
+      } else {
+        // This is a new edge that needs to be created
+        const sourceNode = nodes.find(n => n.id === edge.source);
+        const targetNode = nodes.find(n => n.id === edge.target);
+        
+        if (!sourceNode?.data.dbId || !targetNode?.data.dbId) {
+          // If nodes don't have database IDs, just update locally for now
+          onUpdateEdge(edge.id, edgeData);
+          console.log('Edge updated locally - nodes not yet saved to backend');
+          onClose();
+          return;
+        }
+
+        // Generate a unique edge_id by adding timestamp to avoid conflicts
+        const uniqueEdgeId = `${edge.id}-${Date.now()}`;
+        
+        const backendEdgeData = {
+          edge_id: uniqueEdgeId,
+          source_node: sourceNode.data.dbId,
+          target_node: targetNode.data.dbId,
+          source_handle: edge.sourceHandle || '',
+          target_handle: edge.targetHandle || '',
+          condition_type: conditionType,
+          condition_config: finalConditionConfig,
+          label: label,
+          style: edge.data?.style || {},
+          priority: priority,
+        };
+
+        // Create edge in backend
+        const createdEdge = await flowAPI.createFlowEdge(flowId, backendEdgeData);
+        
+        // Update local edge data with backend response, preserving existing data
+        const updatedEdgeData = {
+          ...edge.data, // Preserve all existing data
+          ...edgeData, // Apply the new data
+          dbId: createdEdge.id, // Set the new dbId from backend
+        };
+
+        onUpdateEdge(edge.id, updatedEdgeData);
+        
+        console.log('Edge created successfully in backend', { edgeId: edge.id, dbId: createdEdge.id });
+      }
+
+      onClose();
+    } catch (error) {
+      console.error('Failed to save edge:', error);
+      setSaveError(error instanceof Error ? error.message : 'Failed to save edge');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleConditionConfigChange = (key: string, value: any) => {
@@ -193,6 +296,13 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
       </div>
 
       <div className="flex-1 p-4 space-y-6 overflow-y-auto">
+        {/* Error Message */}
+        {saveError && (
+          <div className="p-3 bg-red-500/20 border border-red-500/40 rounded-lg text-red-400 text-sm">
+            {saveError}
+          </div>
+        )}
+
         {/* Edge Label */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-300">
@@ -284,9 +394,10 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose }: Edg
       <div className="p-4 border-t border-gray-600">
         <button
           onClick={handleSave}
-          className="w-full bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+          disabled={saving}
+          className="w-full bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Update Edge
+          {saving ? 'Saving...' : 'Apply Changes'}
         </button>
       </div>
     </div>

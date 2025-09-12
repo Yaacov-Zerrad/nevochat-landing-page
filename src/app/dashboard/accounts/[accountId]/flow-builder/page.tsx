@@ -268,23 +268,31 @@ function FlowBuilderContent() {
 
   // Update node data
   const updateNodeData = useCallback((nodeId: string, newData: any) => {
+    console.log('Updating node data:', { nodeId, newData });
     setNodes((nodes) => 
-      nodes.map((node) => 
-        node.id === nodeId 
-          ? { ...node, data: { ...node.data, ...newData } }
-          : node
-      )
+      nodes.map((node) => {
+        if (node.id === nodeId) {
+          const updatedNode = { ...node, data: { ...node.data, ...newData } };
+          console.log('Node updated:', { nodeId, oldData: node.data, newData: updatedNode.data });
+          return updatedNode;
+        }
+        return node;
+      })
     );
   }, [setNodes]);
 
   // Update edge data
   const updateEdgeData = useCallback((edgeId: string, newData: any) => {
+    console.log('Updating edge data:', { edgeId, newData });
     setEdges((edges) => 
-      edges.map((edge) => 
-        edge.id === edgeId 
-          ? { ...edge, data: { ...edge.data, ...newData } }
-          : edge
-      )
+      edges.map((edge) => {
+        if (edge.id === edgeId) {
+          const updatedEdge = { ...edge, data: { ...edge.data, ...newData } };
+          console.log('Edge updated:', { edgeId, oldData: edge.data, newData: updatedEdge.data });
+          return updatedEdge;
+        }
+        return edge;
+      })
     );
   }, [setEdges]);
 
@@ -591,6 +599,7 @@ function FlowBuilderContent() {
                   label: n.data.label || n.id,
                   type: n.type || 'unknown'
                 }))}
+                flowId={flowId ? parseInt(flowId) : undefined}
               />
             )}
             {selectedEdge && (
@@ -598,6 +607,8 @@ function FlowBuilderContent() {
                 edge={selectedEdge}
                 onUpdateEdge={updateEdgeData}
                 onClose={() => setShowPropertiesPanel(false)}
+                flowId={flowId ? parseInt(flowId) : undefined}
+                nodes={nodes}
               />
             )}
           </div>

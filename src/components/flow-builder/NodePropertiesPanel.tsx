@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Node } from 'reactflow';
-import { twilioTemplatesAPI } from '@/lib/api';
+import { twilioTemplatesAPI, flowAPI } from '@/lib/api';
 import AdvancedConditionsBuilder, { ConditionsConfig } from './AdvancedConditionsBuilder';
 import ConditionsDocumentation from './ConditionsDocumentation';
 import DelayDocumentation from './DelayDocumentation';
@@ -19,9 +19,10 @@ interface NodePropertiesPanelProps {
   onClose: () => void;
   accountId?: number;
   availableNodes?: { id: string; label: string; type: string }[];
+  flowId?: number;
 }
 
-export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accountId, availableNodes = [] }: NodePropertiesPanelProps) {
+export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accountId, availableNodes = [], flowId }: NodePropertiesPanelProps) {
   const [label, setLabel] = useState(node.data.label || '');
   const [description, setDescription] = useState(node.data.description || '');
   const [config, setConfig] = useState(node.data.config || {});
@@ -34,11 +35,14 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
     { name: 'success', conditions_met: true, next_node: '' },
     { name: 'failure', conditions_met: false, next_node: '' }
   ]);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     setLabel(node.data.label || '');
     setDescription(node.data.description || '');
     setConfig(node.data.config || {});
+    setSaveError(null);
     
     // Reset active tab when switching nodes
     setActiveTab('config');
@@ -62,41 +66,111 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
     }
   }, [node]);
 
-  const handleSave = () => {
-    let finalConfig = { ...config };
-    
-    // For condition nodes, include advanced conditions and branches
-    if (node.type === 'condition') {
-      finalConfig = {
-        ...config,
-        conditions: advancedConditions,
-        branches: branches,
-        default_branch: branches.find(b => !b.conditions_met)?.name || 'failure'
-      };
+  const handleSave = async () => {
+    if (!flowId) {
+      console.warn('Cannot save node - missing flowId');
+      return;
     }
-    
-    // For delay nodes, ensure all configuration is properly preserved
-    if (node.type === 'delay') {
-      finalConfig = {
-        seconds: config.seconds || 1,
-        blocking: config.blocking !== undefined ? config.blocking : true,
-        timing_mode: config.timing_mode || 'fixed_delay',
-        reset_on_user_response: config.reset_on_user_response !== undefined ? config.reset_on_user_response : true,
-        cancel_on_user_response: config.cancel_on_user_response || false,
-        scheduled_action: config.scheduled_action || null,
-        execute_at: config.execute_at || null,
-        timezone: config.timezone || 'UTC',
-        ...config // Spread any additional config properties
+
+    try {
+      setSaving(true);
+      setSaveError(null);
+
+      let finalConfig = { ...config };
+      
+      // For condition nodes, include advanced conditions and branches
+      if (node.type === 'condition') {
+        finalConfig = {
+          ...config,
+          conditions: advancedConditions,
+          branches: branches,
+          default_branch: branches.find(b => !b.conditions_met)?.name || 'failure'
+        };
+      }
+      
+      // For delay nodes, ensure all configuration is properly preserved
+      if (node.type === 'delay') {
+        finalConfig = {
+          seconds: config.seconds || 1,
+          blocking: config.blocking !== undefined ? config.blocking : true,
+          timing_mode: config.timing_mode || 'fixed_delay',
+          reset_on_user_response: config.reset_on_user_response !== undefined ? config.reset_on_user_response : true,
+          cancel_on_user_response: config.cancel_on_user_response || false,
+          scheduled_action: config.scheduled_action || null,
+          execute_at: config.execute_at || null,
+          timezone: config.timezone || 'UTC',
+          ...config // Spread any additional config properties
+        };
+      }
+
+      const nodeData = {
+        label,
+        description,
+        config: finalConfig,
       };
+
+      // Save to backend if node has a database ID
+      if (node.data.dbId) {
+        const backendNodeData = {
+          node_id: node.id,
+          node_type: node.type,
+          position_x: node.position.x,
+          position_y: node.position.y,
+          config: finalConfig,
+          label: label,
+          description: description || '',
+        };
+
+        // Update node in backend
+        const updatedNode = await flowAPI.updateFlowNode(flowId, node.data.dbId, backendNodeData);
+        
+        // Update local node data with backend response, preserving existing data
+        const updatedNodeData = {
+          ...node.data, // Preserve all existing data including functions
+          ...nodeData, // Apply the new data
+          dbId: updatedNode.id, // Ensure dbId is set
+        };
+
+        onUpdateNode(node.id, updatedNodeData);
+        
+        console.log('Node saved successfully to backend', { nodeId: node.id, dbId: updatedNode.id });
+      } else {
+        // This is a new node that needs to be created
+        // Generate a unique node_id by adding timestamp to avoid conflicts
+        const uniqueNodeId = `${node.id}-${Date.now()}`;
+        
+        const backendNodeData = {
+          node_id: uniqueNodeId,
+          node_type: node.type,
+          position_x: node.position.x,
+          position_y: node.position.y,
+          config: finalConfig,
+          label: label,
+          description: description || '',
+        };
+
+        // Create node in backend
+        const createdNode = await flowAPI.createFlowNode(flowId, backendNodeData);
+        
+        // Update local node data with backend response, preserving existing data
+        const updatedNodeData = {
+          ...node.data, // Preserve all existing data including functions
+          ...nodeData, // Apply the new data
+          dbId: createdNode.id, // Set the new dbId from backend
+        };
+
+        onUpdateNode(node.id, updatedNodeData);
+        
+        console.log('Node created successfully in backend', { nodeId: node.id, dbId: createdNode.id });
+      }
+
+      onClose();
+    } catch (error) {
+      console.error('Failed to save node:', error);
+      setSaveError(error instanceof Error ? error.message : 'Failed to save node');
+    } finally {
+      setSaving(false);
     }
-    
-    onUpdateNode(node.id, {
-      label,
-      description,
-      config: finalConfig,
-    });
-    // Close the panel after saving
-    onClose();
   };
 
   const updateConfig = (key: string, value: any) => {
@@ -746,6 +820,13 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
       {/* Content */}
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="space-y-6">
+          {/* Error Message */}
+          {saveError && (
+            <div className="p-3 bg-red-500/20 border border-red-500/40 rounded-lg text-red-400 text-sm">
+              {saveError}
+            </div>
+          )}
+
           {/* Basic Properties */}
           <div className="space-y-4">
             <div>
@@ -840,9 +921,10 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
       <div className="p-4 border-t border-gray-600">
         <button
           onClick={handleSave}
-          className="w-full bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+          disabled={saving}
+          className="w-full bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Apply Changes
+          {saving ? 'Saving...' : 'Apply Changes'}
         </button>
       </div>
     </div>
