@@ -35,6 +35,12 @@ export default function DashboardSidebar({ isOpen, accountId, accountName }: Sid
       color: 'text-purple-400'
     },
     {
+      title: 'WhatsApp',
+      icon: '📱',
+      path: `/dashboard/accounts/${accountId}/whatsapp`,
+      color: 'text-green-400'
+    },
+    {
       title: 'Analytics',
       icon: '📊',
       path: `/dashboard/accounts/${accountId}/analytics`,

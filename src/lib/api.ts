@@ -252,6 +252,118 @@ export const chatbotAPI = {
   },
 };
 
+// WhatsApp Baileys API endpoints
+export const whatsappAPI = {
+  // WhatsApp Accounts
+  async getWhatsAppAccounts(accountId?: string): Promise<ListResponse<any>> {
+    const params = accountId ? { account: accountId } : {};
+    const response = await api.get('/api/whatsapp/accounts/', { params });
+    return response.data;
+  },
+
+  async getWhatsAppAccount(id: string): Promise<any> {
+    const response = await api.get(`/api/whatsapp/accounts/${id}/`);
+    return response.data;
+  },
+
+  async createWhatsAppAccount(data: { phone_number: string; display_name?: string; account: string }): Promise<any> {
+    const response = await api.post('/api/whatsapp/accounts/', data);
+    return response.data;
+  },
+
+  async updateWhatsAppAccount(id: string, data: { display_name?: string }): Promise<any> {
+    const response = await api.put(`/api/whatsapp/accounts/${id}/`, data);
+    return response.data;
+  },
+
+  async deleteWhatsAppAccount(id: string): Promise<void> {
+    await api.delete(`/api/whatsapp/accounts/${id}/`);
+  },
+
+  // Connection Management
+  async connectWhatsApp(accountId: string, data: {
+    phone_number: string;
+    account_id?: string;
+    type?: 'qrcode' | 'pairing';
+  }): Promise<{
+    success: boolean;
+    account_id: string;
+    phone_number: string;
+    type: 'qrcode' | 'pairing';
+    qr_code_base64?: string;
+    qr_code_data?: string;
+    pairing_code?: string;
+    expires_in?: number;
+    error?: string;
+  }> {
+    const requestData = {
+      ...data,
+      account: accountId,
+      type: data.type || 'qrcode'
+    };
+    const response = await api.post('/api/whatsapp/accounts/connect/', requestData);
+    return response.data;
+  },
+
+  async disconnectWhatsApp(accountId: string, whatsappAccountId: string): Promise<{ message: string; status: string }> {
+    const response = await api.post(`/api/whatsapp/accounts/${whatsappAccountId}/disconnect/`, { account: accountId });
+    return response.data;
+  },
+
+  async getConnectionStatus(accountId: string): Promise<{
+    status: string;
+    is_connected: boolean;
+    last_connected_at?: string;
+    last_disconnect_reason?: string;
+  }> {
+    const response = await api.get(`/api/whatsapp/accounts/${accountId}/status/`);
+    return response.data;
+  },
+
+  // Messaging
+  async sendMessage(accountId: string, data: {
+    to_number: string;
+    message: string;
+    message_type?: 'text' | 'image' | 'audio' | 'video' | 'document';
+  }): Promise<{
+    message: string;
+    message_id: string;
+    status: string;
+  }> {
+    const response = await api.post(`/api/whatsapp/accounts/${accountId}/send_message/`, data);
+    return response.data;
+  },
+
+  // Messages
+  async getMessages(params?: {
+    account?: string;
+    direction?: 'incoming' | 'outgoing';
+    page?: number;
+  }): Promise<ListResponse<any>> {
+    const response = await api.get('/api/whatsapp/messages/', { params });
+    return response.data;
+  },
+
+  async getMessage(id: string): Promise<any> {
+    const response = await api.get(`/api/whatsapp/messages/${id}/`);
+    return response.data;
+  },
+
+  // Contacts
+  async getContacts(params?: {
+    account?: string;
+    page?: number;
+  }): Promise<ListResponse<any>> {
+    const response = await api.get('/api/whatsapp/contacts/', { params });
+    return response.data;
+  },
+
+  async getContact(id: string): Promise<any> {
+    const response = await api.get(`/api/whatsapp/contacts/${id}/`);
+    return response.data;
+  },
+};
+
 // Twilio Templates API endpoints
 export const twilioTemplatesAPI = {
   // Get all messaging service SIDs for an account
