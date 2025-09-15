@@ -18,6 +18,7 @@ const CONDITION_TYPES = [
   { value: 'intent', label: 'Intent Match' },
   { value: 'keyword', label: 'Keyword Match' },
   { value: 'user_input', label: 'User Input' },
+  { value: 'wait_user_reply', label: 'Wait for User Reply' },
 ];
 
 export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, flowId, nodes = [] }: EdgePropertiesPanelProps) {
@@ -269,6 +270,12 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, flowI
             <div className="text-xs text-gray-400">
               The edge will be taken if the user provides any input (or specific input if specified).
             </div>
+          </div>
+        );
+      case 'wait_user_reply':
+        return (
+          <div className="text-sm text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+            This edge will be taken when the bot is waiting for a user reply.
           </div>
         );
       

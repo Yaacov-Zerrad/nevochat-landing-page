@@ -53,6 +53,8 @@ export default function CustomEdge({
         return data?.condition_config?.intent || 'INTENT';
       case 'user_input':
         return data?.condition_config?.expected_input || 'INPUT';
+      case 'wait_user_reply':
+        return 'WAIT USER REPLY';
       default:
         return conditionType.toUpperCase();
     }
