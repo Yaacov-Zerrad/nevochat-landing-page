@@ -23,6 +23,8 @@ export default function WhatsAppConnectPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [step, setStep] = useState('form'); // form, connecting, qr, pairing, success
+  const [existingAccount, setExistingAccount] = useState<any>(null);
+  const [loadingAccountInfo, setLoadingAccountInfo] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -30,6 +32,31 @@ export default function WhatsAppConnectPage() {
       return;
     }
   }, [status, router]);
+
+  // Récupérer les informations du compte existant pour la reconnexion
+  useEffect(() => {
+    const fetchExistingAccountInfo = async () => {
+      if (!existingAccountId || !accountId) return;
+      
+      setLoadingAccountInfo(true);
+      try {
+        const accountInfo = await whatsappAPI.getWhatsAppAccount(existingAccountId);
+        setExistingAccount(accountInfo);
+        if (accountInfo.phone_number) {
+          setPhoneNumber(accountInfo.phone_number);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des informations du compte:', error);
+        setError('Impossible de récupérer les informations du compte');
+      } finally {
+        setLoadingAccountInfo(false);
+      }
+    };
+
+    if (status === 'authenticated' && existingAccountId) {
+      fetchExistingAccountInfo();
+    }
+  }, [status, existingAccountId, accountId]);
 
   const handleSubmit = async (e:any) => {
     e.preventDefault();
@@ -110,11 +137,22 @@ export default function WhatsAppConnectPage() {
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">📱</div>
             <h1 className="text-3xl font-bold text-white mb-2">
-              Connecter WhatsApp Business
+              {existingAccountId ? 'Reconnexion WhatsApp Business' : 'Connecter WhatsApp Business'}
             </h1>
             <p className="text-gray-400">
-              {existingAccountId ? 'Reconnectez votre compte' : 'Connectez un nouveau compte'} WhatsApp Business
+              {existingAccountId 
+                ? `Reconnectez votre compte WhatsApp Business${existingAccount?.phone_number ? ` (${existingAccount.phone_number})` : ''}`
+                : 'Connectez un nouveau compte WhatsApp Business'
+              }
             </p>
+            {loadingAccountInfo && (
+              <div className="mt-2">
+                <div className="inline-flex items-center text-sm text-blue-400">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400 mr-2"></div>
+                  Chargement des informations du compte...
+                </div>
+              </div>
+            )}
           </div>
 
           {step === 'form' && (
@@ -124,6 +162,20 @@ export default function WhatsAppConnectPage() {
               onSubmit={handleSubmit}
               className="space-y-6"
             >
+              {existingAccountId && existingAccount && (
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
+                  <div className="flex items-start">
+                    <div className="text-blue-400 mr-3 mt-0.5">ℹ️</div>
+                    <div>
+                      <h4 className="font-medium text-blue-400 mb-1">Reconnexion en cours</h4>
+                      <p className="text-sm text-blue-300">
+                        Vous reconnectez le compte <strong>{existingAccount.phone_number}</strong>. 
+                        Le numéro de téléphone ne peut pas être modifié lors d&apos;une reconnexion.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Numéro de téléphone
@@ -133,12 +185,24 @@ export default function WhatsAppConnectPage() {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="+33123456789"
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                  className={`w-full px-4 py-3 border rounded-lg text-white placeholder-gray-400 focus:outline-none ${
+                    existingAccountId 
+                      ? 'bg-gray-700/50 border-gray-600 cursor-not-allowed' 
+                      : 'bg-gray-800/50 border-gray-600 focus:border-neon-green'
+                  }`}
                   required
+                  readOnly={!!existingAccountId}
+                  disabled={loadingAccountInfo}
                 />
-                <p className="text-sm text-gray-400 mt-1">
-                  Incluez le code pays (ex: +33 pour la France)
-                </p>
+                {existingAccountId ? (
+                  <p className="text-sm text-blue-400 mt-1">
+                    💡 Numéro du compte existant (reconnexion)
+                  </p>
+                ) : (
+                  <p className="text-sm text-gray-400 mt-1">
+                    Incluez le code pays (ex: +33 pour la France)
+                  </p>
+                )}
               </div>
 
               <div>
@@ -201,7 +265,12 @@ export default function WhatsAppConnectPage() {
                   disabled={loading}
                   className="flex-1 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50"
                 >
-                  {loading ? 'Connexion...' : 'Connecter'}
+                  {loading 
+                    ? 'Connexion...' 
+                    : existingAccountId 
+                      ? 'Reconnecter' 
+                      : 'Connecter'
+                  }
                 </button>
               </div>
             </motion.form>

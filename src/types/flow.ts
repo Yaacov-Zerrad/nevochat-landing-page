@@ -19,7 +19,7 @@ export interface FlowEdge {
   target_node: number;
   source_handle?: string;
   target_handle?: string;
-  condition_type: 'always' | 'condition' | 'intent' | 'keyword' | 'user_input';
+  condition_type: 'always' | 'condition' | 'intent' | 'keyword' | 'user_input' | 'wait_user_reply';
   condition_config: Record<string, any>;
   label?: string;
   style: Record<string, any>;
