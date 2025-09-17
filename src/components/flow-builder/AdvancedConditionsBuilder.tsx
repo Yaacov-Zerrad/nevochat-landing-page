@@ -17,6 +17,8 @@ export interface ConditionRule {
   start_time?: string;
   end_time?: string;
   timezone?: string;
+  // Function call specific fields
+  function_name?: string;
 }
 
 export interface ConditionsConfig {
@@ -39,6 +41,7 @@ const CONDITION_TYPES = [
   { value: 'regex', label: 'Regex Pattern', description: 'Pattern matching with regex' },
   { value: 'previous_node', label: 'Previous Node', description: 'Check visited nodes' },
   { value: 'conversation', label: 'Conversation', description: 'Conversation metadata' },
+  { value: 'function_call', label: 'Function Call', description: 'Check if specific functions were called' },
 ];
 
 const OPERATORS = [
@@ -78,6 +81,11 @@ const CONVERSATION_FIELDS = [
   { value: 'message_count', label: 'Message Count' },
   { value: 'duration_minutes', label: 'Duration (minutes)' },
   { value: 'status', label: 'Status' },
+];
+
+const FUNCTION_CALL_OPERATORS = [
+  { value: 'called', label: 'Was Called', description: 'True if the function was called' },
+  { value: 'not_called', label: 'Not Called', description: 'True if the function was not called' },
 ];
 
 export default function AdvancedConditionsBuilder({ 
@@ -445,6 +453,39 @@ export default function AdvancedConditionsBuilder({
                 className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
                 placeholder="Expected value"
               />
+            </div>
+          </>
+        );
+
+      case 'function_call':
+        return (
+          <>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+              <select
+                value={rule.operator}
+                onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+              >
+                {FUNCTION_CALL_OPERATORS.map(op => (
+                  <option key={op.value} value={op.value} title={op.description}>{op.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-400 mb-1">Function Name</label>
+              <input
+                type="text"
+                value={rule.function_name || ''}
+                onChange={(e) => updateRule(rule.id, { function_name: e.target.value })}
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                placeholder="e.g., send_email, get_calendar, schedule_meeting"
+              />
+              <p className="text-xs text-gray-500 mt-1">Name of the function to check</p>
+            </div>
+            <div className="bg-gray-800 p-2 rounded text-xs text-gray-400">
+              <strong>How it works:</strong> Checks if the specified function has been called during the conversation flow. 
+              Function calls are automatically tracked when AI nodes execute MCP tools. The calls are stored with order and timing information.
             </div>
           </>
         );
