@@ -13,7 +13,7 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { isOpen } = useLeftHover({
+  const { isOpen, closeSidebar } = useLeftHover({
     triggerWidth: 50,
     delay: 200,
     closeDelay: 300
@@ -51,6 +51,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         isOpen={isOpen} 
         accountId={accountId}
         accountName={account?.name}
+        onClose={closeSidebar}
       />
       
       {/* Contenu principal */}

@@ -9,9 +9,10 @@ interface SidebarProps {
   isOpen: boolean
   accountId: string
   accountName?: string
+  onClose: () => void
 }
 
-export default function DashboardSidebar({ isOpen, accountId, accountName }: SidebarProps) {
+export default function DashboardSidebar({ isOpen, accountId, accountName, onClose }: SidebarProps) {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -32,6 +33,12 @@ export default function DashboardSidebar({ isOpen, accountId, accountName }: Sid
       title: 'WhatsApp',
       icon: '💬',
       path: `/dashboard/accounts/${accountId}/whatsapp`,
+      color: 'text-green-400'
+    },
+    {
+      title: 'Conversations',
+      icon: '💬',
+      path: `/dashboard/accounts/${accountId}/conversations`,
       color: 'text-green-400'
     },
     // {
@@ -68,10 +75,12 @@ export default function DashboardSidebar({ isOpen, accountId, accountName }: Sid
 
   const handleNavigation = (path: string) => {
     router.push(path)
+    onClose() // Ferme la sidebar après navigation
   }
 
   const handleBackToAccounts = () => {
     router.push('/dashboard')
+    onClose() // Ferme la sidebar après navigation
   }
 
   const isActivePath = (path: string) => {
@@ -87,7 +96,8 @@ export default function DashboardSidebar({ isOpen, accountId, accountName }: Sid
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+            onClick={onClose}
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 cursor-pointer"
           />
           
           {/* Sidebar */}
@@ -165,7 +175,10 @@ export default function DashboardSidebar({ isOpen, accountId, accountName }: Sid
                 </button>
 
                 <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
+                  onClick={() => {
+                    onClose() // Ferme la sidebar
+                    signOut({ callbackUrl: '/' })
+                  }}
                   className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-red-500/10 transition-colors group"
                 >
                   <span className="text-red-400">🚪</span>

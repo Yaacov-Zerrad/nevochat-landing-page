@@ -32,19 +32,21 @@ export function useLeftHover({
         }, delay)
         setTimeoutId(newTimeoutId)
       }
-    } else if (clientX > triggerWidth + 350) { // 350px = largeur de la sidebar + marge de sécurité
+    } else if (clientX > triggerWidth + 320) { // 320px = largeur de la sidebar
       if (timeoutId) {
         clearTimeout(timeoutId)
         setTimeoutId(null)
       }
       
       if (isOpen) {
+        // Fermeture plus rapide si la souris va loin vers la droite
+        const fastCloseDelay = clientX > window.innerWidth * 0.6 ? 100 : closeDelay
         const newTimeoutId = setTimeout(() => {
           setIsOpen(false)
-        }, closeDelay)
+        }, fastCloseDelay)
         setTimeoutId(newTimeoutId)
       }
-    } else if (clientX <= triggerWidth + 350 && isOpen) {
+    } else if (clientX <= triggerWidth + 320 && isOpen) {
       // Zone de maintien - annule la fermeture si on est dans la sidebar
       if (timeoutId) {
         clearTimeout(timeoutId)

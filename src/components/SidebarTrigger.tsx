@@ -11,10 +11,10 @@ export default function SidebarTrigger({ isVisible }: SidebarTriggerProps) {
   const [showHint, setShowHint] = useState(true)
 
   useEffect(() => {
-    // Cache l'indice après 10 secondes
+    // Cache l'indice après 2 secondes
     const timer = setTimeout(() => {
       setShowHint(false)
-    }, 10000)
+    }, 2000)
 
     return () => clearTimeout(timer)
   }, [])
