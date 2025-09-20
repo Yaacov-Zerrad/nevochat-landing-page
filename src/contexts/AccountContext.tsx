@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { Account, User } from '@/types/account';
-import { authAPI } from '@/lib/api';
+import { authAPI, accountAPI } from '@/lib/api';
 
 interface AccountContextType {
   currentAccount: Account | null;
@@ -14,6 +14,7 @@ interface AccountContextType {
   setCurrentAccount: (account: Account) => void;
   fetchUserAccounts: () => Promise<void>;
   fetchAccountById: (accountId: number) => Promise<Account | null>;
+  createAccount: (name: string) => Promise<Account | null>;
   clearAccount: () => void;
 }
 
@@ -63,6 +64,26 @@ export function AccountProvider({ children }: AccountProviderProps) {
     }
   }, []);
 
+  const createAccount = useCallback(async (name: string): Promise<Account | null> => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const newAccount: Account = await accountAPI.createAccount({ name });
+      
+      // Add the new account to the list
+      setUserAccounts(prev => [...prev, newAccount]);
+      
+      return newAccount;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create account');
+      console.error('Error creating account:', err);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const clearAccount = useCallback(() => {
     setCurrentAccount(null);
     setUserAccounts([]);
@@ -77,6 +98,7 @@ export function AccountProvider({ children }: AccountProviderProps) {
     setCurrentAccount,
     fetchUserAccounts,
     fetchAccountById,
+    createAccount,
     clearAccount,
   };
 

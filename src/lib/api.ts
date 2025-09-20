@@ -207,6 +207,19 @@ export const authAPI = {
   },
 };
 
+// Account API endpoints
+export const accountAPI = {
+  async createAccount(data: { name: string }): Promise<any> {
+    const response = await api.post('/api/cw/accounts/', data);
+    return response.data;
+  },
+
+  async getUserAccounts(): Promise<any[]> {
+    const response = await api.get('/api/users/accounts/');
+    return response.data;
+  },
+};
+
 // User API endpoints
 export const userAPI = {
   async getProfile(): Promise<any> {

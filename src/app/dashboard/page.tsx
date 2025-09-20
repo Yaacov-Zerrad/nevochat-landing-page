@@ -6,11 +6,13 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAccount } from '@/contexts/AccountContext'
 import { Account } from '@/types/account'
+import CreateAccountModal from '@/components/CreateAccountModal'
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [loading, setLoading] = useState(true)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const { userAccounts, fetchUserAccounts, loading: accountsLoading, error } = useAccount()
 
   useEffect(() => {
@@ -26,6 +28,16 @@ export default function Dashboard() {
 
   const handleAccountSelect = (accountId: number) => {
     router.push(`/dashboard/accounts/${accountId}`)
+  }
+
+  const handleCreateAccount = () => {
+    setIsCreateModalOpen(true)
+  }
+
+  const handleAccountCreated = (newAccount: Account) => {
+    // Optionally navigate to the new account
+    console.log('New account created:', newAccount)
+    // router.push(`/dashboard/accounts/${newAccount.id}`)
   }
 
   if (status === 'loading' || loading) {
@@ -125,13 +137,23 @@ export default function Dashboard() {
                 transition={{ delay: 0.2 }}
                 className="text-center"
               >
-                <button className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40">
+                <button 
+                  onClick={handleCreateAccount}
+                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+                >
                   + Créer un nouveau compte
                 </button>
               </motion.div>
             </>
           )}
         </motion.div>
+
+        {/* Create Account Modal */}
+        <CreateAccountModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSuccess={handleAccountCreated}
+        />
       </div>
     </div>
   )
