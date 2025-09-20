@@ -29,47 +29,41 @@ export default function DashboardSidebar({ isOpen, accountId, accountName }: Sid
       color: 'text-blue-400'
     },
     {
-      title: 'Flow Builder',
-      icon: '🏗️',
-      path: `/dashboard/accounts/${accountId}/flow-builder`,
-      color: 'text-purple-400'
-    },
-    {
       title: 'WhatsApp',
-      icon: '📱',
+      icon: '💬',
       path: `/dashboard/accounts/${accountId}/whatsapp`,
       color: 'text-green-400'
     },
-    {
-      title: 'Analytics',
-      icon: '📊',
-      path: `/dashboard/accounts/${accountId}/analytics`,
-      color: 'text-green-400'
-    },
+    // {
+    //   title: 'Analytics',
+    //   icon: '📊',
+    //   path: `/dashboard/accounts/${accountId}/analytics`,
+    //   color: 'text-green-400'
+    // },
     {
       title: 'Templates',
       icon: '📝',
       path: `/dashboard/accounts/${accountId}/templates`,
       color: 'text-pink-400'
     },
-    {
-      title: 'Integrations',
-      icon: '🔗',
-      path: `/dashboard/accounts/${accountId}/integrations`,
-      color: 'text-teal-400'
-    },
-    {
-      title: 'Settings',
-      icon: '⚙️',
-      path: `/dashboard/accounts/${accountId}/settings`,
-      color: 'text-orange-400'
-    },
-    {
-      title: 'Team',
-      icon: '👥',
-      path: `/dashboard/accounts/${accountId}/team`,
-      color: 'text-indigo-400'
-    }
+    // {
+    //   title: 'Integrations',
+    //   icon: '🔗',
+    //   path: `/dashboard/accounts/${accountId}/integrations`,
+    //   color: 'text-teal-400'
+    // },
+    // {
+    //   title: 'Settings',
+    //   icon: '⚙️',
+    //   path: `/dashboard/accounts/${accountId}/settings`,
+    //   color: 'text-orange-400'
+    // },
+    // {
+    //   title: 'Team',
+    //   icon: '👥',
+    //   path: `/dashboard/accounts/${accountId}/team`,
+    //   color: 'text-indigo-400'
+    // }
   ]
 
   const handleNavigation = (path: string) => {

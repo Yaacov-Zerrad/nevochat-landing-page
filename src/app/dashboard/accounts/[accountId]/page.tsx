@@ -80,13 +80,13 @@ export default function AccountDashboard() {
       path: '/flows',
       color: 'from-blue-500/10 to-cyan-400/10 border-blue-500/20'
     },
-    {
-      title: 'Analytics',
-      description: 'Voir les statistiques',
-      icon: '📊',
-      path: '/analytics',
-      color: 'from-green-500/10 to-emerald-400/10 border-green-500/20'
-    },
+    // {
+    //   title: 'Analytics',
+    //   description: 'Voir les statistiques',
+    //   icon: '📊',
+    //   path: '/analytics',
+    //   color: 'from-green-500/10 to-emerald-400/10 border-green-500/20'
+    // },
     {
       title: 'Templates',
       description: 'Gérer vos templates WhatsApp',
@@ -95,26 +95,32 @@ export default function AccountDashboard() {
       color: 'from-pink-500/10 to-rose-400/10 border-pink-500/20'
     },
     {
-      title: 'Settings',
-      description: 'Paramètres du compte',
-      icon: '⚙️',
-      path: '/settings',
-      color: 'from-orange-500/10 to-yellow-400/10 border-orange-500/20'
+      title: 'WhatsApp',
+      icon: '💬',
+      path: `/whatsapp`,
+      color: 'text-green-400'
     },
-    {
-      title: 'Team',
-      description: 'Gérer votre équipe',
-      icon: '👥',
-      path: '/team',
-      color: 'from-indigo-500/10 to-purple-400/10 border-indigo-500/20'
-    },
-    {
-      title: 'Integrations',
-      description: 'Connecter des services',
-      icon: '🔗',
-      path: '/integrations',
-      color: 'from-teal-500/10 to-cyan-400/10 border-teal-500/20'
-    }
+    // {
+    //   title: 'Settings',
+    //   description: 'Paramètres du compte',
+    //   icon: '⚙️',
+    //   path: '/settings',
+    //   color: 'from-orange-500/10 to-yellow-400/10 border-orange-500/20'
+    // },
+    // {
+    //   title: 'Team',
+    //   description: 'Gérer votre équipe',
+    //   icon: '👥',
+    //   path: '/team',
+    //   color: 'from-indigo-500/10 to-purple-400/10 border-indigo-500/20'
+    // },
+    // {
+    //   title: 'Integrations',
+    //   description: 'Connecter des services',
+    //   icon: '🔗',
+    //   path: '/integrations',
+    //   color: 'from-teal-500/10 to-cyan-400/10 border-teal-500/20'
+    // }
   ]
 
   return (
