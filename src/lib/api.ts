@@ -377,6 +377,60 @@ export const whatsappAPI = {
   },
 };
 
+// Conversation API endpoints
+export const conversationAPI = {
+  // Conversations
+  async getConversations(accountId: number, params?: {
+    status?: string;
+    assignee?: string;
+    priority?: string;
+    search?: string;
+    page?: number;
+  }): Promise<ListResponse<any>> {
+    const response = await api.get(`/api/cw/api/${accountId}/conversations/`, { params });
+    return response.data;
+  },
+
+  async getConversation(accountId: number, id: number): Promise<any> {
+    const response = await api.get(`/api/cw/api/${accountId}/conversations/${id}/`);
+    return response.data;
+  },
+
+  async updateConversation(accountId: number, id: number, data: Partial<any>): Promise<any> {
+    const response = await api.patch(`/api/cw/api/${accountId}/conversations/${id}/`, data);
+    return response.data;
+  },
+
+  async sendMessage(accountId: number, conversationId: number, messageData: {
+    content: string;
+    message_type: number;
+    private?: boolean;
+    content_type?: number;
+    additional_attributes?: Record<string, any>;
+  }): Promise<any> {
+    const response = await api.post(`/api/cw/api/${accountId}/conversations/${conversationId}/send_message/`, messageData);
+    return response.data;
+  },
+
+  async markAsRead(accountId: number, conversationId: number): Promise<void> {
+    await api.post(`/api/cw/api/${accountId}/conversations/${conversationId}/mark_as_read/`);
+  },
+
+  async snoozeConversation(accountId: number, conversationId: number, snoozeUntil: string): Promise<void> {
+    await api.post(`/api/cw/api/${accountId}/conversations/${conversationId}/snooze/`, {
+      snooze_until: snoozeUntil
+    });
+  },
+
+  async resolveConversation(accountId: number, conversationId: number): Promise<void> {
+    await api.post(`/api/cw/api/${accountId}/conversations/${conversationId}/resolve/`);
+  },
+
+  async reopenConversation(accountId: number, conversationId: number): Promise<void> {
+    await api.post(`/api/cw/api/${accountId}/conversations/${conversationId}/reopen/`);
+  },
+};
+
 // Twilio Templates API endpoints
 export const twilioTemplatesAPI = {
   // Get all messaging service SIDs for an account

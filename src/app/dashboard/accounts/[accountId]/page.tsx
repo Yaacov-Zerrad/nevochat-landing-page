@@ -74,11 +74,18 @@ export default function AccountDashboard() {
 
   const menuItems = [
     {
+      title: 'Conversations',
+      description: 'Gérer vos conversations clients',
+      icon: '💬',
+      path: '/conversations',
+      color: 'from-blue-500/10 to-cyan-400/10 border-blue-500/20'
+    },
+    {
       title: 'Flows',
       description: 'Gérer vos flows de conversation',
       icon: '🔄',
       path: '/flows',
-      color: 'from-blue-500/10 to-cyan-400/10 border-blue-500/20'
+      color: 'from-purple-500/10 to-indigo-400/10 border-purple-500/20'
     },
     // {
     //   title: 'Analytics',
@@ -96,7 +103,7 @@ export default function AccountDashboard() {
     },
     {
       title: 'WhatsApp',
-      icon: '💬',
+      icon: '�',
       path: `/whatsapp`,
       color: 'text-green-400'
     },
@@ -200,21 +207,21 @@ export default function AccountDashboard() {
             transition={{ delay: 0.6 }}
             className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4"
           >
+            <div className="bg-blue-500/10 p-4 rounded-lg border border-blue-500/20">
+              <div className="text-2xl font-bold text-blue-400">-</div>
+              <div className="text-sm text-gray-400">Conversations actives</div>
+            </div>
             <div className="bg-neon-green/10 p-4 rounded-lg border border-neon-green/20">
               <div className="text-2xl font-bold text-neon-green">-</div>
               <div className="text-sm text-gray-400">Flows actifs</div>
             </div>
-            <div className="bg-blue-500/10 p-4 rounded-lg border border-blue-500/20">
-              <div className="text-2xl font-bold text-blue-400">-</div>
-              <div className="text-sm text-gray-400">Conversations</div>
-            </div>
             <div className="bg-purple-500/10 p-4 rounded-lg border border-purple-500/20">
               <div className="text-2xl font-bold text-purple-400">-</div>
-              <div className="text-sm text-gray-400">Taux de succès</div>
+              <div className="text-sm text-gray-400">Taux de réponse</div>
             </div>
             <div className="bg-orange-500/10 p-4 rounded-lg border border-orange-500/20">
               <div className="text-2xl font-bold text-orange-400">-</div>
-              <div className="text-sm text-gray-400">Membres équipe</div>
+              <div className="text-sm text-gray-400">Messages envoyés</div>
             </div>
           </motion.div>
         </motion.div>
