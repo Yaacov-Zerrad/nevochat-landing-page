@@ -100,7 +100,7 @@ export default function ConversationsPage() {
   const [loading, setLoading] = useState(true)
   const [messagesLoading, setMessagesLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
-  const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [statusFilter, setStatusFilter] = useState<string>('0')
   const [searchQuery, setSearchQuery] = useState('')
 
   const fetchConversations = useCallback(async () => {
