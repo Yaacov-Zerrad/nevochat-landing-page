@@ -38,6 +38,11 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
   ]);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  
+  // États locaux pour gérer les champs JSON
+  const [additionalAttributesText, setAdditionalAttributesText] = useState('');
+  const [customAttributesText, setCustomAttributesText] = useState('');
+  const [jsonErrors, setJsonErrors] = useState({ additional: false, custom: false });
 
   useEffect(() => {
     setLabel(node.data.label || '');
@@ -47,6 +52,17 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
     
     // Reset active tab when switching nodes
     setActiveTab('config');
+    
+    // Initialiser les champs JSON pour le nœud update_contact
+    if (node.type === 'update_contact') {
+      setAdditionalAttributesText(
+        JSON.stringify(node.data.config?.additional_attributes || {}, null, 2)
+      );
+      setCustomAttributesText(
+        JSON.stringify(node.data.config?.custom_attributes || {}, null, 2)
+      );
+      setJsonErrors({ additional: false, custom: false });
+    }
     
     // Load advanced conditions and branches for condition nodes
     if (node.type === 'condition') {
@@ -66,6 +82,29 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
       }
     }
   }, [node]);
+
+  // Fonctions de gestion des champs JSON
+  const handleAdditionalAttributesChange = (value: string) => {
+    setAdditionalAttributesText(value);
+    try {
+      const parsed = JSON.parse(value);
+      updateConfig('additional_attributes', parsed);
+      setJsonErrors(prev => ({ ...prev, additional: false }));
+    } catch (error) {
+      setJsonErrors(prev => ({ ...prev, additional: true }));
+    }
+  };
+
+  const handleCustomAttributesChange = (value: string) => {
+    setCustomAttributesText(value);
+    try {
+      const parsed = JSON.parse(value);
+      updateConfig('custom_attributes', parsed);
+      setJsonErrors(prev => ({ ...prev, custom: false }));
+    } catch (error) {
+      setJsonErrors(prev => ({ ...prev, custom: true }));
+    }
+  };
 
   const handleSave = async () => {
     if (!flowId) {
@@ -746,6 +785,169 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
 
       case 'template':
         return <TemplateNodeConfig config={config} updateConfig={updateConfig} accountId={accountId} />;
+
+      case 'update_contact':
+        return (
+          <div className="space-y-6">
+            {/* Basic Contact Fields */}
+            <div className="space-y-4">
+              <h4 className="text-sm font-medium text-white">Basic Contact Information</h4>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    value={config.name || ''}
+                    onChange={(e) => updateConfig('name', e.target.value)}
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    placeholder="First name"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    value={config.last_name || ''}
+                    onChange={(e) => updateConfig('last_name', e.target.value)}
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    placeholder="Last name"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={config.email || ''}
+                    onChange={(e) => updateConfig('email', e.target.value)}
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    placeholder="email@example.com"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={config.phone_number || ''}
+                    onChange={(e) => updateConfig('phone_number', e.target.value)}
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    placeholder="+1234567890"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    value={config.location || ''}
+                    onChange={(e) => updateConfig('location', e.target.value)}
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    placeholder="City, State"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Country Code
+                  </label>
+                  <input
+                    type="text"
+                    value={config.country_code || ''}
+                    onChange={(e) => updateConfig('country_code', e.target.value)}
+                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    placeholder="US"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Identifier
+                </label>
+                <input
+                  type="text"
+                  value={config.identifier || ''}
+                  onChange={(e) => updateConfig('identifier', e.target.value)}
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                  placeholder="Unique identifier"
+                />
+              </div>
+            </div>
+
+            {/* Additional Attributes */}
+            <div className="border-t border-gray-600 pt-6 space-y-4">
+              <h4 className="text-sm font-medium text-white">Additional Attributes</h4>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Additional Attributes (JSON)
+                  {jsonErrors.additional && <span className="text-red-400 ml-2">⚠ Invalid JSON</span>}
+                </label>
+                <textarea
+                  value={additionalAttributesText}
+                  onChange={(e) => handleAdditionalAttributesChange(e.target.value)}
+                  rows={4}
+                  className={`w-full bg-gray-700 border rounded-lg px-3 py-2 text-white focus:outline-none resize-none font-mono text-xs ${
+                    jsonErrors.additional 
+                      ? 'border-red-500 focus:border-red-400' 
+                      : 'border-gray-600 focus:border-neon-green'
+                  }`}
+                  placeholder='{"source": "website", "campaign": "summer2024"}'
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Add custom attributes that are not part of the main contact fields
+                </p>
+              </div>
+            </div>
+
+            {/* Custom Attributes */}
+            <div className="border-t border-gray-600 pt-6 space-y-4">
+              <h4 className="text-sm font-medium text-white">Custom Attributes</h4>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Custom Attributes (JSON)
+                  {jsonErrors.custom && <span className="text-red-400 ml-2">⚠ Invalid JSON</span>}
+                </label>
+                <textarea
+                  value={customAttributesText}
+                  onChange={(e) => handleCustomAttributesChange(e.target.value)}
+                  rows={4}
+                  className={`w-full bg-gray-700 border rounded-lg px-3 py-2 text-white focus:outline-none resize-none font-mono text-xs ${
+                    jsonErrors.custom 
+                      ? 'border-red-500 focus:border-red-400' 
+                      : 'border-gray-600 focus:border-neon-green'
+                  }`}
+                  placeholder='{"subscription_tier": "premium", "tags": ["vip", "priority"]}'
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Custom business-specific attributes for contact segmentation
+                </p>
+              </div>
+            </div>
+
+            {/* Help Text */}
+            <div className="text-xs text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+              <strong>Note:</strong> Only filled fields will be updated. Empty fields will be ignored.
+              Additional and custom attributes will be merged with existing values.
+            </div>
+          </div>
+        );
 
       case 'end':
         return (

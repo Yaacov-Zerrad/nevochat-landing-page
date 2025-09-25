@@ -35,6 +35,7 @@ import WebhookNode from '@/components/flow-builder/nodes/WebhookNode';
 import DelayNode from '@/components/flow-builder/nodes/DelayNode';
 import EndNode from '@/components/flow-builder/nodes/EndNode';
 import TemplateNode from '@/components/flow-builder/nodes/TemplateNode';
+import UpdateContactNode from '@/components/flow-builder/nodes/UpdateContactNode';
 
 // Import custom edges
 import CustomEdge from '@/components/flow-builder/edges/CustomEdge';
@@ -55,6 +56,7 @@ const nodeTypes: NodeTypes = {
   delay: DelayNode,
   end: EndNode,
   template: TemplateNode,
+  update_contact: UpdateContactNode,
 };
 
 const edgeTypes: EdgeTypes = {
