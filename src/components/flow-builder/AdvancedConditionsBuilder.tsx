@@ -66,9 +66,18 @@ const CONTACT_FIELDS = [
   { value: 'name', label: 'Name' },
   { value: 'email', label: 'Email' },
   { value: 'phone_number', label: 'Phone Number' },
+  { value: 'middle_name', label: 'Middle Name' },
+  { value: 'last_name', label: 'Last Name' },
+  { value: 'identifier', label: 'Identifier' },
   { value: 'blocked', label: 'Blocked Status' },
   { value: 'country_code', label: 'Country Code' },
   { value: 'location', label: 'Location' },
+  { value: 'contact_type', label: 'Contact Type' },
+  { value: 'last_activity_at', label: 'Last Activity At' },
+  { value: 'created_at', label: 'Created At' },
+  { value: 'updated_at', label: 'Updated At' },
+  { value: 'additional_attributes', label: 'Additional Attributes (JSON)' },
+  { value: 'custom_attributes', label: 'Custom Attributes (JSON)' },
 ];
 
 const TIME_OPERATORS = [
@@ -166,6 +175,25 @@ export default function AdvancedConditionsBuilder({
                 </select>
               </div>
             </div>
+            {['additional_attributes', 'custom_attributes'].includes(rule.field || '') && (
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Custom Field Path</label>
+                <input
+                  type="text"
+                  value={rule.variable_path || ''}
+                  onChange={(e) => updateRule(rule.id, { 
+                    variable_path: e.target.value
+                  })}
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  placeholder="e.g., additional_attributes.source, custom_attributes.category"
+                />
+                <div className="bg-gray-800 p-2 rounded text-xs text-gray-400 mt-1">
+                  <strong>JSON Field:</strong> Access nested values using dot notation.
+                  <br />
+                  <strong>Examples:</strong> additional_attributes.source, custom_attributes.category, custom_attributes.tags.0
+                </div>
+              </div>
+            )}
             {!['is_empty', 'not_empty'].includes(rule.operator) && (
               <div>
                 <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
