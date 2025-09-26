@@ -73,6 +73,19 @@ interface Conversation {
   identifier?: string
 }
 
+interface MessageAttachment {
+  id: number
+  file_type: string
+  filename: string
+  file_path: string
+  file_url: string
+  content_type: string
+  file_size: number
+  external_url?: string
+  meta?: any
+  created_at: string
+}
+
 interface Message {
   id: number
   content: string
@@ -84,6 +97,7 @@ interface Message {
   sender_type: string
   sender_id: number
   sender_name: string
+  attachments?: MessageAttachment[]
 }
 
 const statusLabels = {
@@ -98,6 +112,107 @@ const priorityLabels = {
   1: { label: 'Moyenne', color: 'text-yellow-400' },
   2: { label: 'Élevée', color: 'text-orange-400' },
   3: { label: 'Urgente', color: 'text-red-400' }
+}
+
+// Component for displaying message attachments
+const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] }) => {
+  if (!attachments || attachments.length === 0) return null
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 B'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  return (
+    <div className="space-y-2 mt-2">
+      {attachments.map((attachment) => {
+        if (attachment.file_type === 'image') {
+          return (
+            <div key={attachment.id} className="relative">
+              <img
+                src={attachment.file_url}
+                alt={attachment.filename}
+                className="max-w-xs max-h-64 rounded-lg border border-gray-600/30 cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => window.open(attachment.file_url, '_blank')}
+              />
+              <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                {attachment.filename}
+              </div>
+            </div>
+          )
+        }
+
+        if (attachment.file_type === 'video') {
+          return (
+            <div key={attachment.id} className="relative">
+              <video
+                src={attachment.file_url}
+                controls
+                className="max-w-xs max-h-64 rounded-lg border border-gray-600/30"
+              >
+                Votre navigateur ne supporte pas la lecture vidéo.
+              </video>
+              <div className="text-xs text-gray-400 mt-1">
+                {attachment.filename} ({formatFileSize(attachment.file_size)})
+              </div>
+            </div>
+          )
+        }
+
+        if (attachment.file_type === 'audio') {
+          return (
+            <div key={attachment.id} className="bg-gray-700/50 rounded-lg p-3 max-w-xs">
+              <div className="flex items-center space-x-2 mb-2">
+                <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+                <span className="text-sm text-white">{attachment.filename}</span>
+              </div>
+              <audio
+                src={attachment.file_url}
+                controls
+                className="w-full"
+              >
+                Votre navigateur ne supporte pas la lecture audio.
+              </audio>
+              <div className="text-xs text-gray-400 mt-1">
+                {formatFileSize(attachment.file_size)}
+              </div>
+            </div>
+          )
+        }
+
+        // For other file types (documents, etc.)
+        return (
+          <div key={attachment.id} className="bg-gray-700/50 rounded-lg p-3 max-w-xs">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-white truncate">{attachment.filename}</p>
+                <p className="text-xs text-gray-400">{formatFileSize(attachment.file_size)}</p>
+              </div>
+              <button
+                onClick={() => window.open(attachment.file_url, '_blank')}
+                className="text-neon-green hover:text-neon-green/80 transition-colors"
+                title="Télécharger"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 // Contact Modal Component
@@ -818,7 +933,13 @@ export default function ConversationsPage() {
                                       : 'rounded-bl-md'
                                   }`}
                                 >
-                                  <p className="text-sm leading-relaxed break-words">{message.content}</p>
+                                  {message.content && (
+                                    <p className="text-sm leading-relaxed break-words">{message.content}</p>
+                                  )}
+                                  
+                                  {/* Display attachments */}
+                                  <MessageAttachments attachments={message.attachments || []} />
+                                  
                                   <div className="flex justify-end mt-2">
                                     <span className="text-xs text-gray-300 opacity-70">
                                       {formatTime(message.created_at)}
