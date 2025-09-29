@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useParams, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 interface SidebarProps {
   isOpen: boolean
@@ -13,7 +14,6 @@ interface SidebarProps {
 }
 
 export default function DashboardSidebar({ isOpen, accountId, accountName, onClose }: SidebarProps) {
-  const router = useRouter()
   const pathname = usePathname()
 
   const navigationItems = [
@@ -73,15 +73,7 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
     // }
   ]
 
-  const handleNavigation = (path: string) => {
-    router.push(path)
-    onClose() // Ferme la sidebar après navigation
-  }
 
-  const handleBackToAccounts = () => {
-    router.push('/dashboard')
-    onClose() // Ferme la sidebar après navigation
-  }
 
   const isActivePath = (path: string) => {
     return pathname === path
@@ -112,14 +104,15 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
               {/* Header */}
               <div className="mb-8">
                 <div className="flex items-center space-x-3 mb-4">
-                  <button
-                    onClick={handleBackToAccounts}
+                  <Link
+                    href="/dashboard"
+                    onClick={onClose}
                     className="text-neon-green hover:text-neon-green/80 transition-colors"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                  </button>
+                  </Link>
                   <h2 className="text-lg font-semibold text-white truncate">
                     {accountName || 'Dashboard'}
                   </h2>
@@ -130,30 +123,34 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
               {/* Navigation Items */}
               <nav className="space-y-2">
                 {navigationItems.map((item, index) => (
-                  <motion.button
+                  <motion.div
                     key={item.path}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    onClick={() => handleNavigation(item.path)}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
-                      isActivePath(item.path)
-                        ? 'bg-neon-green/20 border border-neon-green/30'
-                        : 'hover:bg-white/5 border border-transparent hover:border-white/10'
-                    }`}
                   >
-                    <span className="text-2xl">{item.icon}</span>
-                    <div className="flex-1 text-left">
-                      <div className={`font-medium ${
-                        isActivePath(item.path) ? 'text-neon-green' : 'text-white group-hover:text-neon-green'
-                      }`}>
-                        {item.title}
+                    <Link
+                      href={item.path}
+                      onClick={onClose}
+                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                        isActivePath(item.path)
+                          ? 'bg-neon-green/20 border border-neon-green/30'
+                          : 'hover:bg-white/5 border border-transparent hover:border-white/10'
+                      }`}
+                    >
+                      <span className="text-2xl">{item.icon}</span>
+                      <div className="flex-1 text-left">
+                        <div className={`font-medium ${
+                          isActivePath(item.path) ? 'text-neon-green' : 'text-white group-hover:text-neon-green'
+                        }`}>
+                          {item.title}
+                        </div>
                       </div>
-                    </div>
-                    {isActivePath(item.path) && (
-                      <div className="w-2 h-2 bg-neon-green rounded-full"></div>
-                    )}
-                  </motion.button>
+                      {isActivePath(item.path) && (
+                        <div className="w-2 h-2 bg-neon-green rounded-full"></div>
+                      )}
+                    </Link>
+                  </motion.div>
                 ))}
               </nav>
 
@@ -166,13 +163,14 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-gray-400 mb-3">Actions rapides</h3>
                 
-                <button
-                  onClick={handleBackToAccounts}
+                <Link
+                  href="/dashboard"
+                  onClick={onClose}
                   className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
                 >
                   <span className="text-gray-400 group-hover:text-white">🏢</span>
                   <span className="text-gray-400 group-hover:text-white text-sm">Tous les comptes</span>
-                </button>
+                </Link>
 
                 <button
                   onClick={() => {

@@ -88,7 +88,7 @@ jobs:
         echo "📦 Image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest"
         echo "🔗 SHA: ${{ github.sha }}"
 
-    - name: 🚀 Deploy on remote server
+    - name: 🚀 Deploy on remote server with Docker Swarm
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.REMOTE_HOST }}
@@ -96,5 +96,16 @@ jobs:
         key: ${{ secrets.REMOTE_SSH_KEY }}
         script: |
           cd app
-          docker compose pull app
-          docker compose up -d --no-deps app
+          # Update landing page service with zero-downtime using Docker Swarm
+          docker service update --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest nevo-stack_app
+          
+          # Wait for service to be ready
+          echo "⏳ Waiting for landing page service to update..."
+          sleep 30
+          
+          # Check service status
+          docker service ls | grep nevo-stack_app
+          
+          # Clean up old images
+          docker image prune -f
+          docker images --filter "dangling=true" -q | xargs -r docker rmi
