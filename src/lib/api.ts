@@ -504,4 +504,123 @@ export const twilioTemplatesAPI = {
   },
 };
 
+// Contacts API endpoints
+export const contactsAPI = {
+  // List contacts with filtering and pagination
+  async getContacts(accountId: number, params?: {
+    page?: number;
+    page_size?: number;
+    search?: string;
+    status?: 'active' | 'inactive' | 'blocked';
+    contact_type?: number;
+    country_code?: string;
+    has_conversations?: boolean;
+    created_after?: string;
+    created_before?: string;
+    ordering?: string;
+  }): Promise<{
+    results: any[];
+    count: number;
+    next?: string;
+    previous?: string;
+  }> {
+    const response = await api.get(`/api/cw/api/${accountId}/contacts/`, { params });
+    return response.data;
+  },
+
+  // Get a specific contact
+  async getContact(accountId: number, contactId: number): Promise<any> {
+    const response = await api.get(`/api/cw/api/${accountId}/contacts/${contactId}/`);
+    return response.data;
+  },
+
+  // Create a new contact
+  async createContact(accountId: number, contactData: {
+    name?: string;
+    email?: string;
+    phone_number?: string;
+    contact_type?: number;
+    middle_name?: string;
+    last_name?: string;
+    location?: string;
+    country_code?: string;
+    additional_attributes?: Record<string, any>;
+    custom_attributes?: Record<string, any>;
+  }): Promise<any> {
+    const response = await api.post(`/api/cw/api/${accountId}/contacts/`, contactData);
+    return response.data;
+  },
+
+  // Update a contact
+  async updateContact(accountId: number, contactId: number, contactData: {
+    name?: string;
+    email?: string;
+    phone_number?: string;
+    contact_type?: number;
+    middle_name?: string;
+    last_name?: string;
+    location?: string;
+    country_code?: string;
+    blocked?: boolean;
+    additional_attributes?: Record<string, any>;
+    custom_attributes?: Record<string, any>;
+  }): Promise<any> {
+    const response = await api.patch(`/api/cw/api/${accountId}/contacts/${contactId}/`, contactData);
+    return response.data;
+  },
+
+  // Delete a contact
+  async deleteContact(accountId: number, contactId: number, deleteConversations: boolean = false): Promise<void> {
+    await api.delete(`/api/cw/api/${accountId}/contacts/${contactId}/`, {
+      params: { delete_conversations: deleteConversations }
+    });
+  },
+
+  // Get contact conversations
+  async getContactConversations(accountId: number, contactId: number, params?: {
+    page?: number;
+    page_size?: number;
+  }): Promise<{
+    results: any[];
+    count: number;
+    next?: string;
+    previous?: string;
+  }> {
+    const response = await api.get(`/api/cw/api/${accountId}/contacts/${contactId}/conversations/`, { params });
+    return response.data;
+  },
+
+  // Block a contact
+  async blockContact(accountId: number, contactId: number): Promise<{ status: string }> {
+    const response = await api.post(`/api/cw/api/${accountId}/contacts/${contactId}/block/`);
+    return response.data;
+  },
+
+  // Unblock a contact
+  async unblockContact(accountId: number, contactId: number): Promise<{ status: string }> {
+    const response = await api.post(`/api/cw/api/${accountId}/contacts/${contactId}/unblock/`);
+    return response.data;
+  },
+
+  // Get contact statistics
+  async getContactStats(accountId: number): Promise<{
+    total_contacts: number;
+    active_contacts: number;
+    inactive_contacts: number;
+    blocked_contacts: number;
+  }> {
+    const response = await api.get(`/api/cw/api/${accountId}/contacts/stats/`);
+    return response.data;
+  },
+
+  // Bulk actions on contacts
+  async bulkActions(accountId: number, data: {
+    contact_ids: number[];
+    action: 'block' | 'unblock' | 'delete';
+  }): Promise<{ status: string }> {
+    const response = await api.post(`/api/cw/api/${accountId}/contacts/bulk_actions/`, data);
+    return response.data;
+  },
+};
+
 export default api;

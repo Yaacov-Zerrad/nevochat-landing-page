@@ -41,6 +41,12 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
       path: `/dashboard/accounts/${accountId}/conversations`,
       color: 'text-green-400'
     },
+    {
+      title: 'Contacts',
+      icon: '👥',
+      path: `/dashboard/accounts/${accountId}/contacts`,
+      color: 'text-purple-400'
+    },
     // {
     //   title: 'Analytics',
     //   icon: '📊',
