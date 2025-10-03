@@ -16,6 +16,19 @@ interface AINodeConfigProps {
 function PromptModal({ isOpen, onClose, prompt, onSave }: PromptModalProps) {
   const [localPrompt, setLocalPrompt] = useState(prompt);
 
+  // Function to detect if text contains Hebrew characters
+  const hasHebrew = (text: string) => {
+    const hebrewRegex = /[\u0590-\u05FF]/;
+    return hebrewRegex.test(text);
+  };
+
+  // Function to get text direction based on content
+  const getTextDirection = (text: string) => {
+    const lines = text.split('\n');
+    const currentLine = text.substring(0, text.lastIndexOf('\n') + 1).split('\n').length - 1;
+    return hasHebrew(lines[currentLine] || '') ? 'rtl' : 'ltr';
+  };
+
   const handleSave = () => {
     onSave(localPrompt);
     onClose();
@@ -53,6 +66,8 @@ function PromptModal({ isOpen, onClose, prompt, onSave }: PromptModalProps) {
             value={localPrompt}
             onChange={(e) => setLocalPrompt(e.target.value)}
             rows={12}
+            dir="auto"
+            style={{ unicodeBidi: 'plaintext' }}
             className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
             placeholder="Enter your AI prompt here..."
           />
