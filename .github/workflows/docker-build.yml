@@ -96,16 +96,27 @@ jobs:
         key: ${{ secrets.REMOTE_SSH_KEY }}
         script: |
           cd app
-          # Update landing page service with zero-downtime using Docker Swarm
+          
+          # Pull the latest image first to ensure it's available
+          echo "� Pulling latest image..."
+          docker pull ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest
+          
+          # Update services with zero-downtime using Docker Swarm
+          echo "� Updating Landing Page service..."
           docker service update --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest nevo-stack_app
           
-          # Wait for service to be ready
-          echo "⏳ Waiting for landing page service to update..."
-          sleep 30
+          # Wait for services to be ready
+          echo "⏳ Waiting for services to update..."
+          sleep 45
           
           # Check service status
-          docker service ls | grep nevo-stack_app
+          echo "📊 Service status:"
+          docker service ls | grep nevo-stack
           
-          # Clean up old images
-          docker image prune -f
-          docker images --filter "dangling=true" -q | xargs -r docker rmi
+          # Verify services are running
+          echo "� Checking service health:"
+          docker service ps nevo-stack_app --no-trunc
+          
+          # Clean up old images (only if services are running)
+          echo "🧹 Cleaning up old images..."
+          docker image prune -f --filter "until=24h"
