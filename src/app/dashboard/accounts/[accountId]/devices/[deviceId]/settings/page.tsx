@@ -6,12 +6,12 @@ import { motion } from 'framer-motion';
 import { useSession } from 'next-auth/react';
 import { whatsappAPI } from '@/lib/api';
 
-export default function WhatsAppSettingsPage() {
+export default function DeviceSettingsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams();
   const accountId = Array.isArray(params.accountId) ? params.accountId[0] : params.accountId;
-  const whatsappId = Array.isArray(params.whatsappId) ? params.whatsappId[0] : params.whatsappId;
+  const deviceId = Array.isArray(params.deviceId) ? params.deviceId[0] : params.deviceId;
 
   const [account, setAccount] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -20,9 +20,9 @@ export default function WhatsAppSettingsPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const fetchAccount = useCallback(async () => {
-    if (!whatsappId) return;
+    if (!deviceId) return;
     try {
-      const accountData = await whatsappAPI.getWhatsAppAccount(whatsappId);
+      const accountData = await whatsappAPI.getWhatsAppAccount(deviceId);
       setAccount(accountData);
       setDisplayName(accountData.display_name || '');
     } catch (error) {
@@ -30,7 +30,7 @@ export default function WhatsAppSettingsPage() {
     } finally {
       setLoading(false);
     }
-  }, [whatsappId]);
+  }, [deviceId]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -45,11 +45,11 @@ export default function WhatsAppSettingsPage() {
 
   const handleSave = async (e:any) => {
     e.preventDefault();
-    if (!whatsappId) return;
+    if (!deviceId) return;
     setSaving(true);
 
     try {
-      await whatsappAPI.updateWhatsAppAccount(whatsappId, {
+      await whatsappAPI.updateWhatsAppAccount(deviceId, {
         display_name: displayName
       });
       
@@ -62,17 +62,17 @@ export default function WhatsAppSettingsPage() {
   };
 
   const handleDelete = async () => {
-    if (!whatsappId) return;
+    if (!deviceId) return;
     try {
-      await whatsappAPI.deleteWhatsAppAccount(whatsappId);
-      router.push(`/dashboard/accounts/${accountId}/whatsapp`);
+      await whatsappAPI.deleteWhatsAppAccount(deviceId);
+      router.push(`/dashboard/accounts/${accountId}/devices`);
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
     }
   };
 
   const handleBack = () => {
-    router.push(`/dashboard/accounts/${accountId}/whatsapp`);
+    router.push(`/dashboard/accounts/${accountId}/devices`);
   };
 
   const formatDate = (dateString:any) => {

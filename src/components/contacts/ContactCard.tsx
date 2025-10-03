@@ -1,29 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-
-interface Contact {
-  id: string | number
-  name: string
-  email?: string
-  phone_number?: string
-  identifier?: string
-  contact_type?: number
-  location?: string
-  country_code?: string
-  blocked: boolean
-  last_activity_at?: string
-  created_at: string
-  conversations_count: number
-  last_conversation_at?: string
-  status: 'active' | 'inactive' | 'blocked'
-  additional_attributes?: {
-    type?: string
-    country?: string
-    country_code?: string
-    [key: string]: any
-  }
-}
+import { Contact } from '@/types/contact'
 
 interface ContactCardProps {
   contact: Contact
@@ -110,12 +88,12 @@ export function ContactCard({
         <div className="relative flex-shrink-0">
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-neon-green/20 to-blue-500/20 border border-white/10 flex items-center justify-center">
             <span className="text-sm font-medium text-white">
-              {getInitials(contact.name)}
+              {getInitials(contact.name || 'N/A')}
             </span>
           </div>
           <div
             className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black ${getStatusColor(
-              contact.status
+              contact.status || 'inactive'
             )}`}
             title={contact.status === 'active' ? 'Actif' : contact.status === 'blocked' ? 'Bloqué' : 'Inactif'}
           />
@@ -184,7 +162,7 @@ export function ContactCard({
             )}
 
             {/* Conversations Count Badge */}
-            {contact.conversations_count > 0 && (
+            {(contact.conversations_count ?? 0) > 0 && (
               <div className="flex items-center space-x-1 px-2 py-1 rounded-lg bg-orange-500/10 border border-orange-500/20">
                 <svg className="w-3 h-3 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path

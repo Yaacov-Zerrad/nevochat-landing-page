@@ -7,12 +7,12 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { whatsappAPI } from '@/lib/api';
 
-export default function WhatsAppContactsPage() {
+export default function DeviceContactsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams();
   const accountId = Array.isArray(params.accountId) ? params.accountId[0] : params.accountId;
-  const whatsappId = Array.isArray(params.whatsappId) ? params.whatsappId[0] : params.whatsappId;
+  const deviceId = Array.isArray(params.deviceId) ? params.deviceId[0] : params.deviceId;
 
   const [contacts, setContacts] = useState<any[]>([]);
   const [account, setAccount] = useState<any>(null);
@@ -20,19 +20,19 @@ export default function WhatsAppContactsPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const fetchAccount = useCallback(async () => {
-    if (!whatsappId) return;
+    if (!deviceId) return;
     try {
-      const accountData = await whatsappAPI.getWhatsAppAccount(whatsappId);
+      const accountData = await whatsappAPI.getWhatsAppAccount(deviceId);
       setAccount(accountData);
     } catch (error) {
       console.error('Erreur lors du chargement du compte:', error);
     }
-  }, [whatsappId]);
+  }, [deviceId]);
 
   const fetchContacts = useCallback(async () => {
-    if (!whatsappId) return;
+    if (!deviceId) return;
     try {
-      const response = await whatsappAPI.getContacts({ account: whatsappId });
+      const response = await whatsappAPI.getContacts({ account: deviceId });
       const contactList = response.results || [];
       setContacts(contactList);
     } catch (error) {
@@ -40,7 +40,7 @@ export default function WhatsAppContactsPage() {
     } finally {
       setLoading(false);
     }
-  }, [whatsappId]);
+  }, [deviceId]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -55,11 +55,11 @@ export default function WhatsAppContactsPage() {
   }, [status, router, fetchAccount, fetchContacts]);
 
   const handleBack = () => {
-    router.push(`/dashboard/accounts/${accountId}/whatsapp`);
+    router.push(`/dashboard/accounts/${accountId}/devices`);
   };
 
   const handleSendMessage = (phoneNumber:any) => {
-    router.push(`/dashboard/accounts/${accountId}/whatsapp/${whatsappId}/messages?recipient=${phoneNumber}`);
+    router.push(`/dashboard/accounts/${accountId}/devices/${deviceId}/messages?recipient=${phoneNumber}`);
   };
 
   const filteredContacts = contacts.filter((contact:any) =>

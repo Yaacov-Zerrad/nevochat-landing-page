@@ -7,7 +7,7 @@ import { ContactDetails } from '@/components/contacts/ContactDetails'
 import { ContactFilters } from '@/components/contacts/ContactFilters'
 import { ContactStats } from '@/components/contacts/ContactStats'
 import { useContacts } from '@/hooks/useContacts'
-import { ContactFilters as FilterType } from '@/types/contacts'
+import { ContactFilters as FilterType } from '@/types/contact'
 
 interface ContactsPageProps {
   params: {
@@ -23,11 +23,11 @@ export default function ContactsPage({ params }: ContactsPageProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [filters, setFilters] = useState<FilterType>({
     status: 'all',
-    contactType: '',
-    countryCode: '',
-    hasConversations: null,
-    createdAfter: '',
-    createdBefore: '',
+    contact_type: '',
+    country_code: '',
+    has_conversations: null,
+    created_after: '',
+    created_before: '',
   })
 
   const {

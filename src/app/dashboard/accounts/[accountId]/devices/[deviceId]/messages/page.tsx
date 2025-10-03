@@ -6,12 +6,12 @@ import { motion } from 'framer-motion';
 import { useSession } from 'next-auth/react';
 import { whatsappAPI } from '@/lib/api';
 
-export default function WhatsAppMessagesPage() {
+export default function DeviceMessagesPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams();
   const accountId = Array.isArray(params.accountId) ? params.accountId[0] : params.accountId;
-  const whatsappId = Array.isArray(params.whatsappId) ? params.whatsappId[0] : params.whatsappId;
+  const deviceId = Array.isArray(params.deviceId) ? params.deviceId[0] : params.deviceId;
 
   const [messages, setMessages] = useState<any[]>([]);
   const [account, setAccount] = useState<any>(null);
@@ -21,26 +21,26 @@ export default function WhatsAppMessagesPage() {
   const [sending, setSending] = useState(false);
 
   const fetchAccount = useCallback(async () => {
-    if (!whatsappId) return;
+    if (!deviceId) return;
     try {
-      const accountData = await whatsappAPI.getWhatsAppAccount(whatsappId);
+      const accountData = await whatsappAPI.getWhatsAppAccount(deviceId);
       setAccount(accountData);
     } catch (error) {
       console.error('Erreur lors du chargement du compte:', error);
     }
-  }, [whatsappId]);
+  }, [deviceId]);
 
   const fetchMessages = useCallback(async () => {
-    if (!whatsappId) return;
+    if (!deviceId) return;
     try {
-      const response = await whatsappAPI.getMessages({ account: whatsappId });
+      const response = await whatsappAPI.getMessages({ account: deviceId });
       setMessages(response?.results || []);
     } catch (error) {
       console.error('Erreur lors du chargement des messages:', error);
     } finally {
       setLoading(false);
     }
-  }, [whatsappId]);
+  }, [deviceId]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -56,11 +56,11 @@ export default function WhatsAppMessagesPage() {
 
   const handleSendMessage = async (e:any) => {
     e.preventDefault();
-    if (!newMessage.trim() || !recipient.trim() || !whatsappId) return;
+    if (!newMessage.trim() || !recipient.trim() || !deviceId) return;
 
     setSending(true);
     try {
-      await whatsappAPI.sendMessage(whatsappId, {
+      await whatsappAPI.sendMessage(deviceId, {
         to_number: recipient,
         message: newMessage,
         message_type: 'text'
@@ -77,7 +77,7 @@ export default function WhatsAppMessagesPage() {
   };
 
   const handleBack = () => {
-    router.push(`/dashboard/accounts/${accountId}/whatsapp`);
+    router.push(`/dashboard/accounts/${accountId}/devices`);
   };
 
   const formatDate = (dateString:any) => {

@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useSession } from 'next-auth/react';
 import { whatsappAPI } from '@/lib/api';
 
-export default function WhatsAppPage() {
+export default function DevicesPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams();
@@ -90,11 +90,11 @@ export default function WhatsAppPage() {
   };
 
   const handleConnect = () => {
-    router.push(`/dashboard/accounts/${accountId}/whatsapp/connect`);
+    router.push(`/dashboard/accounts/${accountId}/devices/connect`);
   };
 
   const handleReconnect = (whatsappAccountId:any) => {
-    router.push(`/dashboard/accounts/${accountId}/whatsapp/connect?account_id=${whatsappAccountId}`);
+    router.push(`/dashboard/accounts/${accountId}/devices/connect?account_id=${whatsappAccountId}`);
   };
 
   if (status === 'loading' || loading) {
@@ -123,10 +123,10 @@ export default function WhatsAppPage() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                📱 WhatsApp Business
+                📱 Mes Appareils
               </h1>
               <p className="text-gray-400">
-                Gérez vos connexions WhatsApp Business et automatisez vos conversations
+                Gérez vos appareils WhatsApp connectés et automatisez vos conversations
               </p>
             </div>
             <button
@@ -134,7 +134,7 @@ export default function WhatsAppPage() {
               className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 flex items-center gap-2"
             >
               <span>➕</span>
-              Nouveau compte
+              Nouvel appareil
             </button>
           </div>
 
@@ -211,7 +211,7 @@ export default function WhatsAppPage() {
 
           {/* Accounts List */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-white">Vos comptes WhatsApp</h2>
+            <h2 className="text-xl font-semibold text-white">Vos appareils connectés</h2>
             
             {accounts?.length === 0 ? (
               <motion.div
@@ -222,16 +222,16 @@ export default function WhatsAppPage() {
               >
                 <div className="text-6xl mb-4">📱</div>
                 <h3 className="text-lg font-medium text-white mb-2">
-                  Aucun compte WhatsApp connecté
+                  Aucun appareil connecté
                 </h3>
                 <p className="text-gray-400 mb-6">
-                  Connectez votre premier compte WhatsApp Business pour commencer à automatiser vos conversations.
+                  Connectez votre premier appareil WhatsApp pour commencer à automatiser vos conversations.
                 </p>
                 <button
                   onClick={handleConnect}
                   className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
                 >
-                  Connecter un compte
+                  Connecter un appareil
                 </button>
               </motion.div>
             ) : (
@@ -279,14 +279,14 @@ export default function WhatsAppPage() {
                         {account.is_connected ? (
                           <>
                             <button
-                              onClick={() => router.push(`/dashboard/accounts/${accountId}/whatsapp/${account.id}/messages`)}
+                              onClick={() => router.push(`/dashboard/accounts/${accountId}/devices/${account.id}/messages`)}
                               className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 px-4 py-2 rounded-lg transition-colors border border-blue-500/20 hover:border-blue-500/40 text-sm flex items-center gap-2"
                             >
                               <span>💬</span>
                               Messages
                             </button>
                             <button
-                              onClick={() => router.push(`/dashboard/accounts/${accountId}/whatsapp/${account.id}/contacts`)}
+                              onClick={() => router.push(`/dashboard/accounts/${accountId}/devices/${account.id}/contacts`)}
                               className="bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 px-4 py-2 rounded-lg transition-colors border border-orange-500/20 hover:border-orange-500/40 text-sm flex items-center gap-2"
                             >
                               <span>👥</span>
@@ -311,7 +311,7 @@ export default function WhatsAppPage() {
                               Reconnecter
                             </button>
                             <button
-                              onClick={() => router.push(`/dashboard/accounts/${accountId}/whatsapp/${account.id}/settings`)}
+                              onClick={() => router.push(`/dashboard/accounts/${accountId}/devices/${account.id}/settings`)}
                               className="bg-gray-500/20 hover:bg-gray-500/30 text-gray-400 px-4 py-2 rounded-lg transition-colors border border-gray-500/20 hover:border-gray-500/40 text-sm flex items-center gap-2"
                             >
                               <span>⚙️</span>

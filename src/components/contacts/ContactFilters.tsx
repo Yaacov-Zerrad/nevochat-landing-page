@@ -2,19 +2,11 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-
-interface Filters {
-  status: string
-  contactType: string
-  countryCode: string
-  hasConversations: boolean | null
-  createdAfter: string
-  createdBefore: string
-}
+import { ContactFilters as FiltersType } from '@/types/contact'
 
 interface ContactFiltersProps {
-  filters: Filters
-  onFiltersChange: (filters: Filters) => void
+  filters: FiltersType
+  onFiltersChange: (filters: FiltersType) => void
   onClose: () => void
 }
 
@@ -40,7 +32,7 @@ const conversationOptions = [
 export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFiltersProps) {
   const [localFilters, setLocalFilters] = useState(filters)
 
-  const handleFilterChange = (key: keyof Filters, value: any) => {
+  const handleFilterChange = (key: keyof FiltersType, value: any) => {
     const newFilters = { ...localFilters, [key]: value }
     setLocalFilters(newFilters)
   }
@@ -51,13 +43,13 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
   }
 
   const handleReset = () => {
-    const resetFilters = {
+    const resetFilters: FiltersType = {
       status: 'all',
-      contactType: '',
-      countryCode: '',
-      hasConversations: null,
-      createdAfter: '',
-      createdBefore: '',
+      contact_type: '',
+      country_code: '',
+      has_conversations: null,
+      created_after: '',
+      created_before: '',
     }
     setLocalFilters(resetFilters)
     onFiltersChange(resetFilters)
@@ -97,8 +89,8 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
               Type de contact
             </label>
             <select
-              value={localFilters.contactType}
-              onChange={(e) => handleFilterChange('contactType', e.target.value)}
+              value={localFilters.contact_type}
+              onChange={(e) => handleFilterChange('contact_type', e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
             >
               {contactTypeOptions.map((option) => (
@@ -117,8 +109,8 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
             <input
               type="text"
               placeholder="ex: FR, US, CA"
-              value={localFilters.countryCode}
-              onChange={(e) => handleFilterChange('countryCode', e.target.value)}
+              value={localFilters.country_code}
+              onChange={(e) => handleFilterChange('country_code', e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-neon-green/50"
             />
           </div>
@@ -129,10 +121,10 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
               Conversations
             </label>
             <select
-              value={localFilters.hasConversations === null ? 'null' : localFilters.hasConversations.toString()}
+              value={localFilters.has_conversations === null || localFilters.has_conversations === undefined ? 'null' : localFilters.has_conversations.toString()}
               onChange={(e) => {
                 const value = e.target.value === 'null' ? null : e.target.value === 'true'
-                handleFilterChange('hasConversations', value)
+                handleFilterChange('has_conversations', value)
               }}
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
             >
@@ -149,8 +141,8 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
             </label>
             <input
               type="date"
-              value={localFilters.createdAfter}
-              onChange={(e) => handleFilterChange('createdAfter', e.target.value)}
+              value={localFilters.created_after}
+              onChange={(e) => handleFilterChange('created_after', e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
             />
           </div>
@@ -161,8 +153,8 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
             </label>
             <input
               type="date"
-              value={localFilters.createdBefore}
-              onChange={(e) => handleFilterChange('createdBefore', e.target.value)}
+              value={localFilters.created_before}
+              onChange={(e) => handleFilterChange('created_before', e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
             />
           </div>

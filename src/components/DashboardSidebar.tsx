@@ -30,9 +30,9 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
       color: 'text-blue-400'
     },
     {
-      title: 'WhatsApp',
-      icon: '💬',
-      path: `/dashboard/accounts/${accountId}/whatsapp`,
+      title: 'Appareils',
+      icon: '�',
+      path: `/dashboard/accounts/${accountId}/devices`,
       color: 'text-green-400'
     },
     {

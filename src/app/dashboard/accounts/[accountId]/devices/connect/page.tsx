@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { whatsappAPI } from '@/lib/api';
 
-export default function WhatsAppConnectPage() {
+export default function DeviceConnectPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams();
@@ -102,14 +102,14 @@ export default function WhatsAppConnectPage() {
   };
 
   const handleBack = () => {
-    router.push(`/dashboard/accounts/${accountId}/whatsapp`);
+    router.push(`/dashboard/accounts/${accountId}/devices`);
   };
 
   const handleSuccess = () => {
     setSuccess(true);
     setStep('success');
     setTimeout(() => {
-      router.push(`/dashboard/accounts/${accountId}/whatsapp`);
+      router.push(`/dashboard/accounts/${accountId}/devices`);
     }, 3000);
   };
 

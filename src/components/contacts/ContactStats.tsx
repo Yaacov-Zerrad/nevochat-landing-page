@@ -1,16 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-
-interface Stats {
-  total_contacts: number
-  active_contacts: number
-  inactive_contacts: number
-  blocked_contacts: number
-}
+import { ContactStats as Stats } from '@/types/contact'
 
 interface ContactStatsProps {
-  stats?: Stats
+  stats?: Stats | null
   loading: boolean
 }
 
