@@ -103,7 +103,7 @@ jobs:
           
           # Update services with zero-downtime using Docker Swarm
           echo "� Updating Landing Page service..."
-          docker service update --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest nevo-stack_app
+          docker service update --force --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/landing-page:latest nevo-stack_app
           
           # Wait for services to be ready
           echo "⏳ Waiting for services to update..."
