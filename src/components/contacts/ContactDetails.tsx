@@ -50,6 +50,10 @@ export function ContactDetails({
   const [isEditing, setIsEditing] = useState(false)
   const [editData, setEditData] = useState<Partial<Contact>>({})
   const [activeTab, setActiveTab] = useState<'details' | 'conversations'>('details')
+  const [newAttributeKey, setNewAttributeKey] = useState('')
+  const [newAttributeValue, setNewAttributeValue] = useState('')
+  const [newCustomKey, setNewCustomKey] = useState('')
+  const [newCustomValue, setNewCustomValue] = useState('')
 
   useEffect(() => {
     const loadContactDetails = async () => {
@@ -108,6 +112,73 @@ export function ContactDetails({
   const handleCancel = () => {
     setEditData(contact || {})
     setIsEditing(false)
+    setNewAttributeKey('')
+    setNewAttributeValue('')
+    setNewCustomKey('')
+    setNewCustomValue('')
+  }
+
+  const getCountryFlag = (countryCode?: string) => {
+    if (!countryCode) return '🌍'
+    try {
+      return countryCode.toUpperCase().replace(/./g, char => 
+        String.fromCodePoint(char.charCodeAt(0) + 127397)
+      )
+    } catch {
+      return '🌍'
+    }
+  }
+
+  const updateAdditionalAttribute = (key: string, value: any) => {
+    setEditData({
+      ...editData,
+      additional_attributes: {
+        ...editData.additional_attributes,
+        [key]: value
+      }
+    })
+  }
+
+  const deleteAdditionalAttribute = (key: string) => {
+    const newAttrs = { ...editData.additional_attributes }
+    delete newAttrs[key]
+    setEditData({
+      ...editData,
+      additional_attributes: newAttrs
+    })
+  }
+
+  const addAdditionalAttribute = () => {
+    if (!newAttributeKey.trim()) return
+    updateAdditionalAttribute(newAttributeKey.trim(), newAttributeValue)
+    setNewAttributeKey('')
+    setNewAttributeValue('')
+  }
+
+  const updateCustomAttribute = (key: string, value: any) => {
+    setEditData({
+      ...editData,
+      custom_attributes: {
+        ...editData.custom_attributes,
+        [key]: value
+      }
+    })
+  }
+
+  const deleteCustomAttribute = (key: string) => {
+    const newAttrs = { ...editData.custom_attributes }
+    delete newAttrs[key]
+    setEditData({
+      ...editData,
+      custom_attributes: newAttrs
+    })
+  }
+
+  const addCustomAttribute = () => {
+    if (!newCustomKey.trim()) return
+    updateCustomAttribute(newCustomKey.trim(), newCustomValue)
+    setNewCustomKey('')
+    setNewCustomValue('')
   }
 
   const getInitials = (name: string) => {
@@ -306,110 +377,280 @@ export function ContactDetails({
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              className="space-y-6"
+              className="space-y-4"
             >
-              {/* Basic Information */}
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">Informations de base</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Nom complet
-                    </label>
+              {/* Name */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-neon-green/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-400">Nom</p>
                     {isEditing ? (
                       <input
                         type="text"
                         value={editData.name || ''}
                         onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
                       />
                     ) : (
-                      <p className="text-white">{contact.name || '-'}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Email
-                    </label>
-                    {isEditing ? (
-                      <input
-                        type="email"
-                        value={editData.email || ''}
-                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
-                      />
-                    ) : (
-                      <p className="text-white">{contact.email || '-'}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Téléphone
-                    </label>
-                    {isEditing ? (
-                      <input
-                        type="tel"
-                        value={editData.phone_number || ''}
-                        onChange={(e) => setEditData({ ...editData, phone_number: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
-                      />
-                    ) : (
-                      <p className="text-white">{contact.phone_number || '-'}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Localisation
-                    </label>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editData.location || ''}
-                        onChange={(e) => setEditData({ ...editData, location: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
-                      />
-                    ) : (
-                      <p className="text-white">{contact.location || '-'}</p>
+                      <p className="text-white font-semibold">{contact.name}</p>
                     )}
                   </div>
                 </div>
               </div>
 
+              {/* Phone */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-400">Téléphone</p>
+                    {isEditing ? (
+                      <input
+                        type="tel"
+                        value={editData.phone_number || ''}
+                        onChange={(e) => setEditData({ ...editData, phone_number: e.target.value })}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                      />
+                    ) : (
+                      <p className="text-white font-semibold">{contact.phone_number || '-'}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Email */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-400">Email</p>
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        value={editData.email || ''}
+                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                      />
+                    ) : (
+                      <p className="text-white font-semibold">{contact.email || '-'}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-400">Localisation</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.location || ''}
+                        onChange={(e) => setEditData({ ...editData, location: e.target.value })}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                      />
+                    ) : (
+                      <p className="text-white font-semibold">{contact.location || '-'}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Country Code */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 text-2xl">
+                    {getCountryFlag((isEditing ? editData : contact)?.country_code || (isEditing ? editData : contact)?.additional_attributes?.country_code)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-400">Code pays</p>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editData.country_code || ''}
+                        onChange={(e) => setEditData({ ...editData, country_code: e.target.value })}
+                        placeholder="ex: FR, US, CA"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                      />
+                    ) : (
+                      <p className="text-white font-semibold">{contact.country_code || contact.additional_attributes?.country_code || '-'}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Attributes */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-semibold text-white">Attributs supplémentaires</h3>
+                  {isEditing && (
+                    <button
+                      onClick={() => {
+                        const key = prompt('Nom de l\'attribut:')
+                        if (key) {
+                          const value = prompt('Valeur:')
+                          if (value !== null) {
+                            updateAdditionalAttribute(key, value)
+                          }
+                        }
+                      }}
+                      className="text-xs px-2 py-1 bg-neon-green/20 text-neon-green rounded border border-neon-green/30 hover:bg-neon-green/30 transition-colors"
+                    >
+                      + Ajouter
+                    </button>
+                  )}
+                </div>
+                
+                {isEditing ? (
+                  <div className="space-y-3">
+                    {editData.additional_attributes && Object.entries(editData.additional_attributes).map(([key, value]) => (
+                      <div key={key} className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          value={key}
+                          disabled
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gray-400 text-sm"
+                        />
+                        <input
+                          type="text"
+                          value={String(value)}
+                          onChange={(e) => updateAdditionalAttribute(key, e.target.value)}
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-neon-green/50"
+                        />
+                        <button
+                          onClick={() => deleteAdditionalAttribute(key)}
+                          className="p-2 text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                    {(!editData.additional_attributes || Object.keys(editData.additional_attributes).length === 0) && (
+                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {contact.additional_attributes && Object.entries(contact.additional_attributes).map(([key, value]) => (
+                      <div key={key} className="flex justify-between text-sm">
+                        <span className="text-gray-400 capitalize">{key.replace(/_/g, ' ')}:</span>
+                        <span className="text-white">{String(value)}</span>
+                      </div>
+                    ))}
+                    {(!contact.additional_attributes || Object.keys(contact.additional_attributes).length === 0) && (
+                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Custom Attributes */}
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-semibold text-white">Attributs personnalisés</h3>
+                  {isEditing && (
+                    <button
+                      onClick={() => {
+                        const key = prompt('Nom de l\'attribut:')
+                        if (key) {
+                          const value = prompt('Valeur:')
+                          if (value !== null) {
+                            updateCustomAttribute(key, value)
+                          }
+                        }
+                      }}
+                      className="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded border border-blue-500/30 hover:bg-blue-500/30 transition-colors"
+                    >
+                      + Ajouter
+                    </button>
+                  )}
+                </div>
+                
+                {isEditing ? (
+                  <div className="space-y-3">
+                    {editData.custom_attributes && Object.entries(editData.custom_attributes).map(([key, value]) => (
+                      <div key={key} className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          value={key}
+                          disabled
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gray-400 text-sm"
+                        />
+                        <input
+                          type="text"
+                          value={String(value)}
+                          onChange={(e) => updateCustomAttribute(key, e.target.value)}
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-neon-green/50"
+                        />
+                        <button
+                          onClick={() => deleteCustomAttribute(key)}
+                          className="p-2 text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                    {(!editData.custom_attributes || Object.keys(editData.custom_attributes).length === 0) && (
+                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {contact.custom_attributes && Object.entries(contact.custom_attributes).map(([key, value]) => (
+                      <div key={key} className="flex justify-between text-sm">
+                        <span className="text-gray-400 capitalize">{key.replace(/_/g, ' ')}:</span>
+                        <span className="text-white">{String(value)}</span>
+                      </div>
+                    ))}
+                    {(!contact.custom_attributes || Object.keys(contact.custom_attributes).length === 0) && (
+                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
               {/* Metadata */}
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">Métadonnées</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Date de création
-                    </label>
-                    <p className="text-white">{formatDate(contact.created_at)}</p>
+              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <h3 className="text-sm font-semibold text-white mb-4">Métadonnées</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Identifiant:</span>
+                    <span className="text-white font-mono">{contact.identifier || '-'}</span>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Dernière modification
-                    </label>
-                    <p className="text-white">{formatDate(contact.updated_at)}</p>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Créé le:</span>
+                    <span className="text-white">{formatDate(contact.created_at)}</span>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Dernière activité
-                    </label>
-                    <p className="text-white">
-                      {contact.last_activity_at ? formatDate(contact.last_activity_at) : 'Jamais'}
-                    </p>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Modifié le:</span>
+                    <span className="text-white">{formatDate(contact.updated_at)}</span>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Identifiant
-                    </label>
-                    <p className="text-white font-mono text-sm">{contact.identifier || '-'}</p>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Dernière activité:</span>
+                    <span className="text-white">{contact.last_activity_at ? formatDate(contact.last_activity_at) : 'Jamais'}</span>
                   </div>
                 </div>
               </div>
