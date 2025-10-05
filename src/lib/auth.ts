@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
+      id: "credentials",
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -50,7 +51,7 @@ export const authOptions: NextAuthOptions = {
 
             if (userResponse.ok) {
               const user = await userResponse.json()
-              console.log('User data from API:', user) // Debug log
+              console.log('User data from API:', user)
               return {
                 id: user.id ? user.id.toString() : user.pk ? user.pk.toString() : Math.random().toString(),
                 email: user.email,
@@ -66,6 +67,47 @@ export const authOptions: NextAuthOptions = {
           return null
         } catch (error) {
           console.error('Auth error:', error)
+          return null
+        }
+      }
+    }),
+    // Custom provider for Google OAuth tokens from Django
+    CredentialsProvider({
+      id: "django-token",
+      name: "Django Token",
+      credentials: {
+        token: { label: "Token", type: "text" },
+        email: { label: "Email", type: "email" },
+        name: { label: "Name", type: "text" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.token) {
+          return null
+        }
+
+        try {
+          const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL
+          
+          // Verify token with Django backend
+          const userResponse = await fetch(`${backendUrl}/api/users/me/`, {
+            headers: {
+              'Authorization': `Token ${credentials.token}`,
+            },
+          })
+
+          if (userResponse.ok) {
+            const user = await userResponse.json()
+            return {
+              id: user.id.toString(),
+              email: user.email || credentials.email,
+              name: user.name || credentials.name,
+              accessToken: credentials.token,
+            }
+          }
+
+          return null
+        } catch (error) {
+          console.error('Django token auth error:', error)
           return null
         }
       }

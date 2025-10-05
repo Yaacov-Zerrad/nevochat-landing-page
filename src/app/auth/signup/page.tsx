@@ -7,17 +7,21 @@ import { motion } from 'framer-motion'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-
-export default function SignIn() {
+export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [name, setName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
   // Check for OAuth callback with token from Django
   useEffect(() => {
@@ -61,29 +65,73 @@ export default function SignIn() {
     setIsLoading(true)
     setError('')
 
+    if (password !== passwordConfirm) {
+      setError('Passwords do not match')
+      setIsLoading(false)
+      return
+    }
+
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
+      const response = await fetch(`${API_URL}/api/auth/register/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          password_confirm: passwordConfirm,
+          name,
+          phone_number: phoneNumber,
+        }),
       })
 
-      if (result?.error) {
-        setError('Invalid credentials')
-      } else {
+      const data = await response.json()
+
+      if (response.ok) {
         setSuccess(true)
-        setTimeout(() => {
-          router.push('/dashboard')
-        }, 1000)
+        // After successful registration, sign in with NextAuth
+        if (data.token) {
+          // Auto sign-in after registration
+          const result = await signIn('credentials', {
+            email,
+            password,
+            redirect: false,
+          })
+
+          if (result?.error) {
+            setError('Registration successful but login failed. Please try to sign in.')
+            setTimeout(() => {
+              router.push('/auth/signin')
+            }, 2000)
+          } else {
+            setTimeout(() => {
+              router.push('/dashboard')
+            }, 2000)
+          }
+        } else {
+          setTimeout(() => {
+            router.push('/auth/signin')
+          }, 2000)
+        }
+      } else {
+        // Handle validation errors
+        if (data.email) {
+          setError(data.email[0])
+        } else if (data.password) {
+          setError(Array.isArray(data.password) ? data.password[0] : data.password)
+        } else {
+          setError(data.message || 'Registration failed')
+        }
       }
     } catch (error) {
-      setError('An error occurred')
+      setError('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const handleGoogleSignin = async () => {
+  const handleGoogleSignup = async () => {
     setIsLoading(true)
     setError('')
 
@@ -91,7 +139,7 @@ export default function SignIn() {
       // Call Django backend to get Google OAuth URL
       const response = await fetch(
         `${API_URL}/api/auth/google/init/?redirect_uri=${encodeURIComponent(
-          window.location.origin + '/auth/signin'
+          window.location.origin + '/auth/signup'
         )}`,
         {
           method: 'GET',
@@ -137,15 +185,17 @@ export default function SignIn() {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Welcome Back!</h2>
-          <p className="text-gray-400">Redirecting to dashboard...</p>
+          <h2 className="text-2xl font-bold text-white mb-2">Registration Successful!</h2>
+          <p className="text-gray-400">
+            Redirecting to dashboard...
+          </p>
         </motion.div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center px-4 py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -163,90 +213,15 @@ export default function SignIn() {
               NevoChat
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-400">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Create Your Account</h1>
+          <p className="text-gray-400">Join us today and get started</p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm">
-              {error}
-            </div>
-          )}
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-colors"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-colors pr-12"
-                placeholder="Enter your password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
-              >
-                {showPassword ? (
-                  <EyeSlashIcon className="h-5 w-5" />
-                ) : (
-                  <EyeIcon className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          <motion.button
-            type="submit"
-            disabled={isLoading}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full bg-gradient-to-r from-neon-green to-emerald-400 text-black font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-neon-green/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? 'Signing in...' : 'Sign In'}
-          </motion.button>
-        </form>
-
-        {/* OR Divider */}
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-600"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-black/80 text-gray-400">OR</span>
-          </div>
-        </div>
-
-        {/* Google Sign In Button */}
-        <motion.button
-          type="button"
-          onClick={handleGoogleSignin}
+        {/* Google Sign Up Button */}
+        <button
+          onClick={handleGoogleSignup}
           disabled={isLoading}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-full bg-white text-gray-800 font-semibold py-3 px-6 rounded-lg flex items-center justify-center space-x-3 hover:bg-gray-100 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full mb-6 bg-white hover:bg-gray-100 text-gray-900 font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
@@ -267,14 +242,141 @@ export default function SignIn() {
             />
           </svg>
           <span>Continue with Google</span>
-        </motion.button>
+        </button>
 
-        {/* Sign Up Link */}
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-600"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-black text-gray-400">Or sign up with email</span>
+          </div>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm">
+              {error}
+            </div>
+          )}
+
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+              Full Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-colors"
+              placeholder="Enter your full name"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+              Email *
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-colors"
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-300 mb-2">
+              Phone Number
+            </label>
+            <input
+              id="phoneNumber"
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-colors"
+              placeholder="Enter your phone number"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              Password *
+            </label>
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-colors pr-12"
+                placeholder="Create a password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5" />
+                ) : (
+                  <EyeIcon className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="passwordConfirm" className="block text-sm font-medium text-gray-300 mb-2">
+              Confirm Password *
+            </label>
+            <div className="relative">
+              <input
+                id="passwordConfirm"
+                type={showPasswordConfirm ? 'text' : 'password'}
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green transition-colors pr-12"
+                placeholder="Confirm your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+              >
+                {showPasswordConfirm ? (
+                  <EyeSlashIcon className="h-5 w-5" />
+                ) : (
+                  <EyeIcon className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <motion.button
+            type="submit"
+            disabled={isLoading}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full bg-gradient-to-r from-neon-green to-emerald-400 text-black font-bold py-3 px-6 rounded-lg hover:shadow-lg hover:shadow-neon-green/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? 'Creating Account...' : 'Sign Up'}
+          </motion.button>
+        </form>
+
+        {/* Sign In Link */}
         <div className="mt-6 text-center">
           <p className="text-gray-400">
-            Don&apos;t have an account?{' '}
-            <Link href="/auth/signup" className="text-neon-green hover:text-emerald-400 font-semibold transition-colors">
-              Sign Up
+            Already have an account?{' '}
+            <Link href="/auth/signin" className="text-neon-green hover:text-emerald-400 font-semibold transition-colors">
+              Sign In
             </Link>
           </p>
         </div>
