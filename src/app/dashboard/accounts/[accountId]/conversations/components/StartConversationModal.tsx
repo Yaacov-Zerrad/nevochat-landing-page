@@ -246,27 +246,8 @@ export function StartConversationModal({
             <div className="border-t border-white/10 pt-6">
               <p className="text-sm text-gray-400 mb-4">Ou entrez manuellement les informations</p>
 
-              {/* Inbox Selector */}
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Boîte de réception *
-                  </label>
-                  <select
-                    value={selectedInboxId || ''}
-                    onChange={(e) => setSelectedInboxId(parseInt(e.target.value))}
-                    className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none"
-                  >
-                    <option value="">Sélectionner une boîte de réception</option>
-                    {inboxes.map((inbox) => (
-                      <option key={inbox.id} value={inbox.id}>
-                        {inbox.name} ({inbox.channel_type})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
               {/* Phone Number Input */}
+              <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Numéro de téléphone *
