@@ -429,6 +429,31 @@ export const conversationAPI = {
   async reopenConversation(accountId: number, conversationId: number): Promise<void> {
     await api.post(`/api/cw/api/${accountId}/conversations/${conversationId}/reopen/`);
   },
+
+  async startConversation(data: {
+    account_id: number;
+    inbox_id: number;
+    phone_number: string;
+    contact_name?: string;
+    initial_message?: string;
+  }): Promise<{
+    conversation_id: number;
+    detail: string;
+  }> {
+    const response = await api.post('/api/chatbot/conversations/start', data);
+    return response.data;
+  },
+
+  async getInboxes(accountId: number): Promise<{
+    results: Array<{
+      id: number;
+      name: string;
+      channel_type: string;
+    }>;
+  }> {
+    const response = await api.get(`/api/cw/api/${accountId}/inboxes/`);
+    return response.data;
+  },
 };
 
 // Twilio Templates API endpoints

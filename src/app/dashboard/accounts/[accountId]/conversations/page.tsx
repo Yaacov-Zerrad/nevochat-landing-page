@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { conversationAPI, contactsAPI } from '@/lib/api'
-import { ConversationsList,  Conversation, ConversationFilters, ConversationFiltersType } from './components'
+import { ConversationsList,  Conversation, ConversationFilters, ConversationFiltersType, StartConversationModal } from './components'
 import { MessagesSection } from './components'
 import { ContactDetails } from '@/components/contacts/ContactDetails'
 import { ConversationsProvider, useConversations } from '@/contexts/ConversationsContext'
@@ -112,6 +112,7 @@ function ConversationsPageContent() {
   const [showContactModal, setShowContactModal] = useState(false)
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
   const [showFilters, setShowFilters] = useState(false)
+  const [showStartConversationModal, setShowStartConversationModal] = useState(false)
   const [filters, setFilters] = useState<ConversationFiltersType>({
     status: '',
     priority: '',
@@ -266,6 +267,24 @@ function ConversationsPageContent() {
 
   return (
     <>
+      {/* Start Conversation Modal */}
+      <StartConversationModal
+        isOpen={showStartConversationModal}
+        onClose={() => setShowStartConversationModal(false)}
+        accountId={parseInt(accountId)}
+        onConversationStarted={(conversationId) => {
+          // Navigate to the conversation or select it
+          const conv = wsConversations.find(c => c.id === conversationId)
+          if (conv) {
+            setSelectedConversation(conv)
+          } else {
+            // Refresh conversations to get the new one
+            refreshConversations()
+          }
+          setShowConversationList(false)
+        }}
+      />
+
       {/* Contact Details Modal */}
       <AnimatePresence>
         {showContactModal && selectedContact && (
@@ -358,6 +377,16 @@ function ConversationsPageContent() {
                   </svg>
                 </button>
                 <h1 className="text-2xl lg:text-3xl font-bold text-white">Conversations</h1>
+                <button
+                  onClick={() => setShowStartConversationModal(true)}
+                  className="ml-4 px-4 py-2 bg-neon-green text-black font-medium rounded-lg hover:bg-neon-green/90 transition-colors flex items-center space-x-2"
+                  title="Nouvelle conversation"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  <span className="hidden sm:inline">Nouveau</span>
+                </button>
               </div>
               
               {/* Filters */}
