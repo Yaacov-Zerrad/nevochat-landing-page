@@ -256,7 +256,7 @@ export function ConversationsProvider({
   }, []);
 
   const clearFilters = useCallback(() => {
-    setFilters({});Pdocke
+    setFilters({});
   }, []);
 
   const sendMessage = useCallback((conversationId: number, content: string) => {
