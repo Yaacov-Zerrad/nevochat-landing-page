@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
 
 function SignInContent() {
   const [email, setEmail] = useState('')

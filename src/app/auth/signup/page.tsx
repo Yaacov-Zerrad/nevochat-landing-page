@@ -21,7 +21,7 @@ function SignUpContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
 
   // Check for OAuth callback with token from Django
   useEffect(() => {
