@@ -66,6 +66,8 @@ jobs:
           --build-arg NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_zpo7irx \
           --build-arg NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_66oaa3u \
           --build-arg NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=RBW3tyDxwgpsulVha \
+          --build-arg NEXT_PUBLIC_WS_URL=wss://api.nevochat.com \
+          --build-arg NEXT_PUBLIC_BACKEND_URL=https://api.nevochat.com \
           -t landing-page:${{ github.sha }} \
           -t landing-page:latest \
           .
