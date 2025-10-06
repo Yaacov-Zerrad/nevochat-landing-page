@@ -251,11 +251,12 @@ export function ConversationsProvider({
 
   // Actions
   const updateFilters = useCallback((newFilters: Partial<ConversationFilters>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
+    // Replace filters completely instead of merging to allow removing filters
+    setFilters(newFilters);
   }, []);
 
   const clearFilters = useCallback(() => {
-    setFilters({});
+    setFilters({});Pdocke
   }, []);
 
   const sendMessage = useCallback((conversationId: number, content: string) => {

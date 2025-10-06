@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { conversationAPI, contactsAPI } from '@/lib/api'
-import { ConversationsList,  Conversation } from './components'
+import { ConversationsList,  Conversation, ConversationFilters, ConversationFiltersType } from './components'
 import { MessagesSection } from './components'
 import { ContactDetails } from '@/components/contacts/ContactDetails'
 import { ConversationsProvider, useConversations } from '@/contexts/ConversationsContext'
@@ -111,26 +111,107 @@ function ConversationsPageContent() {
   const [showConversationList, setShowConversationList] = useState(true)
   const [showContactModal, setShowContactModal] = useState(false)
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
+  const [showFilters, setShowFilters] = useState(false)
+  const [filters, setFilters] = useState<ConversationFiltersType>({
+    status: '',
+    priority: '',
+    assignee: '',
+    unassigned: false,
+    inbox: '',
+    team: '',
+    labels: '',
+    contact_type: '',
+    has_unread: false,
+    is_snoozed: false,
+    waiting_for: '',
+    created_after: '',
+    created_before: '',
+    last_activity_after: '',
+    last_activity_before: '',
+    ordering: '-last_activity_at',
+  })
 
-  // Utiliser directement les conversations du contexte (format complet maintenant)
   const conversations = wsConversations
   const selectedConversation = wsSelectedConversation
   const messages = wsMessages
 
   // Update filters when status or search changes
   useEffect(() => {
-    const filters: any = {}
+    const filterParams: any = {}
     
-    if (statusFilter !== 'all') {
-      filters.status = parseInt(statusFilter)
+    // Apply filters from the advanced filters component
+    // Only add filters that have actual values (not empty strings or false)
+    if (filters.status && filters.status !== '') {
+      filterParams.status = filters.status
+    }
+    
+    if (filters.priority && filters.priority !== '') {
+      filterParams.priority = filters.priority
+    }
+    
+    if (filters.assignee && filters.assignee !== '') {
+      filterParams.assignee = filters.assignee
+    }
+    
+    if (filters.unassigned === true) {
+      filterParams.unassigned = true
+    }
+    
+    if (filters.inbox && filters.inbox !== '') {
+      filterParams.inbox = filters.inbox
+    }
+    
+    if (filters.team && filters.team !== '') {
+      filterParams.team = filters.team
+    }
+    
+    if (filters.labels && filters.labels !== '') {
+      filterParams.labels = filters.labels
+    }
+    
+    if (filters.contact_type && filters.contact_type !== '') {
+      filterParams.contact_type = filters.contact_type
+    }
+    
+    if (filters.has_unread === true) {
+      filterParams.has_unread = true
+    }
+    
+    if (filters.is_snoozed === true) {
+      filterParams.is_snoozed = true
+    }
+    
+    if (filters.waiting_for && filters.waiting_for !== '') {
+      filterParams.waiting_for = filters.waiting_for
+    }
+    
+    if (filters.created_after && filters.created_after !== '') {
+      filterParams.created_after = new Date(filters.created_after).toISOString()
+    }
+    
+    if (filters.created_before && filters.created_before !== '') {
+      filterParams.created_before = new Date(filters.created_before).toISOString()
+    }
+    
+    if (filters.last_activity_after && filters.last_activity_after !== '') {
+      filterParams.last_activity_after = new Date(filters.last_activity_after).toISOString()
+    }
+    
+    if (filters.last_activity_before && filters.last_activity_before !== '') {
+      filterParams.last_activity_before = new Date(filters.last_activity_before).toISOString()
+    }
+    
+    if (filters.ordering && filters.ordering !== '') {
+      filterParams.ordering = filters.ordering
     }
     
     if (searchQuery.trim()) {
-      filters.search = searchQuery.trim()
+      filterParams.search = searchQuery.trim()
     }
     
-    updateFilters(filters)
-  }, [statusFilter, searchQuery, updateFilters])
+    // Force update by creating a new object reference
+    updateFilters({ ...filterParams })
+  }, [filters, searchQuery, updateFilters])
 
   // Fetch conversations on mount and filter changes
   useEffect(() => {
@@ -281,18 +362,6 @@ function ConversationsPageContent() {
               
               {/* Filters */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none text-sm"
-                >
-                  <option value="all">Tous les statuts</option>
-                  <option value="0">Ouvert</option>
-                  <option value="1">Résolu</option>
-                  <option value="2">En attente</option>
-                  <option value="3">Fermé</option>
-                </select>
-                
                 <input
                   type="text"
                   placeholder="Rechercher..."
@@ -302,11 +371,24 @@ function ConversationsPageContent() {
                 />
                 
                 <button
-                  onClick={refreshConversations}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 text-sm"
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`px-4 py-2 rounded-lg transition-colors border text-sm flex items-center space-x-2 ${
+                    showFilters
+                      ? 'bg-neon-green/20 text-neon-green border-neon-green/40'
+                      : 'bg-gray-800 text-white border-gray-600 hover:bg-gray-700'
+                  }`}
                 >
-                  Actualiser
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  </svg>
+                  <span>Filtres</span>
+                  {Object.values(filters).some(v => v && v !== '' && v !== false && v !== '-last_activity_at') && (
+                    <span className="bg-neon-green text-black rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                      {Object.values(filters).filter(v => v && v !== '' && v !== false && v !== '-last_activity_at').length}
+                    </span>
+                  )}
                 </button>
+                
                 
                 {/* Connection Status */}
                 <div className="flex items-center gap-2">
@@ -317,6 +399,16 @@ function ConversationsPageContent() {
                 </div>
               </div>
             </div>
+
+            {/* Filters Modal */}
+            <ConversationFilters
+              filters={filters}
+              onFiltersChange={(newFilters) => {
+                setFilters(newFilters)
+              }}
+              onClose={() => setShowFilters(false)}
+              isOpen={showFilters}
+            />
 
             <div className="flex flex-col lg:flex-row h-[calc(100%-120px)] lg:h-[calc(100%-88px)]">
               {/* Mobile Tab Navigation */}
