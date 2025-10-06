@@ -5,7 +5,8 @@ import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { conversationAPI, contactsAPI } from '@/lib/api'
-import { ConversationsList, MessagesSection } from './components'
+import { ConversationsList, type ConversationListItem } from './components'
+import { MessagesSection } from './components'
 import { ContactDetails } from '@/components/contacts/ContactDetails'
 
 interface Contact {
@@ -108,7 +109,9 @@ export default function ConversationsPage() {
   const params = useParams()
   const accountId = params.accountId as string
   
-  const [conversations, setConversations] = useState<Conversation[]>([])
+  // Use ConversationListItem for the list (optimized)
+  const [conversations, setConversations] = useState<ConversationListItem[]>([])
+  // Keep full Conversation type for selected conversation (fetched separately with details)
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
@@ -143,8 +146,11 @@ export default function ConversationsPage() {
   const fetchConversationMessages = useCallback(async (conversationId: number) => {
     try {
       setMessagesLoading(true)
+      // Fetch the full conversation details when selecting a conversation
       const data = await conversationAPI.getConversation(parseInt(accountId), conversationId)
       setMessages(data.messages || [])
+      // Update selectedConversation with full details
+      setSelectedConversation(data)
     } catch (error) {
       console.error('Error fetching messages:', error)
     } finally {
@@ -210,11 +216,14 @@ export default function ConversationsPage() {
   }, [status, router, fetchConversations])
 
   useEffect(() => {
-    if (selectedConversation) {
-      fetchConversationMessages(selectedConversation.id)
-      markAsRead(selectedConversation.id)
+    // Only fetch if we have a selected conversation ID
+    // We use the ID to avoid re-fetching on every selectedConversation change
+    const conversationId = selectedConversation?.id
+    if (conversationId) {
+      markAsRead(conversationId)
     }
-  }, [selectedConversation, fetchConversationMessages, markAsRead])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedConversation?.id])
 
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString('fr-FR', {
@@ -424,7 +433,10 @@ export default function ConversationsPage() {
               <ConversationsList
                 conversations={conversations}
                 selectedConversation={selectedConversation}
-                onSelectConversation={setSelectedConversation}
+                onSelectConversation={(conversation) => {
+                  // When selecting from list, trigger fetch of full details
+                  fetchConversationMessages(conversation.id)
+                }}
                 onHideList={() => setShowConversationList(false)}
                 showConversationList={showConversationList}
               />
