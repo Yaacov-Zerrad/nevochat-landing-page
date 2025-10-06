@@ -7,13 +7,14 @@
 
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   useAccountWebSocket,
-  Conversation,
   Message,
   TypingIndicator,
 } from '@/hooks/useAccountWebSocket';
+import { conversationAPI } from '@/lib/api';
+import type { Conversation } from '@/app/dashboard/accounts/[accountId]/conversations/components/ConversationsList';
 
 export interface ConversationFilters {
   status?: number | number[];
@@ -85,6 +86,14 @@ export function ConversationsProvider({
   const [typingIndicators, setTypingIndicators] = useState<Map<number, TypingIndicator>>(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Ref to always have the latest selectedConversation in callbacks
+  const selectedConversationRef = useRef<Conversation | null>(null);
+  
+  // Keep ref in sync with state
+  useEffect(() => {
+    selectedConversationRef.current = selectedConversation;
+  }, [selectedConversation]);
 
   // WebSocket handlers
   const handleConversationNew = useCallback((conversation: Conversation) => {
@@ -119,16 +128,29 @@ export function ConversationsProvider({
 
   const handleMessageNew = useCallback((message: Message) => {
     console.log('[ConversationsContext] New message:', message.id);
+    console.log('[ConversationsContext] Message conversation_id:', message.conversation_id);
+    console.log('[ConversationsContext] Selected conversation id (from ref):', selectedConversationRef.current?.id);
+    console.log('[ConversationsContext] Full message object:', message);
     
     // Add message to list if it's for selected conversation
-    if (selectedConversation?.id === message.conversation_id) {
+    // Use ref to get the latest value without stale closure
+    const currentSelectedConv = selectedConversationRef.current;
+    
+    if (currentSelectedConv && message.conversation_id && currentSelectedConv.id === message.conversation_id) {
+      console.log('[ConversationsContext] ✅ Adding message to list');
       setMessages(prev => {
         // Check if message already exists (avoid duplicates)
         if (prev.find(m => m.id === message.id)) {
+          console.log('[ConversationsContext] ⚠️ Message already exists, skipping');
           return prev;
         }
+        console.log('[ConversationsContext] ✅ Message added to list, new count:', prev.length + 1);
         return [...prev, message];
       });
+    } else {
+      console.log('[ConversationsContext] ❌ Message NOT added - conversation mismatch or missing data');
+      console.log('[ConversationsContext] Debug - currentSelectedConv:', currentSelectedConv);
+      console.log('[ConversationsContext] Debug - message.conversation_id:', message.conversation_id);
     }
     
     // Update conversation's last message and move to top
@@ -143,6 +165,7 @@ export function ConversationsProvider({
               message_type: message.message_type,
               created_at: message.created_at,
               sender_type: message.sender_type,
+              sender_id: message.sender_id || 0,
             },
             last_activity_at: message.created_at,
             unread_count: c.unread_count + 1,
@@ -156,7 +179,7 @@ export function ConversationsProvider({
         new Date(b.last_activity_at).getTime() - new Date(a.last_activity_at).getTime()
       );
     });
-  }, [selectedConversation]);
+  }, []); // ✅ No dependencies - uses ref which is always current
 
   const handleMessageUpdated = useCallback((message: Message) => {
     console.log('[ConversationsContext] Updated message:', message.id);
@@ -271,32 +294,15 @@ export function ConversationsProvider({
     
     try {
       // Build query params from filters
-      const params = new URLSearchParams();
+      const params: any = {};
       
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          if (Array.isArray(value)) {
-            params.append(key, value.join(','));
-          } else {
-            params.append(key, String(value));
-          }
+        if (value !== undefined && value !== null) {
+          params[key] = value;
         }
       });
       
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/accounts/${accountId}/conversations/?${params}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        }
-      );
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch conversations');
-      }
-      
-      const data = await response.json();
+      const data = await conversationAPI.getConversations(accountId, params);
       setConversations(data.results || data);
       
     } catch (err) {
@@ -305,39 +311,33 @@ export function ConversationsProvider({
     } finally {
       setIsLoading(false);
     }
-  }, [accountId, token, filters]);
+  }, [accountId, filters]);
 
   const loadMoreMessages = useCallback(async (conversationId: number) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/accounts/${accountId}/conversations/${conversationId}/messages/`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        }
-      );
+      // getConversation retourne la conversation complète avec les messages inclus
+      const conversation = await conversationAPI.getConversation(accountId, conversationId);
       
-      if (!response.ok) {
-        throw new Error('Failed to fetch messages');
-      }
+      // Mettre à jour la conversation sélectionnée avec les données complètes du backend
+      setSelectedConversation(conversation);
       
-      const data = await response.json();
-      setMessages(data.results || data);
+      // Mettre à jour les messages
+      setMessages(conversation.messages || []);
       
     } catch (err) {
-      console.error('[ConversationsContext] Error fetching messages:', err);
+      console.error('[ConversationsContext] Error fetching conversation:', err);
     }
-  }, [accountId, token]);
+  }, [accountId]);
 
   // Load messages when conversation is selected
   useEffect(() => {
     if (selectedConversation) {
+      // Toujours charger les détails complets avec les messages
       loadMoreMessages(selectedConversation.id);
     } else {
       setMessages([]);
     }
-  }, [selectedConversation, loadMoreMessages]);
+  }, [selectedConversation?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Refresh conversations when filters change
   useEffect(() => {

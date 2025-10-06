@@ -5,9 +5,10 @@ import { useRouter, useParams } from 'next/navigation'
 import { useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { conversationAPI, contactsAPI } from '@/lib/api'
-import { ConversationsList, type ConversationListItem } from './components'
+import { ConversationsList,  Conversation } from './components'
 import { MessagesSection } from './components'
 import { ContactDetails } from '@/components/contacts/ContactDetails'
+import { ConversationsProvider, useConversations } from '@/contexts/ConversationsContext'
 
 interface Contact {
   id: number
@@ -56,26 +57,6 @@ interface LastMessage {
   sender_id: number
 }
 
-interface Conversation {
-  id: number
-  display_id: number
-  status: number
-  created_at: string
-  updated_at: string
-  last_activity_at: string
-  contact_last_seen_at?: string
-  agent_last_seen_at?: string
-  priority?: number
-  contact: Contact
-  inbox: Inbox
-  assignee?: User
-  team?: Team
-  last_message?: LastMessage
-  unread_count: number
-  uuid: string
-  identifier?: string
-}
-
 interface MessageAttachment {
   id: number
   file_type: string
@@ -103,19 +84,27 @@ interface Message {
   attachments?: MessageAttachment[]
 }
 
-export default function ConversationsPage() {
+// Main page component wrapped with provider
+function ConversationsPageContent() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const params = useParams()
   const accountId = params.accountId as string
   
-  // Use ConversationListItem for the list (optimized)
-  const [conversations, setConversations] = useState<ConversationListItem[]>([])
-  // Keep full Conversation type for selected conversation (fetched separately with details)
-  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
-  const [messages, setMessages] = useState<Message[]>([])
-  const [loading, setLoading] = useState(true)
-  const [messagesLoading, setMessagesLoading] = useState(false)
+  // Use WebSocket context for real-time updates
+  const {
+    conversations: wsConversations,
+    selectedConversation: wsSelectedConversation,
+    messages: wsMessages,
+    setSelectedConversation,
+    isConnected,
+    sendMessage: wsSendMessage,
+    updateConversationStatus: wsUpdateStatus,
+    refreshConversations,
+    updateFilters,
+  } = useConversations()
+  
+  // Local state for UI
   const [newMessage, setNewMessage] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -123,56 +112,39 @@ export default function ConversationsPage() {
   const [showContactModal, setShowContactModal] = useState(false)
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
 
-  const fetchConversations = useCallback(async () => {
-    try {
-      setLoading(true)
-      const params: any = {}
-      if (statusFilter !== 'all') {
-        params.status = statusFilter
-      }
-      if (searchQuery.trim()) {
-        params.search = searchQuery.trim()
-      }
+  // Utiliser directement les conversations du contexte (format complet maintenant)
+  const conversations = wsConversations
+  const selectedConversation = wsSelectedConversation
+  const messages = wsMessages
 
-      const data = await conversationAPI.getConversations(parseInt(accountId), params)
-      setConversations(data.results || data)
-    } catch (error) {
-      console.error('Failed to fetch conversations:', error)
-    } finally {
-      setLoading(false)
+  // Update filters when status or search changes
+  useEffect(() => {
+    const filters: any = {}
+    
+    if (statusFilter !== 'all') {
+      filters.status = parseInt(statusFilter)
     }
-  }, [statusFilter, searchQuery, accountId])
-
-  const fetchConversationMessages = useCallback(async (conversationId: number) => {
-    try {
-      setMessagesLoading(true)
-      // Fetch the full conversation details when selecting a conversation
-      const data = await conversationAPI.getConversation(parseInt(accountId), conversationId)
-      setMessages(data.messages || [])
-      // Update selectedConversation with full details
-      setSelectedConversation(data)
-    } catch (error) {
-      console.error('Error fetching messages:', error)
-    } finally {
-      setMessagesLoading(false)
+    
+    if (searchQuery.trim()) {
+      filters.search = searchQuery.trim()
     }
-  }, [accountId])
+    
+    updateFilters(filters)
+  }, [statusFilter, searchQuery, updateFilters])
 
-  const sendMessage = async () => {
-    if (!selectedConversation || !newMessage.trim()) return
+  // Fetch conversations on mount and filter changes
+  useEffect(() => {
+    if (status === 'authenticated') {
+      refreshConversations()
+    }
+  }, [status, refreshConversations])
+
+  const sendMessageHandler = async () => {
+    if (!wsSelectedConversation || !newMessage.trim()) return
     
     try {
-      const messageData = await conversationAPI.sendMessage(parseInt(accountId), selectedConversation.id, {
-        content: newMessage,
-        message_type: 1, // Outgoing message
-        private: false,
-        content_type: 0, // Text message
-      })
-      
-      setMessages(prev => [...prev, messageData])
+      wsSendMessage(wsSelectedConversation.id, newMessage.trim())
       setNewMessage('')
-      // Refresh conversations to update last message
-      fetchConversations()
     } catch (error) {
       console.error('Error sending message:', error)
     }
@@ -180,69 +152,19 @@ export default function ConversationsPage() {
 
   const updateConversationStatus = async (conversationId: number, newStatus: number) => {
     try {
-      await conversationAPI.updateConversation(parseInt(accountId), conversationId, { status: newStatus })
-      
-      // Update local state
-      setConversations(prev =>
-        prev.map(conv =>
-          conv.id === conversationId ? { ...conv, status: newStatus } : conv
-        )
-      )
-      if (selectedConversation?.id === conversationId) {
-        setSelectedConversation(prev => prev ? { ...prev, status: newStatus } : null)
-      }
+      wsUpdateStatus(conversationId, newStatus)
     } catch (error) {
       console.error('Error updating conversation status:', error)
     }
   }
 
-  const markAsRead = useCallback(async (conversationId: number) => {
-    try {
-      await conversationAPI.markAsRead(parseInt(accountId), conversationId)
-    } catch (error) {
-      console.error('Error marking conversation as read:', error)
-    }
-  }, [accountId])
-
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin')
-      return
     }
+  }, [status, router])
 
-    if (status === 'authenticated') {
-      fetchConversations()
-    }
-  }, [status, router, fetchConversations])
-
-  useEffect(() => {
-    // Only fetch if we have a selected conversation ID
-    // We use the ID to avoid re-fetching on every selectedConversation change
-    const conversationId = selectedConversation?.id
-    if (conversationId) {
-      markAsRead(conversationId)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedConversation?.id])
-
-  const formatDateTime = (dateString: string) => {
-    return new Date(dateString).toLocaleString('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
-  const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleString('fr-FR', {
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
-  if (status === 'loading' || loading) {
+  if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
@@ -380,11 +302,19 @@ export default function ConversationsPage() {
                 />
                 
                 <button
-                  onClick={fetchConversations}
+                  onClick={refreshConversations}
                   className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 text-sm"
                 >
                   Actualiser
                 </button>
+                
+                {/* Connection Status */}
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></div>
+                  <span className="text-xs text-gray-400">
+                    {isConnected ? 'Connecté' : 'Déconnecté'}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -434,8 +364,11 @@ export default function ConversationsPage() {
                 conversations={conversations}
                 selectedConversation={selectedConversation}
                 onSelectConversation={(conversation) => {
-                  // When selecting from list, trigger fetch of full details
-                  fetchConversationMessages(conversation.id)
+                  // Find full conversation from context
+                  const fullConv = wsConversations.find(c => c.id === conversation.id)
+                  if (fullConv) {
+                    setSelectedConversation(fullConv)
+                  }
                 }}
                 onHideList={() => setShowConversationList(false)}
                 showConversationList={showConversationList}
@@ -445,10 +378,10 @@ export default function ConversationsPage() {
               <MessagesSection
                 selectedConversation={selectedConversation}
                 messages={messages}
-                messagesLoading={messagesLoading}
+                messagesLoading={false}
                 newMessage={newMessage}
                 onNewMessageChange={setNewMessage}
-                onSendMessage={sendMessage}
+                onSendMessage={sendMessageHandler}
                 onShowConversationList={() => setShowConversationList(true)}
                 onUpdateConversationStatus={updateConversationStatus}
                 onShowContactModal={(contact) => {
@@ -462,5 +395,30 @@ export default function ConversationsPage() {
         </div>
       </div>
     </>
+  )
+}
+
+// Default export with ConversationsProvider wrapper
+export default function ConversationsPage() {
+  const params = useParams()
+  const accountId = parseInt(params.accountId as string)
+  const { data: session } = useSession()
+  
+  // Get token from session
+  const token = session?.accessToken as string || ''
+
+  if (!token) {
+    // Return loading or nothing while token is being fetched
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      </div>
+    )
+  }
+
+  return (
+    <ConversationsProvider accountId={accountId} token={token}>
+      <ConversationsPageContent />
+    </ConversationsProvider>
   )
 }

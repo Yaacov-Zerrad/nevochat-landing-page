@@ -68,7 +68,7 @@ interface LastMessage {
   sender_id: number
 }
 
-interface Conversation {
+export interface Conversation {
   id: number
   display_id: number
   status: number
@@ -89,9 +89,9 @@ interface Conversation {
 }
 
 interface ConversationsListProps {
-  conversations: ConversationListItem[]
+  conversations: Conversation[]
   selectedConversation: Conversation | null
-  onSelectConversation: (conversation: ConversationListItem) => void
+  onSelectConversation: (conversation: Conversation) => void
   onHideList: () => void
   showConversationList: boolean
 }
@@ -172,7 +172,7 @@ export const ConversationsList = ({
                 {/* Avatar */}
                 <div className="w-12 h-12 bg-gradient-to-br from-neon-green/20 to-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-neon-green/20">
                   <span className="text-neon-green font-semibold text-lg">
-                    {conversation.contact_name ? conversation.contact_name.charAt(0).toUpperCase() : '?'}
+                    {conversation.contact?.name ? conversation.contact.name.charAt(0).toUpperCase() : '?'}
                   </span>
                 </div>
 
@@ -181,16 +181,16 @@ export const ConversationsList = ({
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center space-x-2 min-w-0 flex-1">
                       <h3 className="font-semibold text-white truncate">
-                        {conversation.contact_name || 'Contact inconnu'}
+                        {conversation.contact?.name || 'Contact inconnu'}
                       </h3>
-                      {conversation.contact_country_code && (
+                      {conversation.contact?.additional_attributes?.country_code && (
                         <span className="text-lg flex-shrink-0">
-                          {getCountryFlag(conversation.contact_country_code)}
+                          {getCountryFlag(conversation.contact.additional_attributes.country_code)}
                         </span>
                       )}
-                      {conversation.contact_type && (
+                      {conversation.contact?.additional_attributes?.type && (
                         <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full flex-shrink-0">
-                          {conversation.contact_type}
+                          {conversation.contact.additional_attributes.type}
                         </span>
                       )}
                     </div>
@@ -204,7 +204,7 @@ export const ConversationsList = ({
                     <div className="flex items-center space-x-2">
                       <span className="truncate">#{conversation.display_id}</span>
                       <span className="text-gray-600">•</span>
-                      <span className="truncate text-xs">{conversation.inbox_name}</span>
+                      <span className="truncate text-xs">{conversation.inbox?.name || 'Inbox'}</span>
                     </div>
                     <div className="flex items-center space-x-2 flex-shrink-0">
                       {conversation.unread_count > 0 && (

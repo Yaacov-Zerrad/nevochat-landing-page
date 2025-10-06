@@ -118,6 +118,7 @@ const statusLabels = {
   3: { label: 'Fermé', color: 'bg-red-500/20 text-red-400' }
 }
 
+
 // Component for displaying message attachments
 const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] }) => {
   if (!attachments || attachments.length === 0) return null

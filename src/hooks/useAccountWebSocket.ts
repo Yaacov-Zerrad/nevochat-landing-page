@@ -12,34 +12,9 @@
 
 import { useEffect, useCallback, useRef } from 'react';
 import { useWebSocket, WebSocketMessage } from './useWebSocket';
+import type { Conversation } from '@/app/dashboard/accounts/[accountId]/conversations/components/ConversationsList';
 
-export interface Conversation {
-  id: number;
-  status: number;
-  priority: number;
-  assignee_id?: number;
-  inbox_id: number;
-  team_id?: number;
-  contact: {
-    id: number;
-    name: string;
-    email?: string;
-    phone_number?: string;
-    avatar_url?: string;
-  };
-  last_message?: {
-    id: number;
-    content: string;
-    message_type: number;
-    created_at: string;
-    sender_type: string;
-  };
-  unread_count: number;
-  created_at: string;
-  last_activity_at: string;
-  snoozed_until?: string;
-  cached_label_list?: string[];
-}
+export type { Conversation };
 
 export interface Message {
   id: number;
@@ -48,9 +23,11 @@ export interface Message {
   conversation_id: number;
   sender_type: string;
   sender_id?: number;
+  sender_name?: string;
   created_at: string;
   updated_at: string;
-  status?: string;
+  private?: boolean;
+  status?: number;
 }
 
 export interface TypingIndicator {
