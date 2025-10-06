@@ -90,11 +90,11 @@ interface Message {
   message_type: number
   created_at: string
   updated_at: string
-  private: boolean
-  status: number
+  private?: boolean
+  status?: number
   sender_type: string
-  sender_id: number
-  sender_name: string
+  sender_id?: number
+  sender_name?: string
   attachments?: MessageAttachment[]
 }
 
@@ -380,7 +380,7 @@ export const MessagesSection = ({
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                           showAvatar ? 'bg-gray-600' : 'opacity-0'
                         }`}>
-                          {showAvatar && (
+                          {showAvatar && message.sender_name && (
                             <span className="text-white text-xs font-medium">
                               {message.sender_name.charAt(0).toUpperCase()}
                             </span>
@@ -389,7 +389,7 @@ export const MessagesSection = ({
                       )}
                       
                       <div className={`max-w-[75%] lg:max-w-md ${isUser ? 'order-first' : ''}`}>
-                        {showAvatar && !isUser && (
+                        {showAvatar && !isUser && message.sender_name && (
                           <p className="text-xs text-gray-400 mb-1 ml-2">{message.sender_name}</p>
                         )}
                         
@@ -423,7 +423,7 @@ export const MessagesSection = ({
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                           showAvatar ? 'bg-neon-green/20 border border-neon-green/30' : 'opacity-0'
                         }`}>
-                          {showAvatar && (
+                          {showAvatar && message.sender_name && (
                             <span className="text-neon-green text-xs font-medium">
                               {message.sender_name.charAt(0).toUpperCase()}
                             </span>
