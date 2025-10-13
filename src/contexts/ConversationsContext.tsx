@@ -335,6 +335,11 @@ export function ConversationsProvider({
     if (selectedConversation) {
       // Toujours charger les détails complets avec les messages
       loadMoreMessages(selectedConversation.id);
+      
+      // Marquer la conversation comme lue automatiquement
+      if (selectedConversation.unread_count > 0) {
+        markAsRead(selectedConversation.id);
+      }
     } else {
       setMessages([]);
     }
