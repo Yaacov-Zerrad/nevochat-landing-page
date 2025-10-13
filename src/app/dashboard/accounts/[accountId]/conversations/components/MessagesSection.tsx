@@ -234,11 +234,51 @@ export const MessagesSection = ({
   onShowContactModal,
   showConversationList
 }: MessagesSectionProps) => {
+  // Fonction pour formater l'heure uniquement
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleString('fr-FR', {
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  // Fonction pour obtenir le label de date (Aujourd'hui, Hier, ou la date)
+  const getDateLabel = (dateString: string) => {
+    const messageDate = new Date(dateString)
+    const today = new Date()
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+    
+    // Réinitialiser les heures pour comparer uniquement les dates
+    const messageDateOnly = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate())
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    const yesterdayOnly = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate())
+    
+    if (messageDateOnly.getTime() === todayOnly.getTime()) {
+      return "Aujourd'hui"
+    } else if (messageDateOnly.getTime() === yesterdayOnly.getTime()) {
+      return "Hier"
+    } else {
+      return messageDate.toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      })
+    }
+  }
+
+  // Fonction pour vérifier si on doit afficher un séparateur de date
+  const shouldShowDateSeparator = (currentMessage: Message, previousMessage?: Message) => {
+    if (!previousMessage) return true
+    
+    const currentDate = new Date(currentMessage.created_at)
+    const previousDate = new Date(previousMessage.created_at)
+    
+    // Comparer uniquement les dates (sans les heures)
+    const currentDateOnly = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate())
+    const previousDateOnly = new Date(previousDate.getFullYear(), previousDate.getMonth(), previousDate.getDate())
+    
+    return currentDateOnly.getTime() !== previousDateOnly.getTime()
   }
 
   const getCountryFlag = (countryCode?: string) => {
@@ -368,14 +408,25 @@ export const MessagesSection = ({
                 {messages.map((message, index) => {
                   const isUser = message.sender_type === 'User'
                   const showAvatar = index === 0 || messages[index - 1].sender_type !== message.sender_type
+                  const previousMessage = index > 0 ? messages[index - 1] : undefined
+                  const showDateSeparator = shouldShowDateSeparator(message, previousMessage)
                   
                   return (
-                    <motion.div
-                      key={message.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`flex items-end space-x-2 ${isUser ? 'justify-end' : 'justify-start'}`}
-                    >
+                    <div key={message.id}>
+                      {/* Séparateur de date (style WhatsApp) */}
+                      {showDateSeparator && (
+                        <div className="flex justify-center my-4">
+                          <div className="bg-gray-700/50 backdrop-blur-sm text-gray-300 px-4 py-1.5 rounded-full text-xs font-medium shadow-md border border-gray-600/30">
+                            {getDateLabel(message.created_at)}
+                          </div>
+                        </div>
+                      )}
+                      
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`flex items-end space-x-2 ${isUser ? 'justify-end' : 'justify-start'}`}
+                      >
                       {!isUser && (
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                           showAvatar ? 'bg-gray-600' : 'opacity-0'
@@ -431,6 +482,7 @@ export const MessagesSection = ({
                         </div>
                       )}
                     </motion.div>
+                    </div>
                   )
                 })}
               </div>
