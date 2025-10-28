@@ -214,7 +214,9 @@ export default function SubscriptionPage() {
                 </h2>
                 <p className="text-gray-400">{currentSubscription.plan_details.description}</p>
                 <p className="text-3xl font-bold text-neon-green mt-4">
-                  {parseFloat(currentSubscription.plan_details.price) === 0
+                  {currentSubscription.plan_details.name === 'enterprise'
+                    ? 'Sur devis'
+                    : parseFloat(currentSubscription.plan_details.price) === 0
                     ? 'Gratuit'
                     : `$${currentSubscription.plan_details.price}/mois`}
                 </p>
@@ -333,9 +335,13 @@ export default function SubscriptionPage() {
                     <p className="text-gray-400 text-sm mb-4 h-12">{plan.description}</p>
                     <div className="mb-6">
                       <span className="text-4xl font-bold text-white">
-                        {parseFloat(plan.price) === 0 ? 'Gratuit' : `$${plan.price}`}
+                        {plan.name === 'enterprise'
+                          ? 'Sur devis'
+                          : parseFloat(plan.price) === 0
+                          ? 'Gratuit'
+                          : `$${plan.price}`}
                       </span>
-                      {parseFloat(plan.price) > 0 && (
+                      {parseFloat(plan.price) > 0 && plan.name !== 'enterprise' && (
                         <span className="text-gray-400 text-sm">/mois</span>
                       )}
                     </div>
