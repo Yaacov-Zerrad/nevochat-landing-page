@@ -648,4 +648,67 @@ export const contactsAPI = {
   },
 };
 
+// Payment API endpoints
+export const paymentAPI = {
+  // Subscription Plans
+  async getPlans(): Promise<ListResponse<any>> {
+    const response = await api.get('/api/payments/plans/');
+    return response.data;
+  },
+
+  async getPlan(id: number): Promise<any> {
+    const response = await api.get(`/api/payments/plans/${id}/`);
+    return response.data;
+  },
+
+  // Account Subscriptions
+  async getSubscriptions(params?: { page?: number }): Promise<ListResponse<any>> {
+    const response = await api.get('/api/payments/subscriptions/', { params });
+    return response.data;
+  },
+
+  async getCurrentSubscription(): Promise<any> {
+    const response = await api.get('/api/payments/subscriptions/current/');
+    return response.data;
+  },
+
+  async createCheckoutSession(data: {
+    plan_id: number;
+    success_url: string;
+    cancel_url: string;
+  }): Promise<{
+    session_id: string;
+    url: string;
+  }> {
+    const response = await api.post('/api/payments/subscriptions/create_checkout_session/', data);
+    return response.data;
+  },
+
+  async createPortalSession(data: {
+    return_url: string;
+  }): Promise<{
+    url: string;
+  }> {
+    const response = await api.post('/api/payments/subscriptions/create_portal_session/', data);
+    return response.data;
+  },
+
+  // Payment History
+  async getPaymentHistory(params?: { page?: number }): Promise<ListResponse<any>> {
+    const response = await api.get('/api/payments/payments/', { params });
+    return response.data;
+  },
+
+  async getPayment(id: number): Promise<any> {
+    const response = await api.get(`/api/payments/payments/${id}/`);
+    return response.data;
+  },
+
+  // Usage Logs
+  async getUsageLogs(params?: { page?: number; log_type?: string }): Promise<ListResponse<any>> {
+    const response = await api.get('/api/payments/usage/', { params });
+    return response.data;
+  },
+};
+
 export default api;

@@ -59,6 +59,12 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
       path: `/dashboard/accounts/${accountId}/templates`,
       color: 'text-pink-400'
     },
+    {
+      title: 'Abonnement',
+      icon: '💳',
+      path: `/dashboard/accounts/${accountId}/subscription`,
+      color: 'text-yellow-400'
+    },
     // {
     //   title: 'Integrations',
     //   icon: '🔗',

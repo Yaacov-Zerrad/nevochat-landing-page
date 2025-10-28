@@ -104,7 +104,7 @@ export default function AccountDashboard() {
     {
       title: 'WhatsApp',
       icon: '�',
-      path: `/whatsapp`,
+      path: `/devices`,
       color: 'text-green-400'
     },
     // {
