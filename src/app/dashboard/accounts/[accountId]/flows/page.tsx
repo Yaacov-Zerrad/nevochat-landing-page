@@ -236,7 +236,8 @@ export default function AccountFlowsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-6 rounded-xl border border-gray-600 hover:border-neon-green/40 transition-all"
+                  onClick={() => flow.id && handleEditFlow(flow.id)}
+                  className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-6 rounded-xl border border-gray-600 hover:border-neon-green/40 transition-all cursor-pointer"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
@@ -252,17 +253,8 @@ export default function AccountFlowsPage() {
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
                     <div className="flex space-x-2">
-                      <button
-                        onClick={() => flow.id && handleEditFlow(flow.id)}
-                        className="text-blue-400 hover:text-blue-300 transition-colors"
-                        title="Modifier"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                      </button>
                       <button
                         onClick={() => flow.id && handleDuplicateFlow(flow.id)}
                         className="text-yellow-400 hover:text-yellow-300 transition-colors"

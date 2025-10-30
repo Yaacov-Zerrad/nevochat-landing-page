@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import DashboardLayout from '@/components/DashboardLayout'
@@ -58,18 +58,14 @@ export default function SubscriptionPage() {
   const [error, setError] = useState<string | null>(null)
   const [processingPlan, setProcessingPlan] = useState<number | null>(null)
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
 
       const [plansResponse, subscriptionResponse, paymentsResponse] = await Promise.all([
         paymentAPI.getPlans(),
-        paymentAPI.getCurrentSubscription().catch(() => null),
+        paymentAPI.getCurrentSubscription(parseInt(accountId)).catch(() => null),
         paymentAPI.getPaymentHistory({ page: 1 }).catch(() => ({ results: [] }))
       ])
 
@@ -87,7 +83,11 @@ export default function SubscriptionPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [accountId])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   const handleUpgrade = async (planId: number) => {
     try {
@@ -101,7 +101,8 @@ export default function SubscriptionPage() {
       const response = await paymentAPI.createCheckoutSession({
         plan_id: planId,
         success_url: successUrl,
-        cancel_url: cancelUrl
+        cancel_url: cancelUrl,
+        account_id: parseInt(accountId)
       })
 
       // Redirect to Stripe Checkout
@@ -123,7 +124,8 @@ export default function SubscriptionPage() {
       const returnUrl = `${baseUrl}/dashboard/accounts/${accountId}/subscription`
 
       const response = await paymentAPI.createPortalSession({
-        return_url: returnUrl
+        return_url: returnUrl,
+        account_id: parseInt(accountId)
       })
 
       // Redirect to Stripe Customer Portal

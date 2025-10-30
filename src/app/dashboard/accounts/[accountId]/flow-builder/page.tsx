@@ -45,6 +45,7 @@ import NodeSidebar from '@/components/flow-builder/NodeSidebar';
 import FlowToolbar from '@/components/flow-builder/FlowToolbar';
 import NodePropertiesPanel from '@/components/flow-builder/NodePropertiesPanel';
 import EdgePropertiesPanel from '@/components/flow-builder/EdgePropertiesPanel';
+import ConfirmDialog from '@/components/flow-builder/ConfirmDialog';
 
 const nodeTypes: NodeTypes = {
   message: MessageNode,
@@ -89,6 +90,14 @@ function FlowBuilderContent() {
   const [showNodeSidebar, setShowNodeSidebar] = useState(true);
   const [showPropertiesPanel, setShowPropertiesPanel] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  
+  // Confirmation dialog state
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [confirmDialogConfig, setConfirmDialogConfig] = useState<{
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  } | null>(null);
 
   // Node ID counter for new nodes
   const [nodeIdCounter, setNodeIdCounter] = useState(1);
@@ -144,6 +153,94 @@ function FlowBuilderContent() {
     setSelectedEdge(null);
     setShowPropertiesPanel(false);
   }, []);
+
+  // Handle node/edge deletion from keyboard
+  const onNodesDelete = useCallback((nodesToDelete: Node[]) => {
+    // Prevent default deletion and show confirmation instead
+    nodesToDelete.forEach((node) => {
+      const nodeName = node.data.label || node.id;
+
+      setConfirmDialogConfig({
+        title: 'Supprimer le nœud',
+        message: `Êtes-vous sûr de vouloir supprimer le nœud "${nodeName}" ? Cette action est irréversible.`,
+        onConfirm: async () => {
+          try {
+            setShowConfirmDialog(false);
+            
+            // If node exists in database, delete it via API
+            if (node.data.dbId && flowId) {
+              await flowAPI.deleteFlowNode(parseInt(flowId), node.data.dbId);
+              setSuccessMessage('Nœud supprimé avec succès');
+            }
+
+            // Remove from local state
+            setNodes((nodes) => nodes.filter((n) => n.id !== node.id));
+            setEdges((edges) => edges.filter((edge) => 
+              edge.source !== node.id && edge.target !== node.id
+            ));
+            
+            if (selectedNode?.id === node.id) {
+              setSelectedNode(null);
+              setShowPropertiesPanel(false);
+            }
+
+            // Clear success message after 3 seconds
+            setTimeout(() => setSuccessMessage(null), 3000);
+          } catch (error) {
+            console.error('Failed to delete node:', error);
+            setError('Erreur lors de la suppression du nœud');
+            setTimeout(() => setError(null), 3000);
+          }
+        },
+      });
+      setShowConfirmDialog(true);
+    });
+
+    // Return empty array to prevent ReactFlow from deleting automatically
+    return [];
+  }, [flowId, selectedNode, setNodes, setEdges]);
+
+  const onEdgesDelete = useCallback((edgesToDelete: Edge[]) => {
+    // Prevent default deletion and show confirmation instead
+    edgesToDelete.forEach((edge) => {
+      const edgeLabel = edge.data?.label || 'cette connexion';
+
+      setConfirmDialogConfig({
+        title: 'Supprimer la connexion',
+        message: `Êtes-vous sûr de vouloir supprimer ${edgeLabel} ? Cette action est irréversible.`,
+        onConfirm: async () => {
+          try {
+            setShowConfirmDialog(false);
+
+            // If edge exists in database, delete it via API
+            if (edge.data?.dbId && flowId) {
+              await flowAPI.deleteFlowEdge(parseInt(flowId), edge.data.dbId);
+              setSuccessMessage('Connexion supprimée avec succès');
+            }
+
+            // Remove from local state
+            setEdges((edges) => edges.filter((e) => e.id !== edge.id));
+            
+            if (selectedEdge?.id === edge.id) {
+              setSelectedEdge(null);
+              setShowPropertiesPanel(false);
+            }
+
+            // Clear success message after 3 seconds
+            setTimeout(() => setSuccessMessage(null), 3000);
+          } catch (error) {
+            console.error('Failed to delete edge:', error);
+            setError('Erreur lors de la suppression de la connexion');
+            setTimeout(() => setError(null), 3000);
+          }
+        },
+      });
+      setShowConfirmDialog(true);
+    });
+
+    // Return empty array to prevent ReactFlow from deleting automatically
+    return [];
+  }, [flowId, selectedEdge, setEdges]);
 
   // Load account data
   const fetchAccount = useCallback(async () => {
@@ -437,6 +534,86 @@ function FlowBuilderContent() {
     setShowPropertiesPanel(false);
   }, [selectedNode, setNodes, setEdges]);
 
+  // Delete node with API call and confirmation
+  const deleteNodeWithConfirmation = useCallback(() => {
+    if (!selectedNode) return;
+
+    const nodeName = selectedNode.data.label || selectedNode.id;
+
+    setConfirmDialogConfig({
+      title: 'Supprimer le nœud',
+      message: `Êtes-vous sûr de vouloir supprimer le nœud "${nodeName}" ? Cette action est irréversible.`,
+      onConfirm: async () => {
+        try {
+          setShowConfirmDialog(false);
+          
+          // If node exists in database, delete it via API
+          if (selectedNode.data.dbId && flowId) {
+            await flowAPI.deleteFlowNode(parseInt(flowId), selectedNode.data.dbId);
+            setSuccessMessage('Nœud supprimé avec succès');
+          }
+
+          // Remove from local state
+          setNodes((nodes) => nodes.filter((node) => node.id !== selectedNode.id));
+          setEdges((edges) => edges.filter((edge) => 
+            edge.source !== selectedNode.id && edge.target !== selectedNode.id
+          ));
+          
+          setSelectedNode(null);
+          setShowPropertiesPanel(false);
+
+          // Clear success message after 3 seconds
+          setTimeout(() => setSuccessMessage(null), 3000);
+        } catch (error) {
+          console.error('Failed to delete node:', error);
+          setError('Erreur lors de la suppression du nœud');
+          setTimeout(() => setError(null), 3000);
+        }
+      },
+    });
+    setShowConfirmDialog(true);
+  }, [selectedNode, flowId, setNodes, setEdges]);
+
+  // Delete edge with API call and confirmation
+  const deleteEdgeWithConfirmation = useCallback((edgeToDelete?: Edge) => {
+    const edge = edgeToDelete || selectedEdge;
+    if (!edge) return;
+
+    const edgeLabel = edge.data?.label || 'cette connexion';
+
+    setConfirmDialogConfig({
+      title: 'Supprimer la connexion',
+      message: `Êtes-vous sûr de vouloir supprimer ${edgeLabel} ? Cette action est irréversible.`,
+      onConfirm: async () => {
+        try {
+          setShowConfirmDialog(false);
+
+          // If edge exists in database, delete it via API
+          if (edge.data?.dbId && flowId) {
+            await flowAPI.deleteFlowEdge(parseInt(flowId), edge.data.dbId);
+            setSuccessMessage('Connexion supprimée avec succès');
+          }
+
+          // Remove from local state
+          setEdges((edges) => edges.filter((e) => e.id !== edge.id));
+          
+          if (selectedEdge?.id === edge.id) {
+            setSelectedEdge(null);
+            setShowPropertiesPanel(false);
+          }
+
+          // Clear success message after 3 seconds
+          setTimeout(() => setSuccessMessage(null), 3000);
+        } catch (error) {
+          console.error('Failed to delete edge:', error);
+          setError('Erreur lors de la suppression de la connexion');
+          setTimeout(() => setError(null), 3000);
+        }
+      },
+    });
+    setShowConfirmDialog(true);
+  }, [selectedEdge, flowId, setEdges]);
+
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin');
@@ -564,6 +741,8 @@ function FlowBuilderContent() {
             onNodeClick={onNodeClick}
             onEdgeClick={onEdgeClick}
             onPaneClick={onPaneClick}
+            onNodesDelete={onNodesDelete}
+            onEdgesDelete={onEdgesDelete}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             fitView
@@ -579,7 +758,7 @@ function FlowBuilderContent() {
             <Panel position="top-right">
               <FlowToolbar 
                 onSave={saveFlow}
-                onDeleteNode={deleteSelectedNode}
+                onDeleteNode={deleteNodeWithConfirmation}
                 selectedNode={selectedNode}
                 saving={saving}
               />
@@ -595,6 +774,7 @@ function FlowBuilderContent() {
                 node={selectedNode}
                 onUpdateNode={updateNodeData}
                 onClose={() => setShowPropertiesPanel(false)}
+                onDelete={deleteNodeWithConfirmation}
                 accountId={parseInt(accountId)}
                 availableNodes={nodes.map(n => ({
                   id: n.id,
@@ -609,6 +789,7 @@ function FlowBuilderContent() {
                 edge={selectedEdge}
                 onUpdateEdge={updateEdgeData}
                 onClose={() => setShowPropertiesPanel(false)}
+                onDelete={() => deleteEdgeWithConfirmation(selectedEdge)}
                 flowId={flowId ? parseInt(flowId) : undefined}
                 nodes={nodes}
               />
@@ -616,6 +797,20 @@ function FlowBuilderContent() {
           </div>
         )}
       </div>
+
+      {/* Confirm Dialog */}
+      {showConfirmDialog && confirmDialogConfig && (
+        <ConfirmDialog
+          isOpen={showConfirmDialog}
+          title={confirmDialogConfig.title}
+          message={confirmDialogConfig.message}
+          confirmLabel="Supprimer"
+          cancelLabel="Annuler"
+          type="danger"
+          onConfirm={confirmDialogConfig.onConfirm}
+          onCancel={() => setShowConfirmDialog(false)}
+        />
+      )}
     </div>
   );
 }

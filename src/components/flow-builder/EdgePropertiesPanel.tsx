@@ -8,6 +8,7 @@ interface EdgePropertiesPanelProps {
   edge: Edge | null;
   onUpdateEdge: (edgeId: string, newData: any) => void;
   onClose: () => void;
+  onDelete?: () => void;
   flowId?: number;
   nodes?: any[]; // Pour trouver les nodes source et target
 }
@@ -21,7 +22,7 @@ const CONDITION_TYPES = [
   { value: 'wait_user_reply', label: 'Wait for User Reply' },
 ];
 
-export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, flowId, nodes = [] }: EdgePropertiesPanelProps) {
+export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDelete, flowId, nodes = [] }: EdgePropertiesPanelProps) {
   const [conditionType, setConditionType] = useState(edge?.data?.condition_type || 'always');
   const [label, setLabel] = useState(edge?.data?.label || '');
   const [priority, setPriority] = useState(edge?.data?.priority || 0);
@@ -398,7 +399,7 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, flowI
         </div>
       </div>
 
-      <div className="p-4 border-t border-gray-600">
+      <div className="p-4 border-t border-gray-600 space-y-2">
         <button
           onClick={handleSave}
           disabled={saving}
@@ -406,6 +407,15 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, flowI
         >
           {saving ? 'Saving...' : 'Apply Changes'}
         </button>
+        
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-2 rounded-lg transition-colors border border-red-500/20 hover:border-red-500/40"
+          >
+            Delete Connection
+          </button>
+        )}
       </div>
     </div>
   );

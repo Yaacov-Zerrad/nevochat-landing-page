@@ -667,8 +667,9 @@ export const paymentAPI = {
     return response.data;
   },
 
-  async getCurrentSubscription(): Promise<any> {
-    const response = await api.get('/api/payments/subscriptions/current/');
+  async getCurrentSubscription(accountId?: number): Promise<any> {
+    const params = accountId ? { account_id: accountId } : {};
+    const response = await api.get('/api/payments/subscriptions/current/', { params });
     return response.data;
   },
 
@@ -676,6 +677,7 @@ export const paymentAPI = {
     plan_id: number;
     success_url: string;
     cancel_url: string;
+    account_id?: number;
   }): Promise<{
     session_id: string;
     url: string;
@@ -686,6 +688,7 @@ export const paymentAPI = {
 
   async createPortalSession(data: {
     return_url: string;
+    account_id?: number;
   }): Promise<{
     url: string;
   }> {

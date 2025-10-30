@@ -18,12 +18,13 @@ interface NodePropertiesPanelProps {
   node: Node;
   onUpdateNode: (nodeId: string, newData: any) => void;
   onClose: () => void;
+  onDelete?: () => void;
   accountId?: number;
   availableNodes?: { id: string; label: string; type: string }[];
   flowId?: number;
 }
 
-export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accountId, availableNodes = [], flowId }: NodePropertiesPanelProps) {
+export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDelete, accountId, availableNodes = [], flowId }: NodePropertiesPanelProps) {
   const [label, setLabel] = useState(node.data.label || '');
   const [description, setDescription] = useState(node.data.description || '');
   const [config, setConfig] = useState(node.data.config || {});
@@ -1092,7 +1093,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-gray-600">
+      <div className="p-4 border-t border-gray-600 space-y-2">
         <button
           onClick={handleSave}
           disabled={saving}
@@ -1100,6 +1101,15 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, accou
         >
           {saving ? 'Saving...' : 'Apply Changes'}
         </button>
+        
+        {onDelete && (
+          <button
+            onClick={onDelete}
+            className="w-full bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-2 rounded-lg transition-colors border border-red-500/20 hover:border-red-500/40"
+          >
+            Delete Node
+          </button>
+        )}
       </div>
     </div>
   );
