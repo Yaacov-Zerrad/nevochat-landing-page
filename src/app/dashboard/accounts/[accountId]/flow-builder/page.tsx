@@ -46,6 +46,7 @@ import FlowToolbar from '@/components/flow-builder/FlowToolbar';
 import NodePropertiesPanel from '@/components/flow-builder/NodePropertiesPanel';
 import EdgePropertiesPanel from '@/components/flow-builder/EdgePropertiesPanel';
 import ConfirmDialog from '@/components/flow-builder/ConfirmDialog';
+import ChatbotPlayground from '@/components/ChatbotPlayground';
 
 const nodeTypes: NodeTypes = {
   message: MessageNode,
@@ -811,6 +812,9 @@ function FlowBuilderContent() {
           onCancel={() => setShowConfirmDialog(false)}
         />
       )}
+
+      {/* Chatbot Playground */}
+      <ChatbotPlayground flowId={flowId || undefined} />
     </div>
   );
 }
