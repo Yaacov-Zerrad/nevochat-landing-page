@@ -14,7 +14,7 @@ interface AccountContextType {
   setCurrentAccount: (account: Account) => void;
   fetchUserAccounts: () => Promise<void>;
   fetchAccountById: (accountId: number) => Promise<Account | null>;
-  createAccount: (name: string) => Promise<Account | null>;
+  createAccount: (name: string, detailedData?: any) => Promise<Account | null>;
   clearAccount: () => void;
 }
 
@@ -64,12 +64,19 @@ export function AccountProvider({ children }: AccountProviderProps) {
     }
   }, []);
 
-  const createAccount = useCallback(async (name: string): Promise<Account | null> => {
+  const createAccount = useCallback(async (name: string, detailedData?: any): Promise<Account | null> => {
     try {
       setLoading(true);
       setError(null);
       
-      const newAccount: Account = await accountAPI.createAccount({ name });
+      const accountData: any = { name };
+      
+      // Ajouter les données détaillées si fournies
+      if (detailedData) {
+        accountData.prompt_config = detailedData;
+      }
+      
+      const newAccount: Account = await accountAPI.createAccount(accountData);
       
       // Add the new account to the list
       setUserAccounts(prev => [...prev, newAccount]);

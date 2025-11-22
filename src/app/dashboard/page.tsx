@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useAccount } from '@/contexts/AccountContext'
 import { Account } from '@/types/account'
-import CreateAccountModal from '@/components/CreateAccountModal'
+import CreateAccountModalDetailed from '@/components/CreateAccountModalDetailed'
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
@@ -26,6 +26,13 @@ export default function Dashboard() {
     }
   }, [status, router, fetchUserAccounts])
 
+  // Toujours afficher le popup si 0 compte
+  useEffect(() => {
+    if (!accountsLoading && userAccounts.length === 0 && !loading) {
+      setIsCreateModalOpen(true)
+    }
+  }, [accountsLoading, userAccounts.length, loading])
+
   const handleAccountSelect = (accountId: number) => {
     router.push(`/dashboard/accounts/${accountId}`)
   }
@@ -35,9 +42,18 @@ export default function Dashboard() {
   }
 
   const handleAccountCreated = (newAccount: Account) => {
+    // Rafraîchir la liste des comptes
+    fetchUserAccounts()
     // Optionally navigate to the new account
     console.log('New account created:', newAccount)
     // router.push(`/dashboard/accounts/${newAccount.id}`)
+  }
+
+  const handleCloseModal = () => {
+    // Ne fermer le modal que s'il y a au moins un compte
+    if (userAccounts.length > 0) {
+      setIsCreateModalOpen(false)
+    }
   }
 
   if (status === 'loading' || loading) {
@@ -149,9 +165,9 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Create Account Modal */}
-        <CreateAccountModal
+        <CreateAccountModalDetailed
           isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
+          onClose={handleCloseModal}
           onSuccess={handleAccountCreated}
         />
       </div>
