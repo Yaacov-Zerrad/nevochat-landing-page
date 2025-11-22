@@ -140,9 +140,9 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
               <Image
                 src={attachment.file_url}
                 alt={attachment.filename}
-                width={300}
-                height={256}
-                className="max-w-xs max-h-64 rounded-lg border border-gray-600/30 cursor-pointer hover:opacity-80 transition-opacity object-cover"
+                width={250}
+                height={200}
+                className="max-w-[200px] sm:max-w-xs max-h-48 sm:max-h-64 rounded-lg border border-gray-600/30 cursor-pointer hover:opacity-80 transition-opacity object-cover"
                 onClick={() => window.open(attachment.file_url, '_blank')}
               />
               <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
@@ -158,7 +158,7 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
               <video
                 src={attachment.file_url}
                 controls
-                className="max-w-xs max-h-64 rounded-lg border border-gray-600/30"
+                className="max-w-[200px] sm:max-w-xs max-h-48 sm:max-h-64 rounded-lg border border-gray-600/30"
               >
                 Votre navigateur ne supporte pas la lecture vidéo.
               </video>
@@ -171,12 +171,12 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
 
         if (attachment.file_type === 'audio') {
           return (
-            <div key={attachment.id} className="bg-gray-700/50 rounded-lg p-3 max-w-xs">
+            <div key={attachment.id} className="bg-gray-700/50 rounded-lg p-2 sm:p-3 max-w-[220px] sm:max-w-xs">
               <div className="flex items-center space-x-2 mb-2">
-                <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                 </svg>
-                <span className="text-sm text-white">{attachment.filename}</span>
+                <span className="text-xs sm:text-sm text-white truncate">{attachment.filename}</span>
               </div>
               <audio
                 src={attachment.file_url}
@@ -194,20 +194,20 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
 
         // For other file types (documents, etc.)
         return (
-          <div key={attachment.id} className="bg-gray-700/50 rounded-lg p-3 max-w-xs">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div key={attachment.id} className="bg-gray-700/50 rounded-lg p-2 sm:p-3 max-w-[220px] sm:max-w-xs">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-white truncate">{attachment.filename}</p>
+                <p className="text-xs sm:text-sm text-white truncate">{attachment.filename}</p>
                 <p className="text-xs text-gray-400">{formatFileSize(attachment.file_size)}</p>
               </div>
               <button
                 onClick={() => window.open(attachment.file_url, '_blank')}
-                className="text-neon-green hover:text-neon-green/80 transition-colors"
+                className="text-neon-green hover:text-neon-green/80 transition-colors flex-shrink-0"
                 title="Télécharger"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,19 +289,19 @@ export const MessagesSection = ({
   }
 
   return (
-    <div className={`flex-1 flex flex-col ${
+    <div className={`flex-1 flex flex-col min-h-0 ${
       showConversationList ? 'hidden lg:flex' : 'flex'
     }`}>
       {selectedConversation ? (
         <>
           {/* Conversation Header */}
-          <div className="p-3 lg:p-4 border-b border-neon-green/20 bg-gradient-to-r from-gray-800/50 to-gray-900/30">
-            <div className="flex justify-between items-start">
+          <div className="p-2 sm:p-3 lg:p-4 border-b border-neon-green/20 bg-gradient-to-r from-gray-800/50 to-gray-900/30 flex-shrink-0">
+            <div className="flex justify-between items-start gap-2">
               <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-2 mb-2">
+                <div className="flex items-center space-x-2 mb-1.5 sm:mb-2">
                   <button
                     onClick={onShowConversationList}
-                    className="lg:hidden text-neon-green hover:text-neon-green/80 transition-colors p-1 rounded-lg hover:bg-neon-green/10"
+                    className="lg:hidden text-neon-green hover:text-neon-green/80 transition-colors p-1 rounded-lg hover:bg-neon-green/10 flex-shrink-0"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -309,83 +309,81 @@ export const MessagesSection = ({
                   </button>
                   
                   {/* Contact Avatar and Name */}
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-neon-green/20 to-emerald-500/20 rounded-full flex items-center justify-center border border-neon-green/30">
-                      <span className="text-neon-green font-semibold">
+                  <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-neon-green/20 to-emerald-500/20 rounded-full flex items-center justify-center border border-neon-green/30 flex-shrink-0">
+                      <span className="text-neon-green font-semibold text-sm sm:text-base">
                         {selectedConversation.contact.name ? selectedConversation.contact.name.charAt(0).toUpperCase() : '?'}
                       </span>
                     </div>
-                    <div>
-                      <h2 className="text-lg lg:text-xl font-bold text-white">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-sm sm:text-base lg:text-lg font-bold text-white truncate">
                         {selectedConversation.contact.name || 'Contact inconnu'}
                       </h2>
                       {selectedConversation.contact.phone_number && (
-                        <p className="text-xs text-gray-400">{selectedConversation.contact.phone_number}</p>
+                        <p className="text-xs text-gray-400 truncate">{selectedConversation.contact.phone_number}</p>
                       )}
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-2 lg:gap-3 text-xs text-gray-400">
-                  <span className="bg-gray-700/50 px-2 py-1 rounded-full">#{selectedConversation.display_id}</span>
-                  <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full truncate">{selectedConversation.inbox.name}</span>
+                <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 lg:gap-2 text-xs">
+                  <span className="bg-gray-700/50 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-gray-400">#{selectedConversation.display_id}</span>
+                  <span className="bg-blue-500/20 text-blue-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full truncate max-w-[120px] sm:max-w-none">{selectedConversation.inbox.name}</span>
                   {selectedConversation.assignee && (
-                    <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded-full truncate">
+                    <span className="bg-purple-500/20 text-purple-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full truncate max-w-[100px] sm:max-w-none">
                       {selectedConversation.assignee.display_name || selectedConversation.assignee.name}
                     </span>
                   )}
                   {selectedConversation.contact.additional_attributes?.country && (
-                    <span className="bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">
+                    <span className="bg-orange-500/20 text-orange-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs">
                       {selectedConversation.contact.additional_attributes.country_code && 
                         getCountryFlag(selectedConversation.contact.additional_attributes.country_code)
-                      } {selectedConversation.contact.additional_attributes.country}
+                      } <span className="hidden sm:inline">{selectedConversation.contact.additional_attributes.country}</span>
                     </span>
                   )}
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-1 sm:space-y-0 sm:space-x-2 ml-2">
+              <div className="flex flex-col items-end space-y-1 flex-shrink-0">
                 {/* Contact Details Button */}
                 <button
                   onClick={() => onShowContactModal(selectedConversation.contact)}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded-lg text-xs lg:text-sm transition-colors border border-neon-green/20 hover:border-neon-green/40 flex items-center space-x-1"
+                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-2 py-1 sm:px-3 rounded-lg text-xs transition-colors border border-neon-green/20 hover:border-neon-green/40 flex items-center space-x-1"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  <span>Contact</span>
+                  <span className="hidden sm:inline">Contact</span>
                 </button>
                 
                 {/* Status buttons - conditional based on current status */}
-                <div className="flex space-x-1">
-                  {selectedConversation.status === 0 ? (
-                    <button
-                      onClick={() => onUpdateConversationStatus(selectedConversation.id, 1)}
-                      className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm transition-colors flex items-center space-x-1"
-                    >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="hidden sm:inline">Résoudre</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => onUpdateConversationStatus(selectedConversation.id, 0)}
-                      className="bg-green-500/20 hover:bg-green-500/30 text-green-400 px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm transition-colors flex items-center space-x-1"
-                    >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                      </svg>
-                      <span className="hidden sm:inline">Rouvrir</span>
-                    </button>
-                  )}
-                </div>
+                {selectedConversation.status === 0 ? (
+                  <button
+                    onClick={() => onUpdateConversationStatus(selectedConversation.id, 1)}
+                    className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 px-2 py-1 sm:px-3 rounded-lg text-xs transition-colors flex items-center space-x-1 w-full sm:w-auto justify-center"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="hidden sm:inline">Résoudre</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => onUpdateConversationStatus(selectedConversation.id, 0)}
+                    className="bg-green-500/20 hover:bg-green-500/30 text-green-400 px-2 py-1 sm:px-3 rounded-lg text-xs transition-colors flex items-center space-x-1 w-full sm:w-auto justify-center"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                    </svg>
+                    <span className="hidden sm:inline">Rouvrir</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 lg:p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-2 sm:p-3 lg:p-4 space-y-3 sm:space-y-4 min-h-0">
             {messagesLoading ? (
               <div className="flex justify-center items-center h-32">
                 <div className="text-center">
@@ -404,7 +402,7 @@ export const MessagesSection = ({
                 </div>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {messages.map((message, index) => {
                   const isUser = message.sender_type === 'User'
                   const showAvatar = index === 0 || messages[index - 1].sender_type !== message.sender_type
@@ -415,8 +413,8 @@ export const MessagesSection = ({
                     <div key={message.id}>
                       {/* Séparateur de date (style WhatsApp) */}
                       {showDateSeparator && (
-                        <div className="flex justify-center my-4">
-                          <div className="bg-gray-700/50 backdrop-blur-sm text-gray-300 px-4 py-1.5 rounded-full text-xs font-medium shadow-md border border-gray-600/30">
+                        <div className="flex justify-center my-3 sm:my-4">
+                          <div className="bg-gray-700/50 backdrop-blur-sm text-gray-300 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs font-medium shadow-md border border-gray-600/30">
                             {getDateLabel(message.created_at)}
                           </div>
                         </div>
@@ -425,10 +423,10 @@ export const MessagesSection = ({
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`flex items-end space-x-2 ${isUser ? 'justify-end' : 'justify-start'}`}
+                        className={`flex items-end gap-1.5 sm:gap-2 ${isUser ? 'justify-end' : 'justify-start'}`}
                       >
                       {!isUser && (
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                           showAvatar ? 'bg-gray-600' : 'opacity-0'
                         }`}>
                           {showAvatar && message.sender_name && (
@@ -439,13 +437,13 @@ export const MessagesSection = ({
                         </div>
                       )}
                       
-                      <div className={`max-w-[75%] lg:max-w-md ${isUser ? 'order-first' : ''}`}>
+                      <div className={`max-w-[85%] sm:max-w-[75%] lg:max-w-md ${isUser ? 'order-first' : ''}`}>
                         {showAvatar && !isUser && message.sender_name && (
                           <p className="text-xs text-gray-400 mb-1 ml-2">{message.sender_name}</p>
                         )}
                         
                         <div
-                          className={`p-3 rounded-2xl shadow-lg ${
+                          className={`px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-2xl shadow-lg ${
                             isUser
                               ? 'bg-gradient-to-r from-neon-green/20 to-emerald-500/20 text-white border border-neon-green/20'
                               : 'bg-gray-700/80 text-white border border-gray-600/30'
@@ -462,7 +460,7 @@ export const MessagesSection = ({
                           {/* Display attachments */}
                           <MessageAttachments attachments={message.attachments || []} />
                           
-                          <div className="flex justify-end mt-2">
+                          <div className="flex justify-end mt-1.5 sm:mt-2">
                             <span className="text-xs text-gray-300 opacity-70">
                               {formatTime(message.created_at)}
                             </span>
@@ -471,7 +469,7 @@ export const MessagesSection = ({
                       </div>
                       
                       {isUser && (
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                           showAvatar ? 'bg-neon-green/20 border border-neon-green/30' : 'opacity-0'
                         }`}>
                           {showAvatar && message.sender_name && (
@@ -490,8 +488,8 @@ export const MessagesSection = ({
           </div>
 
           {/* Message Input */}
-          <div className="p-3 lg:p-4 border-t border-neon-green/20 bg-gray-800/30">
-            <div className="flex items-end space-x-2">
+          <div className="p-2 sm:p-3 lg:p-4 border-t border-neon-green/20 bg-gray-800/30 flex-shrink-0">
+            <div className="flex items-end gap-1.5 sm:gap-2">
               <div className="flex-1 relative">
                 <textarea
                   value={newMessage}
@@ -502,36 +500,31 @@ export const MessagesSection = ({
                       onSendMessage()
                     }
                   }}
-                  placeholder="Tapez votre message... (Entrée pour envoyer, Maj+Entrée pour nouvelle ligne)"
+                  placeholder="Message..."
                   rows={1}
-                  className="w-full bg-gray-700/80 text-white px-4 py-3 rounded-2xl border border-gray-600/50 focus:border-neon-green/50 focus:outline-none text-sm resize-none overflow-hidden backdrop-blur-sm"
+                  className="w-full bg-gray-700/80 text-white px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl border border-gray-600/50 focus:border-neon-green/50 focus:outline-none text-sm resize-none overflow-hidden backdrop-blur-sm"
                   style={{
-                    minHeight: '44px',
+                    minHeight: '40px',
                     maxHeight: '120px',
-                    height: newMessage.split('\n').length > 1 ? 'auto' : '44px'
+                    height: newMessage.split('\n').length > 1 ? 'auto' : '40px'
                   }}
                 />
-                {newMessage.trim() && (
-                  <div className="absolute right-2 bottom-2 text-xs text-gray-400">
-                    {newMessage.length} caractères
-                  </div>
-                )}
               </div>
               
               <button
                 onClick={onSendMessage}
                 disabled={!newMessage.trim()}
-                className="bg-gradient-to-r from-neon-green/20 to-emerald-500/20 hover:from-neon-green/30 hover:to-emerald-500/30 disabled:from-gray-600/20 disabled:to-gray-600/20 disabled:text-gray-400 text-neon-green p-3 rounded-2xl transition-all border border-neon-green/20 hover:border-neon-green/40 disabled:border-gray-600/20 flex items-center justify-center min-w-[44px] h-[44px] shadow-lg disabled:shadow-none"
+                className="bg-gradient-to-r from-neon-green/20 to-emerald-500/20 hover:from-neon-green/30 hover:to-emerald-500/30 disabled:from-gray-600/20 disabled:to-gray-600/20 disabled:text-gray-400 text-neon-green p-2.5 sm:p-3 rounded-2xl transition-all border border-neon-green/20 hover:border-neon-green/40 disabled:border-gray-600/20 flex items-center justify-center min-w-[40px] h-[40px] shadow-lg disabled:shadow-none flex-shrink-0"
                 title={newMessage.trim() ? "Envoyer le message" : "Tapez un message"}
               >
-                <svg className={`w-5 h-5 transition-transform ${newMessage.trim() ? 'rotate-0' : 'rotate-45'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${newMessage.trim() ? 'rotate-0' : 'rotate-45'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
               </button>
             </div>
             
-            {/* Quick actions */}
-            <div className="flex items-center justify-between mt-2 text-xs text-gray-400">
+            {/* Quick actions - Hidden on mobile for cleaner interface */}
+            <div className="hidden sm:flex items-center justify-between mt-2 text-xs text-gray-400">
               <div className="flex items-center space-x-4">
                 <span>Maj+Entrée pour nouvelle ligne</span>
               </div>

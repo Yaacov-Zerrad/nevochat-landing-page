@@ -253,21 +253,21 @@ export function ContactDetails({
   return (
     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="p-6 border-b border-white/10">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-neon-green/20 to-blue-500/20 border border-white/10 flex items-center justify-center">
-              <span className="text-xl font-medium text-white">
+      <div className="p-4 sm:p-6 border-b border-white/10">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+          <div className="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-neon-green/20 to-blue-500/20 border border-white/10 flex items-center justify-center flex-shrink-0">
+              <span className="text-lg sm:text-xl font-medium text-white">
                 {getInitials(contact.name)}
               </span>
             </div>
-            <div>
-              <h2 className="text-2xl font-bold text-white">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl sm:text-2xl font-bold text-white break-words">
                 {contact.name || 'Contact sans nom'}
               </h2>
-              <div className="flex items-center space-x-3 mt-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-2">
                 <span
-                  className={`px-3 py-1 text-sm rounded-full ${
+                  className={`px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full ${
                     contact.blocked
                       ? 'bg-red-500/20 text-red-400'
                       : 'bg-green-500/20 text-green-400'
@@ -275,19 +275,19 @@ export function ContactDetails({
                 >
                   {contact.blocked ? 'Bloqué' : 'Actif'}
                 </span>
-                <span className="text-gray-400 text-sm">
+                <span className="text-gray-400 text-xs sm:text-sm">
                   {contact.conversations_count} conversation{contact.conversations_count !== 1 ? 's' : ''}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             {!isEditing ? (
               <>
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 hover:bg-blue-500/30 transition-colors"
+                  className="flex-1 sm:flex-initial px-3 sm:px-4 py-2 text-sm bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 hover:bg-blue-500/30 transition-colors"
                 >
                   Modifier
                 </button>
@@ -325,16 +325,16 @@ export function ContactDetails({
                 </div>
               </>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   onClick={handleCancel}
-                  className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white hover:bg-white/10 transition-colors"
+                  className="flex-1 sm:flex-initial px-3 sm:px-4 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white hover:bg-white/10 transition-colors"
                 >
                   Annuler
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-neon-green/20 border border-neon-green/30 rounded-lg text-neon-green hover:bg-neon-green/30 transition-colors"
+                  className="flex-1 sm:flex-initial px-3 sm:px-4 py-2 text-sm bg-neon-green/20 border border-neon-green/30 rounded-lg text-neon-green hover:bg-neon-green/30 transition-colors"
                 >
                   Sauvegarder
                 </button>
@@ -347,7 +347,7 @@ export function ContactDetails({
         <div className="flex space-x-1 mt-6 bg-white/5 rounded-lg p-1">
           <button
             onClick={() => setActiveTab('details')}
-            className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+            className={`flex-1 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all ${
               activeTab === 'details'
                 ? 'bg-neon-green/20 text-neon-green border border-neon-green/30'
                 : 'text-gray-400 hover:text-white'
@@ -357,19 +357,20 @@ export function ContactDetails({
           </button>
           <button
             onClick={() => setActiveTab('conversations')}
-            className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+            className={`flex-1 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all ${
               activeTab === 'conversations'
                 ? 'bg-neon-green/20 text-neon-green border border-neon-green/30'
                 : 'text-gray-400 hover:text-white'
             }`}
           >
-            Conversations ({contact.conversations_count})
+            <span className="hidden sm:inline">Conversations ({contact.conversations_count})</span>
+            <span className="sm:hidden">Conv. ({contact.conversations_count})</span>
           </button>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <AnimatePresence mode="wait">
           {activeTab === 'details' ? (
             <motion.div
@@ -380,128 +381,128 @@ export function ContactDetails({
               className="space-y-4"
             >
               {/* Name */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-neon-green/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-neon-green/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-400">Nom</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Nom</p>
                     {isEditing ? (
                       <input
                         type="text"
                         value={editData.name || ''}
                         onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm sm:text-base focus:outline-none focus:border-neon-green/50 mt-1"
                       />
                     ) : (
-                      <p className="text-white font-semibold">{contact.name}</p>
+                      <p className="text-white font-semibold text-sm sm:text-base break-words">{contact.name}</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Phone */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-400">Téléphone</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Téléphone</p>
                     {isEditing ? (
                       <input
                         type="tel"
                         value={editData.phone_number || ''}
                         onChange={(e) => setEditData({ ...editData, phone_number: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm sm:text-base focus:outline-none focus:border-neon-green/50 mt-1"
                       />
                     ) : (
-                      <p className="text-white font-semibold">{contact.phone_number || '-'}</p>
+                      <p className="text-white font-semibold text-sm sm:text-base break-words">{contact.phone_number || '-'}</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Email */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-400">Email</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Email</p>
                     {isEditing ? (
                       <input
                         type="email"
                         value={editData.email || ''}
                         onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm sm:text-base focus:outline-none focus:border-neon-green/50 mt-1"
                       />
                     ) : (
-                      <p className="text-white font-semibold">{contact.email || '-'}</p>
+                      <p className="text-white font-semibold text-sm sm:text-base break-words">{contact.email || '-'}</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Location */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-400">Localisation</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Localisation</p>
                     {isEditing ? (
                       <input
                         type="text"
                         value={editData.location || ''}
                         onChange={(e) => setEditData({ ...editData, location: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm sm:text-base focus:outline-none focus:border-neon-green/50 mt-1"
                       />
                     ) : (
-                      <p className="text-white font-semibold">{contact.location || '-'}</p>
+                      <p className="text-white font-semibold text-sm sm:text-base break-words">{contact.location || '-'}</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Country Code */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 text-2xl">
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 text-xl sm:text-2xl">
                     {getCountryFlag((isEditing ? editData : contact)?.country_code || (isEditing ? editData : contact)?.additional_attributes?.country_code)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-400">Code pays</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Code pays</p>
                     {isEditing ? (
                       <input
                         type="text"
                         value={editData.country_code || ''}
                         onChange={(e) => setEditData({ ...editData, country_code: e.target.value })}
                         placeholder="ex: FR, US, CA"
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50 mt-1"
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm sm:text-base focus:outline-none focus:border-neon-green/50 mt-1"
                       />
                     ) : (
-                      <p className="text-white font-semibold">{contact.country_code || contact.additional_attributes?.country_code || '-'}</p>
+                      <p className="text-white font-semibold text-sm sm:text-base break-words">{contact.country_code || contact.additional_attributes?.country_code || '-'}</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Additional Attributes */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-semibold text-white">Attributs supplémentaires</h3>
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-4">
+                  <h3 className="text-xs sm:text-sm font-semibold text-white">Attributs supplémentaires</h3>
                   {isEditing && (
                     <button
                       onClick={() => {
@@ -523,22 +524,22 @@ export function ContactDetails({
                 {isEditing ? (
                   <div className="space-y-3">
                     {editData.additional_attributes && Object.entries(editData.additional_attributes).map(([key, value]) => (
-                      <div key={key} className="flex items-center space-x-2">
+                      <div key={key} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                         <input
                           type="text"
                           value={key}
                           disabled
-                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gray-400 text-sm"
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gray-400 text-xs sm:text-sm"
                         />
                         <input
                           type="text"
                           value={String(value)}
                           onChange={(e) => updateAdditionalAttribute(key, e.target.value)}
-                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-neon-green/50"
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-green/50"
                         />
                         <button
                           onClick={() => deleteAdditionalAttribute(key)}
-                          className="p-2 text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                          className="p-2 text-red-400 hover:bg-red-500/10 rounded transition-colors self-center sm:self-auto"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -547,28 +548,28 @@ export function ContactDetails({
                       </div>
                     ))}
                     {(!editData.additional_attributes || Object.keys(editData.additional_attributes).length === 0) && (
-                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                      <p className="text-xs sm:text-sm text-gray-500 text-center py-4">Aucun attribut</p>
                     )}
                   </div>
                 ) : (
                   <div className="space-y-2">
                     {contact.additional_attributes && Object.entries(contact.additional_attributes).map(([key, value]) => (
-                      <div key={key} className="flex justify-between text-sm">
+                      <div key={key} className="flex flex-col sm:flex-row sm:justify-between text-xs sm:text-sm gap-1">
                         <span className="text-gray-400 capitalize">{key.replace(/_/g, ' ')}:</span>
-                        <span className="text-white">{String(value)}</span>
+                        <span className="text-white break-words">{String(value)}</span>
                       </div>
                     ))}
                     {(!contact.additional_attributes || Object.keys(contact.additional_attributes).length === 0) && (
-                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                      <p className="text-xs sm:text-sm text-gray-500 text-center py-4">Aucun attribut</p>
                     )}
                   </div>
                 )}
               </div>
 
               {/* Custom Attributes */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-semibold text-white">Attributs personnalisés</h3>
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 mb-4">
+                  <h3 className="text-xs sm:text-sm font-semibold text-white">Attributs personnalisés</h3>
                   {isEditing && (
                     <button
                       onClick={() => {
@@ -590,22 +591,22 @@ export function ContactDetails({
                 {isEditing ? (
                   <div className="space-y-3">
                     {editData.custom_attributes && Object.entries(editData.custom_attributes).map(([key, value]) => (
-                      <div key={key} className="flex items-center space-x-2">
+                      <div key={key} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                         <input
                           type="text"
                           value={key}
                           disabled
-                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gray-400 text-sm"
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gray-400 text-xs sm:text-sm"
                         />
                         <input
                           type="text"
                           value={String(value)}
                           onChange={(e) => updateCustomAttribute(key, e.target.value)}
-                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-neon-green/50"
+                          className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-xs sm:text-sm focus:outline-none focus:border-neon-green/50"
                         />
                         <button
                           onClick={() => deleteCustomAttribute(key)}
-                          className="p-2 text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                          className="p-2 text-red-400 hover:bg-red-500/10 rounded transition-colors self-center sm:self-auto"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -614,43 +615,43 @@ export function ContactDetails({
                       </div>
                     ))}
                     {(!editData.custom_attributes || Object.keys(editData.custom_attributes).length === 0) && (
-                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                      <p className="text-xs sm:text-sm text-gray-500 text-center py-4">Aucun attribut</p>
                     )}
                   </div>
                 ) : (
                   <div className="space-y-2">
                     {contact.custom_attributes && Object.entries(contact.custom_attributes).map(([key, value]) => (
-                      <div key={key} className="flex justify-between text-sm">
+                      <div key={key} className="flex flex-col sm:flex-row sm:justify-between text-xs sm:text-sm gap-1">
                         <span className="text-gray-400 capitalize">{key.replace(/_/g, ' ')}:</span>
-                        <span className="text-white">{String(value)}</span>
+                        <span className="text-white break-words">{String(value)}</span>
                       </div>
                     ))}
                     {(!contact.custom_attributes || Object.keys(contact.custom_attributes).length === 0) && (
-                      <p className="text-sm text-gray-500 text-center py-4">Aucun attribut</p>
+                      <p className="text-xs sm:text-sm text-gray-500 text-center py-4">Aucun attribut</p>
                     )}
                   </div>
                 )}
               </div>
 
               {/* Metadata */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <h3 className="text-sm font-semibold text-white mb-4">Métadonnées</h3>
+              <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+                <h3 className="text-xs sm:text-sm font-semibold text-white mb-4">Métadonnées</h3>
                 <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
+                  <div className="flex flex-col sm:flex-row sm:justify-between text-xs sm:text-sm gap-1">
                     <span className="text-gray-400">Identifiant:</span>
-                    <span className="text-white font-mono">{contact.identifier || '-'}</span>
+                    <span className="text-white font-mono break-all">{contact.identifier || '-'}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex flex-col sm:flex-row sm:justify-between text-xs sm:text-sm gap-1">
                     <span className="text-gray-400">Créé le:</span>
-                    <span className="text-white">{formatDate(contact.created_at)}</span>
+                    <span className="text-white break-words">{formatDate(contact.created_at)}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex flex-col sm:flex-row sm:justify-between text-xs sm:text-sm gap-1">
                     <span className="text-gray-400">Modifié le:</span>
-                    <span className="text-white">{formatDate(contact.updated_at)}</span>
+                    <span className="text-white break-words">{formatDate(contact.updated_at)}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex flex-col sm:flex-row sm:justify-between text-xs sm:text-sm gap-1">
                     <span className="text-gray-400">Dernière activité:</span>
-                    <span className="text-white">{contact.last_activity_at ? formatDate(contact.last_activity_at) : 'Jamais'}</span>
+                    <span className="text-white break-words">{contact.last_activity_at ? formatDate(contact.last_activity_at) : 'Jamais'}</span>
                   </div>
                 </div>
               </div>
