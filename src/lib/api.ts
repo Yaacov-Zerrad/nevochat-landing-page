@@ -326,7 +326,7 @@ export const whatsappAPI = {
   async getConnectionStatus(accountId: string): Promise<{
     status: string;
     is_connected: boolean;
-    last_connected_at?: string;
+    last_seen?: string;
     last_disconnect_reason?: string;
   }> {
     const response = await api.get(`/api/whatsapp/accounts/${accountId}/status/`);

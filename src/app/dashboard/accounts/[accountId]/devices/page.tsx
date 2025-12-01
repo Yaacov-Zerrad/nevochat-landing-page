@@ -262,10 +262,10 @@ export default function DevicesPage() {
                     </div>
 
                     <div className="space-y-3">
-                      {account.last_connected_at && (
+                      {account.last_seen && (
                         <div className="text-sm text-gray-400">
                           <strong>Dernière connexion:</strong>{' '}
-                          {new Date(account.last_connected_at).toLocaleString('fr-FR')}
+                          {new Date(account.last_seen).toLocaleString('fr-FR')}
                         </div>
                       )}
                       

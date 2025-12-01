@@ -3,7 +3,7 @@ export interface WhatsAppAccount {
   phone_number: string;
   display_name: string;
   status: 'disconnected' | 'connecting' | 'connected' | 'qr_required' | 'pairing_code' | 'error' | 'banned' | 'timeout';
-  last_connected_at?: string;
+  last_seen?: string;
   last_disconnect_reason?: string;
   created_at: string;
   updated_at: string;
@@ -61,7 +61,7 @@ export interface ConnectionResponse {
 export interface ConnectionStatus {
   status: string;
   is_connected: boolean;
-  last_connected_at?: string;
+  last_seen?: string;
   last_disconnect_reason?: string;
 }
 

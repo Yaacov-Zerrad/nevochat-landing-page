@@ -140,7 +140,7 @@ export default function DeviceSettingsPage() {
               <div>
                 <span className="text-gray-400">Dernière connexion:</span>
                 <p className="text-white">
-                  {account?.last_connected_at ? formatDate(account?.last_connected_at) : 'Jamais'}
+                  {account?.last_seen ? formatDate(account?.last_seen) : 'Jamais'}
                 </p>
               </div>
             </div>
