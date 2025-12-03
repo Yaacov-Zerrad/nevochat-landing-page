@@ -155,7 +155,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Secteur d'activité *
+                Secteur d&apos;activité *
               </label>
               <select
                 value={formData.business_sector}
@@ -287,7 +287,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                L'assistant doit-il utiliser des emojis ? *
+                L&apos;assistant doit-il utiliser des emojis ? *
               </label>
               <div className="space-y-2">
                 {[
@@ -338,7 +338,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Tranche d'âge principale *
+                Tranche d&apos;âge principale *
               </label>
               <select
                 value={formData.age_range}
@@ -346,7 +346,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
                 required
               >
-                <option value="">Sélectionnez une tranche d'âge</option>
+                <option value="">Sélectionnez une tranche d&apos;âge</option>
                 <option value="18-25">18-25 ans</option>
                 <option value="26-35">26-35 ans</option>
                 <option value="36-50">36-50 ans</option>
@@ -507,7 +507,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Action si l'assistant ne sait pas répondre *
+                Action si l&apos;assistant ne sait pas répondre *
               </label>
               <select
                 value={formData.unknown_answer_handling}
