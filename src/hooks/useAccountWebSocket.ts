@@ -252,8 +252,9 @@ export function useAccountWebSocket(
 
   // Cleanup typing timeouts on unmount
   useEffect(() => {
+    const timeouts = typingTimeoutRef.current;
     return () => {
-      Object.values(typingTimeoutRef.current).forEach(timeout => {
+      Object.values(timeouts).forEach(timeout => {
         clearTimeout(timeout);
       });
     };
