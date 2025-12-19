@@ -142,7 +142,7 @@ export function ConversationFilters({ filters, onFiltersChange, onClose, isOpen 
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             className="bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-primary/30 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-          >
+          
             {/* Modal Header */}
             <div className="sticky top-0 bg-white dark:bg-gray-900 z-10 p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
               <div>
@@ -156,7 +156,7 @@ export function ConversationFilters({ filters, onFiltersChange, onClose, isOpen 
               <button
                 onClick={onClose}
                 className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors">
-              >
+              
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
