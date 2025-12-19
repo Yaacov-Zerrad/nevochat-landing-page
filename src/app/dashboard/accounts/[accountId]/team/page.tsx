@@ -48,8 +48,8 @@ export default function AccountTeamPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -59,26 +59,26 @@ export default function AccountTeamPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleBackToDashboard}
-                className="text-neon-green hover:text-neon-green/80 transition-colors"
+                className="text-primary hover:text-primary/80 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Équipe - {account.name}</h1>
-                <p className="text-gray-400">Gérer les membres de votre équipe</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Équipe - {account.name}</h1>
+                <p className="text-muted-foreground">Gérer les membres de votre équipe</p>
               </div>
             </div>
           </div>
@@ -86,8 +86,8 @@ export default function AccountTeamPage() {
           {/* Placeholder Content */}
           <div className="text-center py-12">
             <div className="text-6xl mb-4">👥</div>
-            <h3 className="text-xl font-semibold text-white mb-2">Gestion d&apos;équipe à venir</h3>
-            <p className="text-gray-400 mb-6">Cette section permettra bientôt de gérer les membres de votre équipe et leurs permissions.</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">Gestion d&apos;équipe à venir</h3>
+            <p className="text-muted-foreground mb-6">Cette section permettra bientôt de gérer les membres de votre équipe et leurs permissions.</p>
           </div>
         </motion.div>
       </div>

@@ -79,15 +79,15 @@ export function ContactCard({
       className={`relative p-4 rounded-xl cursor-pointer transition-all duration-200 border ${
         isSelected
           ? 'bg-gradient-to-r from-neon-green/10 to-transparent border-neon-green/50'
-          : 'bg-white/5 border-white/10 hover:border-neon-green/30 hover:bg-white/10'
+          : 'bg-white/5 border-border hover:border-primary/30 hover:bg-white/10'
       }`}
       onClick={onClick}
     >
       <div className="flex items-center space-x-3">
         {/* Avatar with Status */}
         <div className="relative flex-shrink-0">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-neon-green/20 to-blue-500/20 border border-white/10 flex items-center justify-center">
-            <span className="text-sm font-medium text-white">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-neon-green/20 to-blue-500/20 border border-border flex items-center justify-center">
+            <span className="text-sm font-medium text-foreground">
               {getInitials(contact.name || 'N/A')}
             </span>
           </div>
@@ -103,7 +103,7 @@ export function ContactCard({
         <div className="flex-1 min-w-0">
           {/* Name and Badges Row */}
           <div className="flex items-center space-x-2">
-            <h3 className="text-white font-medium truncate">
+            <h3 className="text-foreground font-medium truncate">
               {contact.name || 'Contact sans nom'}
             </h3>
           </div>

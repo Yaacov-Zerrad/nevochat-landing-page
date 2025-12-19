@@ -126,7 +126,7 @@ export default function NodeSidebar({ onAddNode }: NodeSidebarProps) {
 
   return (
     <div className="p-4 h-full overflow-y-auto">
-      <h3 className="text-white font-semibold mb-4">Add Nodes</h3>
+      <h3 className="text-foreground font-semibold mb-4">Add Nodes</h3>
       
       <div className="space-y-2">
         {nodeTypes.map((nodeType) => (
@@ -134,7 +134,7 @@ export default function NodeSidebar({ onAddNode }: NodeSidebarProps) {
             key={nodeType.type}
             className={`
               flex items-center space-x-3 p-3 rounded-lg cursor-pointer
-              bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600
+              bg-secondary/50 hover:bg-gray-600/50 border border-gray-600
               hover:border-${nodeType.color}-500/50 transition-all
             `}
             draggable
@@ -145,10 +145,10 @@ export default function NodeSidebar({ onAddNode }: NodeSidebarProps) {
               {nodeType.icon}
             </div>
             <div className="flex-1">
-              <div className="text-white text-sm font-medium">
+              <div className="text-foreground text-sm font-medium">
                 {nodeType.label}
               </div>
-              <div className="text-gray-400 text-xs">
+              <div className="text-muted-foreground text-xs">
                 {nodeType.description}
               </div>
             </div>
@@ -157,8 +157,8 @@ export default function NodeSidebar({ onAddNode }: NodeSidebarProps) {
       </div>
 
       <div className="mt-8 pt-4 border-t border-gray-600">
-        <h4 className="text-white font-medium mb-2">Tips</h4>
-        <ul className="text-gray-400 text-xs space-y-1">
+        <h4 className="text-foreground font-medium mb-2">Tips</h4>
+        <ul className="text-muted-foreground text-xs space-y-1">
           <li>• Drag nodes to canvas</li>
           <li>• Click to select and edit</li>
           <li>• Connect nodes with edges</li>

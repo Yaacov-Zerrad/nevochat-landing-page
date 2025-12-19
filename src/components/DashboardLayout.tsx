@@ -39,7 +39,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }, [accountId, fetchAccountById])
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-gradient-to-br from-primary-50 to-primary-200 dark:from-gray-900 dark:to-primary-700">
       {/* Zone de déclenchement invisible */}
       <div className="fixed left-0 top-0 bottom-0 w-12 z-30 pointer-events-none" />
       

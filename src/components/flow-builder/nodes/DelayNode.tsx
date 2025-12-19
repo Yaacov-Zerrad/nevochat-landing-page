@@ -64,8 +64,8 @@ export default function DelayNode(props: NodeProps) {
       isEntryNode={data.isEntryNode}
     >
       <div className="space-y-2">
-        <div className="text-xs text-gray-400">Delay</div>
-        <div className="text-sm text-white bg-gray-700 p-2 rounded">
+        <div className="text-xs text-muted-foreground">Delay</div>
+        <div className="text-sm text-foreground bg-secondary p-2 rounded">
           <div className="font-medium">{timeDisplay}</div>
           <div className="text-xs text-gray-300 mt-1">{typeDisplay}</div>
         </div>

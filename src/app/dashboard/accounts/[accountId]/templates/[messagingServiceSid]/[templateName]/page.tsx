@@ -76,21 +76,21 @@ export default function TemplateDetailPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     )
   }
 
   if (!session || !template) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-red-500/20">
-          <h1 className="text-2xl font-bold text-white mb-4">Template non trouvé</h1>
-          <p className="text-gray-400 mb-6">Le template demandé n&apos;existe pas ou a été supprimé.</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="glass glass-border p-8 rounded-2xl border border-red-500/20">
+          <h1 className="text-2xl font-bold text-foreground mb-4">Template non trouvé</h1>
+          <p className="text-muted-foreground mb-6">Le template demandé n&apos;existe pas ou a été supprimé.</p>
           <button
             onClick={() => router.push(`/dashboard/accounts/${accountId}/templates`)}
-            className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+            className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40"
           >
             Retour aux templates
           </button>
@@ -100,24 +100,24 @@ export default function TemplateDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.push(`/dashboard/accounts/${accountId}/templates`)}
-                className="p-2 rounded-lg bg-neon-green/10 hover:bg-neon-green/20 text-neon-green transition-colors"
+                className="p-2 rounded-lg bg-neon-green/10 hover:bg-primary/20 text-primary transition-colors"
               >
                 <ArrowLeft className="w-6 h-6" />
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-white">{template.friendly_name}</h1>
-                <p className="text-gray-400">Détails du template WhatsApp</p>
+                <h1 className="text-3xl font-bold text-foreground">{template.friendly_name}</h1>
+                <p className="text-muted-foreground">Détails du template WhatsApp</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -148,13 +148,13 @@ export default function TemplateDetailPage() {
             {/* Left Column - Template Details */}
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
-                <h2 className="text-xl font-semibold text-white mb-4">Informations</h2>
+                <h2 className="text-xl font-semibold text-foreground mb-4">Informations</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Statut</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">Statut</label>
                     <span className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${
                       template.status === 'approved' 
-                        ? 'bg-green-500/20 text-green-400' 
+                        ? 'bg-primary/20 text-primary' 
                         : template.status === 'pending'
                         ? 'bg-yellow-500/20 text-yellow-400'
                         : 'bg-red-500/20 text-red-400'
@@ -163,30 +163,30 @@ export default function TemplateDetailPage() {
                     </span>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Langue</label>
-                    <p className="text-white">{template.language}</p>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">Langue</label>
+                    <p className="text-foreground">{template.language}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Catégorie</label>
-                    <p className="text-white">{template.category}</p>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">Catégorie</label>
+                    <p className="text-foreground">{template.category}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Types de contenu</label>
-                    <p className="text-white">{template.content_types?.join(', ')}</p>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">Types de contenu</label>
+                    <p className="text-foreground">{template.content_types?.join(', ')}</p>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
-                <h2 className="text-xl font-semibold text-white mb-4">Corps du message</h2>
-                <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-600">
+                <h2 className="text-xl font-semibold text-foreground mb-4">Corps du message</h2>
+                <div className="bg-card/50 p-4 rounded-lg border border-gray-600">
                   <pre className="text-gray-300 whitespace-pre-wrap font-mono text-sm">
                     {template.body}
                   </pre>
                 </div>
                 <button
                   onClick={() => copyToClipboard(template.body)}
-                  className="mt-3 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded text-sm transition-colors"
+                  className="mt-3 bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-sm transition-colors"
                 >
                   <Copy className="w-4 h-4 inline mr-1" />
                   Copier le corps
@@ -196,7 +196,7 @@ export default function TemplateDetailPage() {
 
             <div className="space-y-6">
               <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
-                <h2 className="text-xl font-semibold text-white mb-4">Actions</h2>
+                <h2 className="text-xl font-semibold text-foreground mb-4">Actions</h2>
                 <div className="space-y-3">
                   <button
                     onClick={() => copyToClipboard(template.friendly_name)}
@@ -217,7 +217,7 @@ export default function TemplateDetailPage() {
 
               {/* WhatsApp Preview */}
               <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
-                <h2 className="text-xl font-semibold text-white mb-4">Aperçu WhatsApp</h2>
+                <h2 className="text-xl font-semibold text-foreground mb-4">Aperçu WhatsApp</h2>
                 <WhatsAppPreview
                   templateType="text" // We'll need to determine this from the template data
                   templateData={{ body: template.body }}
@@ -227,17 +227,17 @@ export default function TemplateDetailPage() {
 
               {/* Technical Details */}
               <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
-                <h2 className="text-xl font-semibold text-white mb-4">Détails techniques</h2>
+                <h2 className="text-xl font-semibold text-foreground mb-4">Détails techniques</h2>
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">SID</label>
-                    <code className="text-xs text-neon-green bg-gray-900/50 p-2 rounded block font-mono">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">SID</label>
+                    <code className="text-xs text-primary bg-card/50 p-2 rounded block font-mono">
                       {template.sid}
                     </code>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Service de messagerie</label>
-                    <code className="text-xs text-gray-300 bg-gray-900/50 p-2 rounded block font-mono">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">Service de messagerie</label>
+                    <code className="text-xs text-gray-300 bg-card/50 p-2 rounded block font-mono">
                       {messagingServiceSid}
                     </code>
                   </div>

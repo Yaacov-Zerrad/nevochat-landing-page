@@ -97,8 +97,8 @@ interface ConversationsListProps {
 }
 
 const statusLabels = {
-  0: { label: 'Ouvert', color: 'bg-green-500/20 text-green-400' },
-  1: { label: 'Résolu', color: 'bg-gray-500/20 text-gray-400' },
+  0: { label: 'Ouvert', color: 'bg-primary/20 text-primary' },
+  1: { label: 'Résolu', color: 'bg-gray-500/20 text-muted-foreground' },
   2: { label: 'En attente', color: 'bg-yellow-500/20 text-yellow-400' },
   3: { label: 'Fermé', color: 'bg-red-500/20 text-red-400' }
 }
@@ -148,19 +148,19 @@ export const ConversationsList = ({
   }
 
   return (
-    <div className={`w-full lg:w-1/3 lg:border-r border-neon-green/20 overflow-y-auto ${
+    <div className={`w-full lg:w-1/3 lg:border-r border-primary/20 overflow-y-auto ${
       showConversationList ? 'block' : 'hidden lg:block'
     }`}>
       {conversations.length === 0 ? (
-        <div className="p-6 text-center text-gray-400">
-          <svg className="w-16 h-16 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="p-6 text-center text-muted-foreground">
+          <svg className="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
           </svg>
-          <p className="text-lg font-medium">Aucune conversation trouvée</p>
-          <p className="text-sm text-gray-500 mt-1">Les conversations apparaîtront ici</p>
+          <p className="text-lg font-medium text-gray-900 dark:text-gray-100">Aucune conversation trouvée</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Les conversations apparaîtront ici</p>
         </div>
       ) : (
-        <div className="divide-y divide-gray-700/30">
+        <div className="divide-y divide-gray-200 dark:divide-gray-700/30">
           {conversations.map((conversation) => (
             <motion.div
               key={conversation.id}
@@ -170,7 +170,7 @@ export const ConversationsList = ({
               className={`p-4 cursor-pointer transition-all relative ${
                 selectedConversation?.id === conversation.id
                   ? 'bg-gradient-to-r from-neon-green/10 to-transparent border-l-4 border-l-neon-green'
-                  : 'hover:bg-gray-800/30'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800/30'
               }`}
               onClick={() => {
                 onSelectConversation(conversation)
@@ -186,8 +186,8 @@ export const ConversationsList = ({
 
               <div className="flex items-start space-x-3">
                 {/* Avatar */}
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-green/20 to-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-neon-green/20">
-                  <span className="text-neon-green font-semibold text-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-green/30 to-emerald-500/30 dark:from-neon-green/20 dark:to-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-primary/30 dark:border-primary/20">
+                  <span className="text-primary font-semibold text-lg">
                     {conversation.contact?.name ? conversation.contact.name.charAt(0).toUpperCase() : '?'}
                   </span>
                 </div>
@@ -196,7 +196,7 @@ export const ConversationsList = ({
                   {/* Header */}
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center space-x-2 min-w-0 flex-1">
-                      <h3 className="font-semibold text-white truncate">
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                         {conversation.contact?.name || 'Contact inconnu'}
                       </h3>
                       {conversation.contact?.additional_attributes?.country_code && (
@@ -205,7 +205,7 @@ export const ConversationsList = ({
                         </span>
                       )}
                       {conversation.contact?.additional_attributes?.type && (
-                        <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full flex-shrink-0">
+                        <span className="text-xs bg-blue-500/30 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded-full flex-shrink-0 font-medium">
                           {conversation.contact.additional_attributes.type}
                         </span>
                       )}
@@ -216,26 +216,26 @@ export const ConversationsList = ({
                   </div>
                   
                   {/* Meta info */}
-                  <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
                     <div className="flex items-center space-x-2">
-                      <span className="truncate">#{conversation.display_id}</span>
-                      <span className="text-gray-600">•</span>
-                      <span className="truncate text-xs">{conversation.inbox?.name || 'Inbox'}</span>
+                      <span className="truncate text-gray-600 dark:text-gray-400">#{conversation.display_id}</span>
+                      <span className="text-gray-400 dark:text-gray-600">•</span>
+                      <span className="truncate text-xs text-gray-600 dark:text-gray-400">{conversation.inbox?.name || 'Inbox'}</span>
                     </div>
                     <div className="flex items-center space-x-2 flex-shrink-0">
                       {conversation.unread_count > 0 && (
-                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">
                           {conversation.unread_count}
                         </span>
                       )}
-                      <span className="text-xs">{formatTime(conversation.last_activity_at)}</span>
+                      <span className="text-xs text-gray-600 dark:text-gray-400">{formatTime(conversation.last_activity_at)}</span>
                     </div>
                   </div>
                   
                   {/* Last message */}
                   {conversation.last_message && (
-                    <p className="text-sm text-gray-300 truncate mb-1">
-                      <span className="text-gray-500">
+                    <p className="text-sm text-gray-700 dark:text-gray-300 truncate mb-1">
+                      <span className="text-gray-500 dark:text-gray-500 font-medium">
                         {conversation.last_message.sender_type === 'User' ? 'Vous: ' : ''}
                       </span>
                       {conversation.last_message.content}

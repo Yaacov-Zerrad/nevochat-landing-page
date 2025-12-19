@@ -115,8 +115,8 @@ export default function DeviceConnectPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -126,20 +126,20 @@ export default function DeviceConnectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-2xl mx-auto bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="max-w-2xl mx-auto glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           {/* Header */}
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">📱</div>
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               {existingAccountId ? 'Reconnexion WhatsApp Business' : 'Connecter WhatsApp Business'}
             </h1>
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               {existingAccountId 
                 ? `Reconnectez votre compte WhatsApp Business${existingAccount?.phone_number ? ` (${existingAccount.phone_number})` : ''}`
                 : 'Connectez un nouveau compte WhatsApp Business'
@@ -185,10 +185,10 @@ export default function DeviceConnectPage() {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="+33123456789"
-                  className={`w-full px-4 py-3 border rounded-lg text-white placeholder-gray-400 focus:outline-none ${
+                  className={`w-full px-4 py-3 border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none ${
                     existingAccountId 
                       ? 'bg-gray-700/50 border-gray-600 cursor-not-allowed' 
-                      : 'bg-gray-800/50 border-gray-600 focus:border-neon-green'
+                      : 'bg-gray-800/50 border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20'
                   }`}
                   required
                   readOnly={!!existingAccountId}
@@ -199,7 +199,7 @@ export default function DeviceConnectPage() {
                     💡 Numéro du compte existant (reconnexion)
                   </p>
                 ) : (
-                  <p className="text-sm text-gray-400 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Incluez le code pays (ex: +33 pour la France)
                   </p>
                 )}
@@ -220,8 +220,8 @@ export default function DeviceConnectPage() {
                   >
                     <div className="text-center">
                       <div className="text-3xl mb-2">📷</div>
-                      <h3 className="font-medium text-white">QR Code</h3>
-                      <p className="text-sm text-gray-400 mt-1">
+                      <h3 className="font-medium text-foreground">QR Code</h3>
+                      <p className="text-sm text-muted-foreground mt-1">
                         Scannez avec votre téléphone
                       </p>
                     </div>
@@ -237,8 +237,8 @@ export default function DeviceConnectPage() {
                   >
                     <div className="text-center">
                       <div className="text-3xl mb-2">🔢</div>
-                      <h3 className="font-medium text-white">Code d&apos;appairage</h3>
-                      <p className="text-sm text-gray-400 mt-1">
+                      <h3 className="font-medium text-foreground">Code d&apos;appairage</h3>
+                      <p className="text-sm text-muted-foreground mt-1">
                         Entrez le code sur votre téléphone
                       </p>
                     </div>
@@ -263,7 +263,7 @@ export default function DeviceConnectPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50"
+                  className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 disabled:opacity-50"
                 >
                   {loading 
                     ? 'Connexion...' 
@@ -282,9 +282,9 @@ export default function DeviceConnectPage() {
               animate={{ opacity: 1 }}
               className="text-center py-12"
             >
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-neon-green mx-auto mb-4"></div>
-              <h3 className="text-xl font-medium text-white mb-2">Connexion en cours...</h3>
-              <p className="text-gray-400">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary mx-auto mb-4"></div>
+              <h3 className="text-xl font-medium text-foreground mb-2">Connexion en cours...</h3>
+              <p className="text-muted-foreground">
                 Préparation de la connexion à WhatsApp Business
               </p>
             </motion.div>
@@ -296,7 +296,7 @@ export default function DeviceConnectPage() {
               animate={{ opacity: 1 }}
               className="text-center"
             >
-              <h3 className="text-xl font-medium text-white mb-6">
+              <h3 className="text-xl font-medium text-foreground mb-6">
                 Scannez le QR Code
               </h3>
               <div className="bg-white p-4 rounded-lg inline-block mb-6">
@@ -320,7 +320,7 @@ export default function DeviceConnectPage() {
                 </button>
                 <button
                   onClick={handleSuccess}
-                  className="flex-1 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+                  className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40"
                 >
                   J&apos;ai scanné le code
                 </button>
@@ -334,14 +334,14 @@ export default function DeviceConnectPage() {
               animate={{ opacity: 1 }}
               className="text-center"
             >
-              <h3 className="text-xl font-medium text-white mb-6">
+              <h3 className="text-xl font-medium text-foreground mb-6">
                 Code d&apos;appairage
               </h3>
-              <div className="bg-gray-800/50 border border-gray-600 rounded-lg p-8 mb-6">
-                <div className="text-4xl font-mono text-neon-green mb-4 tracking-wider">
+              <div className="bg-input/50 border border-input rounded-lg p-8 mb-6">
+                <div className="text-4xl font-mono text-primary mb-4 tracking-wider">
                   {pairingCode}
                 </div>
-                <p className="text-gray-400">
+                <p className="text-muted-foreground">
                   Entrez ce code sur votre téléphone
                 </p>
               </div>
@@ -364,7 +364,7 @@ export default function DeviceConnectPage() {
                 </button>
                 <button
                   onClick={handleSuccess}
-                  className="flex-1 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+                  className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40"
                 >
                   J&apos;ai entré le code
                 </button>
@@ -379,10 +379,10 @@ export default function DeviceConnectPage() {
               className="text-center py-12"
             >
               <div className="text-6xl mb-4">✅</div>
-              <h3 className="text-2xl font-bold text-white mb-2">
+              <h3 className="text-2xl font-bold text-foreground mb-2">
                 Connexion réussie !
               </h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Votre compte WhatsApp Business a été connecté avec succès.
               </p>
               <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">

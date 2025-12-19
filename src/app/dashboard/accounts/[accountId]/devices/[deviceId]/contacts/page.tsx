@@ -74,8 +74,8 @@ export default function DeviceContactsPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -85,35 +85,35 @@ export default function DeviceContactsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
               <button
                 onClick={handleBack}
-                className="text-neon-green hover:text-neon-green/80 transition-colors"
+                className="text-primary hover:text-primary/80 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-white">👥 Contacts WhatsApp</h1>
+                <h1 className="text-3xl font-bold text-foreground">👥 Contacts WhatsApp</h1>
                 {account && (
-                  <p className="text-gray-400 mt-2">
+                  <p className="text-muted-foreground mt-2">
                     {account.display_name || account.phone_number} - {account.phone_number}
                   </p>
                 )}
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 {filteredContacts.length} contact{filteredContacts.length !== 1 ? 's' : ''}
               </p>
             </div>
@@ -126,7 +126,7 @@ export default function DeviceContactsPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="🔍 Rechercher un contact..."
-              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+              className="w-full px-4 py-3 bg-input/50 border border-input rounded-lg text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
             />
           </div>
 
@@ -134,10 +134,10 @@ export default function DeviceContactsPage() {
           {filteredContacts.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-6xl mb-4">👥</div>
-              <h3 className="text-lg font-medium text-white mb-2">
+              <h3 className="text-lg font-medium text-foreground mb-2">
                 {searchTerm ? 'Aucun contact trouvé' : 'Aucun contact'}
               </h3>
-              <p className="text-gray-400">
+              <p className="text-muted-foreground">
                 {searchTerm 
                   ? 'Essayez une autre recherche'
                   : 'Les contacts apparaîtront ici une fois que des conversations seront initiées.'
@@ -152,7 +152,7 @@ export default function DeviceContactsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
-                  className="bg-gray-800/50 backdrop-blur-md p-6 rounded-xl border border-gray-700/50 hover:border-neon-green/30 transition-colors"
+                  className="bg-gray-800/50 backdrop-blur-md p-6 rounded-xl border border-gray-700/50 hover:border-primary/30 transition-colors"
                 >
                   <div className="flex items-center gap-4 mb-4">
                     {contact.profile_picture_url ? (
@@ -169,10 +169,10 @@ export default function DeviceContactsPage() {
                       </div>
                     )}
                     <div className="flex-1">
-                      <h3 className="font-medium text-white">
+                      <h3 className="font-medium text-foreground">
                         {contact.display_name || contact.phone_number}
                       </h3>
-                      <p className="text-sm text-gray-400">{contact.phone_number}</p>
+                      <p className="text-sm text-muted-foreground">{contact.phone_number}</p>
                     </div>
                   </div>
 
@@ -189,19 +189,19 @@ export default function DeviceContactsPage() {
                     )}
                   </div>
 
-                  <div className="text-xs text-gray-400 mb-4">
+                  <div className="text-xs text-muted-foreground mb-4">
                     <strong>Dernière activité:</strong> {formatLastSeen(contact.last_seen)}
                   </div>
 
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleSendMessage(contact.phone_number)}
-                      className="flex-1 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 text-sm flex items-center justify-center gap-2"
+                      className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 text-sm flex items-center justify-center gap-2"
                     >
                       <span>💬</span>
                       Message
                     </button>
-                    <button className="bg-gray-600/20 hover:bg-gray-600/30 text-gray-400 px-4 py-2 rounded-lg transition-colors border border-gray-600/20 hover:border-gray-600/40 text-sm flex items-center justify-center">
+                    <button className="bg-gray-600/20 hover:bg-gray-600/30 text-muted-foreground px-4 py-2 rounded-lg transition-colors border border-gray-600/20 hover:border-gray-600/40 text-sm flex items-center justify-center">
                       <span>ℹ️</span>
                     </button>
                   </div>

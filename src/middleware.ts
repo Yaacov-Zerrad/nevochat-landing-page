@@ -5,10 +5,15 @@ export default createMiddleware({
   locales: ['he', 'en', 'fr'],
 
   // Used when no locale matches
-  defaultLocale: 'he'
+  defaultLocale: 'fr',
+  
+  // Disable locale prefix for default locale
+  localePrefix: 'as-needed'
 });
 
 export const config = {
-  // Match only internationalized pathnames
-  matcher: ['/', '/(he|fr|en)/:path*']
+  // Match all pathnames except for
+  // - … if they start with `/api`, `/_next`, `/_vercel`, `/dashboard`, `/auth`
+  // - … the ones containing a dot (e.g. `favicon.ico`)
+  matcher: ['/((?!api|_next|_vercel|dashboard|auth|.*\\..*).*)']
 };

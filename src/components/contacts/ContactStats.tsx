@@ -47,7 +47,7 @@ export function ContactStats({ stats, loading }: ContactStatsProps) {
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse"
+              className="bg-white/5 backdrop-blur-sm border border-border rounded-lg p-4 animate-pulse"
             >
               <div className="h-4 bg-white/10 rounded mb-2"></div>
               <div className="h-8 bg-white/10 rounded"></div>
@@ -71,7 +71,7 @@ export function ContactStats({ stats, loading }: ContactStatsProps) {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm font-medium">{item.label}</p>
+                <p className="text-muted-foreground text-sm font-medium">{item.label}</p>
                 <p className={`text-2xl font-bold ${item.color} mt-1`}>
                   {item.value.toLocaleString()}
                 </p>

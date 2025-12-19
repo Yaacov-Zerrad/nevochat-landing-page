@@ -15,13 +15,13 @@ export default function FunctionNode(props: NodeProps) {
     <BaseNode 
       {...props} 
       icon={icon} 
-      color="green-500"
+      color="blue-500"
       onSetAsEntry={data.onSetAsEntry}
       isEntryNode={data.isEntryNode}
     >
       <div className="space-y-2">
-        <div className="text-xs text-gray-400">Function</div>
-        <div className="text-sm text-white bg-gray-700 p-2 rounded">
+        <div className="text-xs text-muted-foreground">Function</div>
+        <div className="text-sm text-foreground bg-secondary p-2 rounded">
           {data.config?.function_name || 'No function selected'}
         </div>
       </div>

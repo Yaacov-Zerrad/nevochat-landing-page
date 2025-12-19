@@ -28,16 +28,16 @@ export default function EndNode(props: NodeProps) {
           </svg>
         </div>
         <div className="flex-1">
-          <h3 className="text-white font-medium text-sm">{data.label}</h3>
+          <h3 className="text-foreground font-medium text-sm">{data.label}</h3>
           {data.description && (
-            <p className="text-gray-400 text-xs">{data.description}</p>
+            <p className="text-muted-foreground text-xs">{data.description}</p>
           )}
         </div>
       </div>
 
       <div className="p-3">
-        <div className="text-xs text-gray-400">End Message</div>
-        <div className="text-sm text-white bg-gray-700 p-2 rounded mt-1">
+        <div className="text-xs text-muted-foreground">End Message</div>
+        <div className="text-sm text-foreground bg-secondary p-2 rounded mt-1">
           {data.config?.message || 'Flow completed'}
         </div>
       </div>

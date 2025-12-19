@@ -157,14 +157,14 @@ export function StartConversationModal({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="bg-gray-900 border border-neon-green/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+          className="bg-card border border-primary/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
         >
           {/* Header */}
-          <div className="sticky top-0 bg-gray-900 z-10 p-4 sm:p-6 border-b border-white/10 flex justify-between items-center">
-            <h2 className="text-xl sm:text-2xl font-bold text-white">Nouvelle conversation</h2>
+          <div className="sticky top-0 bg-card z-10 p-4 sm:p-6 border-b border-border flex justify-between items-center">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">Nouvelle conversation</h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -183,7 +183,7 @@ export function StartConversationModal({
                 <select
                   value={selectedInboxId || ''}
                   onChange={(e) => setSelectedInboxId(parseInt(e.target.value))}
-                  className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none"
+                  className="w-full bg-input text-foreground px-4 py-3 rounded-lg border border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                 >
                   {inboxes.map((inbox) => (
                     <option key={inbox.id} value={inbox.id}>
@@ -204,13 +204,13 @@ export function StartConversationModal({
                 placeholder="Rechercher par nom ou numéro..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none"
+                className="w-full bg-input text-foreground px-4 py-3 rounded-lg border border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
 
               {/* Contacts List */}
               {loading ? (
-                <div className="mt-4 text-center text-gray-400">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neon-green mx-auto"></div>
+                <div className="mt-4 text-center text-muted-foreground">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-4 border-primary mx-auto"></div>
                 </div>
               ) : contacts.length > 0 ? (
                 <div className="mt-4 space-y-2 max-h-48 overflow-y-auto">
@@ -220,12 +220,12 @@ export function StartConversationModal({
                       onClick={() => handleContactSelect(contact)}
                       className={`w-full text-left p-3 rounded-lg border transition-colors ${
                         selectedContact?.id === contact.id
-                          ? 'bg-neon-green/20 border-neon-green text-white'
+                          ? 'bg-primary/20 border-neon-green text-foreground'
                           : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
                       }`}
                     >
                       <div className="font-medium">{contact.name}</div>
-                      <div className="text-sm text-gray-400">
+                      <div className="text-sm text-muted-foreground">
                         {contact.phone_number || contact.identifier}
                       </div>
                       {contact.additional_attributes?.country && (
@@ -237,14 +237,14 @@ export function StartConversationModal({
                   ))}
                 </div>
               ) : searchQuery ? (
-                <div className="mt-4 text-center text-gray-400 text-sm">
+                <div className="mt-4 text-center text-muted-foreground text-sm">
                   Aucun contact trouvé
                 </div>
               ) : null}
             </div>
 
-            <div className="border-t border-white/10 pt-6">
-              <p className="text-sm text-gray-400 mb-4">Ou entrez manuellement les informations</p>
+            <div className="border-t border-border pt-6">
+              <p className="text-sm text-muted-foreground mb-4">Ou entrez manuellement les informations</p>
 
               {/* Phone Number Input */}
               <div className="space-y-4">
@@ -257,7 +257,7 @@ export function StartConversationModal({
                     placeholder="+972545564449"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none"
+                    className="w-full bg-input text-foreground px-4 py-3 rounded-lg border border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Incluez l&apos;indicatif du pays (ex: +972, +33)
@@ -274,7 +274,7 @@ export function StartConversationModal({
                     placeholder="John Doe"
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none"
+                    className="w-full bg-input text-foreground px-4 py-3 rounded-lg border border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                   />
                 </div>
 
@@ -288,7 +288,7 @@ export function StartConversationModal({
                     value={initialMessage}
                     onChange={(e) => setInitialMessage(e.target.value)}
                     rows={3}
-                    className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none resize-none"
+                    className="w-full bg-input text-foreground px-4 py-3 rounded-lg border border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Si aucun message n&apos;est fourni, le flow de chatbot démarrera automatiquement
@@ -306,11 +306,11 @@ export function StartConversationModal({
           </div>
 
           {/* Footer */}
-          <div className="sticky bottom-0 bg-gray-900 z-10 p-4 sm:p-6 border-t border-white/10 flex justify-end space-x-3">
+          <div className="sticky bottom-0 bg-card z-10 p-4 sm:p-6 border-t border-border flex justify-end space-x-3">
             <button
               onClick={onClose}
               disabled={submitting}
-              className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
+              className="px-6 py-3 bg-input text-foreground rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
             >
               Annuler
             </button>

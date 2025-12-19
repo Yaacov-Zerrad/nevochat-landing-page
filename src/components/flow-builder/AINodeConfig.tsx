@@ -46,10 +46,10 @@ function PromptModal({ isOpen, onClose, prompt, onSave }: PromptModalProps) {
       <div className="bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] flex flex-col mx-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Edit AI Prompt</h3>
+          <h3 className="text-lg font-semibold text-foreground">Edit AI Prompt</h3>
           <button
             onClick={handleCancel}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -68,10 +68,10 @@ function PromptModal({ isOpen, onClose, prompt, onSave }: PromptModalProps) {
             rows={12}
             dir="auto"
             style={{ unicodeBidi: 'plaintext' }}
-            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
+            className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none"
             placeholder="Enter your AI prompt here..."
           />
-          <div className="mt-2 text-xs text-gray-400">
+          <div className="mt-2 text-xs text-muted-foreground">
             Character count: {localPrompt.length}
           </div>
         </div>
@@ -80,13 +80,13 @@ function PromptModal({ isOpen, onClose, prompt, onSave }: PromptModalProps) {
         <div className="flex justify-end space-x-3">
           <button
             onClick={handleCancel}
-            className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors"
+            className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-foreground rounded-lg transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green border border-neon-green/20 hover:border-neon-green/40 rounded-lg transition-colors"
+            className="px-4 py-2 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20 hover:border-neon-green/40 rounded-lg transition-colors"
           >
             Save Prompt
           </button>
@@ -119,19 +119,19 @@ export default function AINodeConfig({ config, updateConfig }: AINodeConfigProps
         </label>
         <div
           onClick={() => setIsPromptModalOpen(true)}
-          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-3 text-white hover:border-neon-green cursor-pointer transition-colors min-h-[80px] flex items-start"
+          className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-3 text-foreground hover:border-neon-green cursor-pointer transition-colors min-h-[80px] flex items-start"
         >
           <div className="flex-1">
-            <div className={`${config.prompt ? 'text-white' : 'text-gray-400'}`}>
+            <div className={`${config.prompt ? 'text-foreground' : 'text-muted-foreground'}`}>
               {getPromptPreview(config.prompt || '')}
             </div>
             {config.prompt && (
-              <div className="text-xs text-gray-400 mt-2">
+              <div className="text-xs text-muted-foreground mt-2">
                 {config.prompt.length} characters - Click to edit
               </div>
             )}
           </div>
-          <div className="ml-2 text-gray-400">
+          <div className="ml-2 text-muted-foreground">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
@@ -147,7 +147,7 @@ export default function AINodeConfig({ config, updateConfig }: AINodeConfigProps
         <select
           value={config.model || 'gpt-4o-mini'}
           onChange={(e) => updateConfig('model', e.target.value)}
-          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+          className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
         >
           <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
           <option value="gpt-4o-mini">GPT-4o Mini</option>
@@ -167,7 +167,7 @@ export default function AINodeConfig({ config, updateConfig }: AINodeConfigProps
         <select
           value={config.temperature || '0.7'}
           onChange={(e) => updateConfig('temperature', e.target.value)}
-          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+          className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
         >
           <option value="0.1">0.1</option>
           <option value="0.2">0.2</option>

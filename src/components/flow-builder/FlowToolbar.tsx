@@ -10,7 +10,7 @@ interface FlowToolbarProps {
 
 export default function FlowToolbar({ onSave, onDeleteNode, selectedNode, saving }: FlowToolbarProps) {
   return (
-    <div className="flex items-center space-x-2 p-2 bg-black/80 backdrop-blur-md rounded-lg border border-neon-green/20">
+    <div className="flex items-center space-x-2 p-2 glass glass-border rounded-lg border border-primary/20">
       {/* Save Button */}
       <button
         onClick={onSave}
@@ -18,8 +18,8 @@ export default function FlowToolbar({ onSave, onDeleteNode, selectedNode, saving
         className={`
           px-3 py-2 rounded-md text-sm font-medium transition-colors
           ${saving 
-            ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
-            : 'bg-neon-green/20 hover:bg-neon-green/30 text-neon-green border border-neon-green/20 hover:border-neon-green/40'
+            ? 'bg-gray-600 text-muted-foreground cursor-not-allowed' 
+            : 'bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20 hover:border-neon-green/40'
           }
         `}
         title="Save Flow (Ctrl+S)"
@@ -58,7 +58,7 @@ export default function FlowToolbar({ onSave, onDeleteNode, selectedNode, saving
       {/* Zoom Controls */}
       <div className="flex items-center space-x-1 ml-4">
         <button
-          className="p-2 rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 transition-colors"
+          className="p-2 rounded-md bg-secondary hover:bg-gray-600 text-gray-300 transition-colors"
           title="Zoom to Fit"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,9 +69,9 @@ export default function FlowToolbar({ onSave, onDeleteNode, selectedNode, saving
 
       {/* Node Info */}
       {selectedNode && (
-        <div className="ml-4 px-3 py-2 bg-gray-700/50 rounded-md">
-          <div className="text-xs text-gray-400">Selected:</div>
-          <div className="text-sm text-white font-medium">
+        <div className="ml-4 px-3 py-2 bg-secondary/50 rounded-md">
+          <div className="text-xs text-muted-foreground">Selected:</div>
+          <div className="text-sm text-foreground font-medium">
             {selectedNode.data.label}
           </div>
         </div>

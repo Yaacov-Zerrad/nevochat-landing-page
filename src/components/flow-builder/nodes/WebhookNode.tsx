@@ -20,8 +20,8 @@ export default function WebhookNode(props: NodeProps) {
       isEntryNode={data.isEntryNode}
     >
       <div className="space-y-2">
-        <div className="text-xs text-gray-400">Webhook</div>
-        <div className="text-sm text-white bg-gray-700 p-2 rounded">
+        <div className="text-xs text-muted-foreground">Webhook</div>
+        <div className="text-sm text-foreground bg-secondary p-2 rounded">
           {data.config?.method || 'POST'} {data.config?.url || 'No URL set'}
         </div>
       </div>

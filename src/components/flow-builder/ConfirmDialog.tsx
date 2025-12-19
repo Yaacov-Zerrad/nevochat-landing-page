@@ -54,7 +54,7 @@ export default function ConfirmDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-neon-green/20 rounded-lg shadow-2xl max-w-md w-full">
+      <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-primary/20 rounded-lg shadow-2xl max-w-md w-full">
         <div className="p-6">
           {/* Icon */}
           <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-black/50">
@@ -74,12 +74,12 @@ export default function ConfirmDialog({
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold text-white text-center mb-2">
+          <h3 className="text-xl font-bold text-foreground text-center mb-2">
             {title}
           </h3>
 
           {/* Message */}
-          <p className="text-gray-400 text-center mb-6">
+          <p className="text-muted-foreground text-center mb-6">
             {message}
           </p>
 
@@ -87,7 +87,7 @@ export default function ConfirmDialog({
           <div className="flex space-x-3">
             <button
               onClick={onCancel}
-              className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors border border-gray-600"
+              className="flex-1 px-4 py-2 bg-secondary hover:bg-gray-600 text-foreground rounded-lg transition-colors border border-gray-600"
             >
               {cancelLabel}
             </button>

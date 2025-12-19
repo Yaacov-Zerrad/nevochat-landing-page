@@ -150,11 +150,11 @@ export default function AdvancedConditionsBuilder({
           <>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Field</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Field</label>
                 <select
                   value={rule.field || ''}
                   onChange={(e) => updateRule(rule.id, { field: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 >
                   <option value="">Select field</option>
                   {CONTACT_FIELDS.map(field => (
@@ -163,11 +163,11 @@ export default function AdvancedConditionsBuilder({
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Operator</label>
                 <select
                   value={rule.operator}
                   onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 >
                   {OPERATORS.map(op => (
                     <option key={op.value} value={op.value}>{op.label}</option>
@@ -177,17 +177,17 @@ export default function AdvancedConditionsBuilder({
             </div>
             {['additional_attributes', 'custom_attributes'].includes(rule.field || '') && (
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Custom Field Path</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Custom Field Path</label>
                 <input
                   type="text"
                   value={rule.variable_path || ''}
                   onChange={(e) => updateRule(rule.id, { 
                     variable_path: e.target.value
                   })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                   placeholder="e.g., additional_attributes.source, custom_attributes.category"
                 />
-                <div className="bg-gray-800 p-2 rounded text-xs text-gray-400 mt-1">
+                <div className="bg-gray-800 p-2 rounded text-xs text-muted-foreground mt-1">
                   <strong>JSON Field:</strong> Access nested values using dot notation.
                   <br />
                   <strong>Examples:</strong> additional_attributes.source, custom_attributes.category, custom_attributes.tags.0
@@ -196,12 +196,12 @@ export default function AdvancedConditionsBuilder({
             )}
             {!['is_empty', 'not_empty'].includes(rule.operator) && (
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Value</label>
                 <input
                   type="text"
                   value={rule.value || ''}
                   onChange={(e) => updateRule(rule.id, { value: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                   placeholder="Expected value"
                 />
               </div>
@@ -214,7 +214,7 @@ export default function AdvancedConditionsBuilder({
                   onChange={(e) => updateRule(rule.id, { case_sensitive: e.target.checked })}
                   className="rounded"
                 />
-                <span className="text-xs text-gray-400">Case sensitive</span>
+                <span className="text-xs text-muted-foreground">Case sensitive</span>
               </label>
             </div>
           </>
@@ -224,22 +224,22 @@ export default function AdvancedConditionsBuilder({
         return (
           <>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Variable Path</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Variable Path</label>
               <input
                 type="text"
                 value={rule.variable_path || ''}
                 onChange={(e) => updateRule(rule.id, { variable_path: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="e.g., user.age, preferences.language"
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Operator</label>
                 <select
                   value={rule.operator}
                   onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 >
                   {OPERATORS.map(op => (
                     <option key={op.value} value={op.value}>{op.label}</option>
@@ -247,12 +247,12 @@ export default function AdvancedConditionsBuilder({
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Value</label>
                 <input
                   type="text"
                   value={rule.value || ''}
                   onChange={(e) => updateRule(rule.id, { value: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                   placeholder="Expected value"
                 />
               </div>
@@ -265,11 +265,11 @@ export default function AdvancedConditionsBuilder({
           <>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Operator</label>
                 <select
                   value={rule.operator}
                   onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 >
                   {OPERATORS.map(op => (
                     <option key={op.value} value={op.value}>{op.label}</option>
@@ -277,12 +277,12 @@ export default function AdvancedConditionsBuilder({
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Value</label>
                 <input
                   type="text"
                   value={rule.value || ''}
                   onChange={(e) => updateRule(rule.id, { value: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                   placeholder="Text to match"
                 />
               </div>
@@ -295,7 +295,7 @@ export default function AdvancedConditionsBuilder({
                   onChange={(e) => updateRule(rule.id, { case_sensitive: e.target.checked })}
                   className="rounded"
                 />
-                <span className="text-xs text-gray-400">Case sensitive</span>
+                <span className="text-xs text-muted-foreground">Case sensitive</span>
               </label>
             </div>
           </>
@@ -305,17 +305,17 @@ export default function AdvancedConditionsBuilder({
         return (
           <>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Intent Name</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Intent Name</label>
               <input
                 type="text"
                 value={rule.intent_name || ''}
                 onChange={(e) => updateRule(rule.id, { intent_name: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="e.g., confirm_booking, support_request"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Confidence Threshold</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Confidence Threshold</label>
               <input
                 type="number"
                 min="0"
@@ -323,7 +323,7 @@ export default function AdvancedConditionsBuilder({
                 step="0.1"
                 value={rule.confidence_threshold || 0.8}
                 onChange={(e) => updateRule(rule.id, { confidence_threshold: parseFloat(e.target.value) })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
               />
             </div>
           </>
@@ -333,11 +333,11 @@ export default function AdvancedConditionsBuilder({
         return (
           <>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Time Operator</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Time Operator</label>
               <select
                 value={rule.operator}
                 onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
               >
                 {TIME_OPERATORS.map(op => (
                   <option key={op.value} value={op.value}>{op.label}</option>
@@ -347,42 +347,42 @@ export default function AdvancedConditionsBuilder({
             {rule.operator === 'between' ? (
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1">Start Time</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Start Time</label>
                   <input
                     type="time"
                     value={rule.start_time || ''}
                     onChange={(e) => updateRule(rule.id, { start_time: e.target.value })}
-                    className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1">End Time</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">End Time</label>
                   <input
                     type="time"
                     value={rule.end_time || ''}
                     onChange={(e) => updateRule(rule.id, { end_time: e.target.value })}
-                    className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                   />
                 </div>
               </div>
             ) : (
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Time</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Time</label>
                 <input
                   type="time"
                   value={rule.value || ''}
                   onChange={(e) => updateRule(rule.id, { value: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 />
               </div>
             )}
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Timezone</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Timezone</label>
               <input
                 type="text"
                 value={rule.timezone || 'UTC'}
                 onChange={(e) => updateRule(rule.id, { timezone: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="e.g., UTC, Europe/Paris"
               />
             </div>
@@ -393,21 +393,21 @@ export default function AdvancedConditionsBuilder({
         return (
           <>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Regex Pattern</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Regex Pattern</label>
               <input
                 type="text"
                 value={rule.pattern || ''}
                 onChange={(e) => updateRule(rule.id, { pattern: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="e.g., ^[0-9]{10}$"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Target</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Target</label>
               <select
                 value={rule.target || 'last_user_message'}
                 onChange={(e) => updateRule(rule.id, { target: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
               >
                 <option value="last_user_message">Last User Message</option>
               </select>
@@ -419,12 +419,12 @@ export default function AdvancedConditionsBuilder({
         return (
           <>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Node ID</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Node ID</label>
               <input
                 type="text"
                 value={rule.node_id || ''}
                 onChange={(e) => updateRule(rule.id, { node_id: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="e.g., welcome_message"
               />
             </div>
@@ -436,7 +436,7 @@ export default function AdvancedConditionsBuilder({
                   onChange={(e) => updateRule(rule.id, { visited: e.target.checked })}
                   className="rounded"
                 />
-                <span className="text-xs text-gray-400">Must have been visited</span>
+                <span className="text-xs text-muted-foreground">Must have been visited</span>
               </label>
             </div>
           </>
@@ -447,11 +447,11 @@ export default function AdvancedConditionsBuilder({
           <>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Field</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Field</label>
                 <select
                   value={rule.field || ''}
                   onChange={(e) => updateRule(rule.id, { field: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 >
                   <option value="">Select field</option>
                   {CONVERSATION_FIELDS.map(field => (
@@ -460,11 +460,11 @@ export default function AdvancedConditionsBuilder({
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Operator</label>
                 <select
                   value={rule.operator}
                   onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
-                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 >
                   {OPERATORS.map(op => (
                     <option key={op.value} value={op.value}>{op.label}</option>
@@ -473,12 +473,12 @@ export default function AdvancedConditionsBuilder({
               </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Value</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Value</label>
               <input
                 type={rule.field === 'message_count' || rule.field === 'duration_minutes' ? 'number' : 'text'}
                 value={rule.value || ''}
                 onChange={(e) => updateRule(rule.id, { value: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="Expected value"
               />
             </div>
@@ -489,11 +489,11 @@ export default function AdvancedConditionsBuilder({
         return (
           <>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Operator</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Operator</label>
               <select
                 value={rule.operator}
                 onChange={(e) => updateRule(rule.id, { operator: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
               >
                 {FUNCTION_CALL_OPERATORS.map(op => (
                   <option key={op.value} value={op.value} title={op.description}>{op.label}</option>
@@ -501,17 +501,17 @@ export default function AdvancedConditionsBuilder({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-400 mb-1">Function Name</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Function Name</label>
               <input
                 type="text"
                 value={rule.function_name || ''}
                 onChange={(e) => updateRule(rule.id, { function_name: e.target.value })}
-                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="e.g., send_email, get_calendar, schedule_meeting"
               />
               <p className="text-xs text-gray-500 mt-1">Name of the function to check</p>
             </div>
-            <div className="bg-gray-800 p-2 rounded text-xs text-gray-400">
+            <div className="bg-gray-800 p-2 rounded text-xs text-muted-foreground">
               <strong>How it works:</strong> Checks if the specified function has been called during the conversation flow. 
               Function calls are automatically tracked when AI nodes execute MCP tools. The calls are stored with order and timing information.
             </div>
@@ -526,13 +526,13 @@ export default function AdvancedConditionsBuilder({
   return (
     <div className={`space-y-4 ${className}`}>
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium text-white">Advanced Conditions</h4>
+        <h4 className="text-sm font-medium text-foreground">Advanced Conditions</h4>
         <div className="flex items-center space-x-2">
-          <label className="text-xs text-gray-400">Logic:</label>
+          <label className="text-xs text-muted-foreground">Logic:</label>
           <select
             value={localConditions.operator}
             onChange={(e) => updateConditions({ ...localConditions, operator: e.target.value as 'AND' | 'OR' })}
-            className="bg-gray-600 border border-gray-500 rounded px-2 py-1 text-xs text-white focus:border-neon-green focus:outline-none"
+            className="bg-gray-600 border border-gray-500 rounded px-2 py-1 text-xs text-foreground focus:border-neon-green focus:outline-none"
           >
             <option value="AND">AND (All must be true)</option>
             <option value="OR">OR (Any can be true)</option>
@@ -542,14 +542,14 @@ export default function AdvancedConditionsBuilder({
 
       <div className="space-y-3 max-h-64 overflow-y-auto">
         {localConditions.rules.map((rule, index) => (
-          <div key={rule.id} className="bg-gray-700 rounded-lg p-3 space-y-3 border border-gray-600">
+          <div key={rule.id} className="bg-secondary rounded-lg p-3 space-y-3 border border-gray-600">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <span className="text-xs font-medium text-neon-green">Rule {index + 1}</span>
+                <span className="text-xs font-medium text-primary">Rule {index + 1}</span>
                 <select
                   value={rule.type}
                   onChange={(e) => updateRule(rule.id, { type: e.target.value })}
-                  className="bg-gray-600 border border-gray-500 rounded px-2 py-1 text-xs text-white focus:border-neon-green focus:outline-none"
+                  className="bg-gray-600 border border-gray-500 rounded px-2 py-1 text-xs text-foreground focus:border-neon-green focus:outline-none"
                 >
                   {CONDITION_TYPES.map(type => (
                     <option key={type.value} value={type.value}>{type.label}</option>
@@ -576,7 +576,7 @@ export default function AdvancedConditionsBuilder({
 
       <button
         onClick={addRule}
-        className="w-full bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white px-3 py-2 rounded-lg transition-colors border border-gray-600 hover:border-gray-500 text-sm"
+        className="w-full bg-secondary hover:bg-gray-600 text-gray-300 hover:text-foreground px-3 py-2 rounded-lg transition-colors border border-gray-600 hover:border-gray-500 text-sm"
       >
         + Add Condition Rule
       </button>

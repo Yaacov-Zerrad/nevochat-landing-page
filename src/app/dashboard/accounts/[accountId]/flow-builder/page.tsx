@@ -633,8 +633,8 @@ function FlowBuilderContent() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -645,13 +645,13 @@ function FlowBuilderContent() {
 
   if (!flowId) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">No Flow Selected</h2>
-          <p className="text-gray-400 mb-6">Please select a flow to edit</p>
+          <h2 className="text-2xl font-bold text-foreground mb-4">No Flow Selected</h2>
+          <p className="text-muted-foreground mb-6">Please select a flow to edit</p>
           <button
             onClick={() => router.push(`/dashboard/accounts/${accountId}/flows`)}
-            className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+            className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40"
           >
             Back to Flows
           </button>
@@ -661,23 +661,23 @@ function FlowBuilderContent() {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex flex-col">
+    <div className="h-screen gradient-bg-light dark:gradient-bg-dark flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-black/50 backdrop-blur-md border-b border-neon-green/20">
+      <div className="flex items-center justify-between p-4 glass glass-border border-b border-primary/20">
         <div className="flex items-center space-x-4">
           <button
             onClick={() => router.push(`/dashboard/accounts/${accountId}/flows`)}
-            className="text-neon-green hover:text-neon-green/80 transition-colors"
+            className="text-primary hover:text-primary/80 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <div>
-            <h1 className="text-xl font-bold text-white">
+            <h1 className="text-xl font-bold text-foreground">
               {flow?.name || 'Flow Builder'} - {account?.name}
             </h1>
-            <p className="text-gray-400 text-sm">
+            <p className="text-muted-foreground text-sm">
               {flow?.description || 'Design your conversation flow'}
             </p>
           </div>
@@ -688,7 +688,7 @@ function FlowBuilderContent() {
             onClick={() => setShowNodeSidebar(!showNodeSidebar)}
             className={`p-2 rounded-lg transition-colors ${
               showNodeSidebar
-                ? 'bg-neon-green/20 text-neon-green'
+                ? 'bg-primary/20 text-primary'
                 : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
             title="Toggle Node Sidebar"
@@ -701,7 +701,7 @@ function FlowBuilderContent() {
           <button
             onClick={saveFlow}
             disabled={saving}
-            className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50"
+            className="bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save'}
           </button>
@@ -726,7 +726,7 @@ function FlowBuilderContent() {
       <div className="flex-1 flex">
         {/* Node Sidebar */}
         {showNodeSidebar && (
-          <div className="w-64 bg-black/50 backdrop-blur-md border-r border-neon-green/20">
+          <div className="w-64 glass glass-border border-r border-primary/20">
             <NodeSidebar onAddNode={addNode} />
           </div>
         )}
@@ -749,12 +749,12 @@ function FlowBuilderContent() {
             fitView
             attributionPosition="bottom-left"
           >
-            <Background variant={BackgroundVariant.Dots} color="#10b981" />
-            <Controls className="bg-black/50 border-neon-green/20" />
+            <Background variant={BackgroundVariant.Dots} color="hsl(199, 89%, 48%)" />
+            <Controls className="glass glass-border" />
             <MiniMap 
-              className="bg-black/50 border border-neon-green/20" 
-              nodeColor="#10b981"
-              maskColor="rgba(0, 0, 0, 0.8)"
+              className="bg-black/50 border border-primary/20" 
+              nodeColor="hsl(199, 89%, 48%)"
+              maskColor="rgba(0, 0, 0, 0.6)"
             />
             <Panel position="top-right">
               <FlowToolbar 
@@ -769,7 +769,7 @@ function FlowBuilderContent() {
 
         {/* Properties Panel */}
         {showPropertiesPanel && (selectedNode || selectedEdge) && (
-          <div className="w-80 bg-black/50 backdrop-blur-md border-l border-neon-green/20">
+          <div className="w-80 glass glass-border border-l border-primary/20">
             {selectedNode && (
               <NodePropertiesPanel 
                 node={selectedNode}

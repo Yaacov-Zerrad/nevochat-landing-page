@@ -95,7 +95,7 @@ export default function DeviceMessagesPage() {
       case 'failed':
         return 'text-red-400';
       default:
-        return 'text-gray-400';
+        return 'text-muted-foreground';
     }
   };
 
@@ -116,8 +116,8 @@ export default function DeviceMessagesPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -127,12 +127,12 @@ export default function DeviceMessagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md rounded-2xl border border-neon-green/20 overflow-hidden"
+          className="glass glass-border rounded-2xl border border-primary/20 overflow-hidden"
         >
           {/* Header */}
           <div className="p-6 border-b border-gray-700/50">
@@ -140,23 +140,23 @@ export default function DeviceMessagesPage() {
               <div className="flex items-center gap-4">
                 <button
                   onClick={handleBack}
-                  className="text-neon-green hover:text-neon-green/80 transition-colors"
+                  className="text-primary hover:text-primary/80 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
                 <div>
-                  <h1 className="text-2xl font-bold text-white">Messages WhatsApp</h1>
+                  <h1 className="text-2xl font-bold text-foreground">Messages WhatsApp</h1>
                   {account && (
-                    <p className="text-gray-400">
+                    <p className="text-muted-foreground">
                       {account.display_name || account.phone_number} - {account.phone_number}
                     </p>
                   )}
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-muted-foreground">
                   {messages.length} message{messages.length !== 1 ? 's' : ''}
                 </span>
               </div>
@@ -176,7 +176,7 @@ export default function DeviceMessagesPage() {
                     value={recipient}
                     onChange={(e) => setRecipient(e.target.value)}
                     placeholder="+33123456789"
-                    className="w-full px-4 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                    className="w-full px-4 py-2 bg-input/50 border border-input rounded-lg text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                     required
                   />
                 </div>
@@ -190,13 +190,13 @@ export default function DeviceMessagesPage() {
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       placeholder="Tapez votre message..."
-                      className="flex-1 px-4 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                      className="flex-1 px-4 py-2 bg-input/50 border border-input rounded-lg text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                       required
                     />
                     <button
                       type="submit"
                       disabled={sending || !newMessage.trim() || !recipient.trim()}
-                      className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50"
+                      className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-2 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 disabled:opacity-50"
                     >
                       {sending ? '📤' : '➤'}
                     </button>
@@ -211,10 +211,10 @@ export default function DeviceMessagesPage() {
             {messages.length === 0 ? (
               <div className="p-12 text-center">
                 <div className="text-6xl mb-4">💬</div>
-                <h3 className="text-lg font-medium text-white mb-2">
+                <h3 className="text-lg font-medium text-foreground mb-2">
                   Aucun message
                 </h3>
-                <p className="text-gray-400">
+                <p className="text-muted-foreground">
                   Envoyez votre premier message pour commencer une conversation.
                 </p>
               </div>
@@ -230,20 +230,20 @@ export default function DeviceMessagesPage() {
                     <div
                       className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
                         message.direction === 'outgoing'
-                          ? 'bg-neon-green/20 border border-neon-green/30'
+                          ? 'bg-primary/20 border border-primary/30'
                           : 'bg-gray-700/50 border border-gray-600/50'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {message.direction === 'outgoing' ? 'Vous' : message.from_number}
                         </span>
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {formatDate(message.created_at)}
                         </span>
                       </div>
                       
-                      <p className="text-white text-sm mb-2">
+                      <p className="text-foreground text-sm mb-2">
                         {message.content?.text || 'Message non textuel'}
                       </p>
                       
@@ -252,7 +252,7 @@ export default function DeviceMessagesPage() {
                           <span className={`text-xs ${getMessageStatusColor(message.status)}`}>
                             {getMessageStatusIcon(message.status)}
                           </span>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-muted-foreground">
                             {message.status}
                           </span>
                         </div>

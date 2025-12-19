@@ -110,7 +110,7 @@ export default function ContactsPage({ params }: ContactsPageProps) {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+      <div className="min-h-screen">
         <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
           <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
             <h3 className="text-red-400 font-medium mb-2">Erreur</h3>
@@ -122,19 +122,19 @@ export default function ContactsPage({ params }: ContactsPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md rounded-2xl border border-neon-green/20"
+          className="glass glass-border rounded-2xl border border-primary/20"
         >
           {/* Header */}
-          <div className="border-b border-neon-green/20 p-4 lg:p-6">
+          <div className="border-b border-primary/20 p-4 lg:p-6">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
               <div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-white">Contacts</h1>
-                <p className="text-gray-400 mt-1">
+                <h1 className="text-2xl lg:text-3xl font-bold text-foreground">Contacts</h1>
+                <p className="text-muted-foreground mt-1">
                   Gérez vos contacts et leurs conversations
                 </p>
               </div>
@@ -147,10 +147,10 @@ export default function ContactsPage({ params }: ContactsPageProps) {
                     placeholder="Rechercher un contact..."
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none sm:w-64 text-sm placeholder-gray-400"
+                    className="bg-input text-foreground px-4 py-2 rounded-lg border border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none sm:w-64 text-sm placeholder-muted-foreground"
                   />
                   <svg
-                    className="absolute right-3 top-2.5 w-5 h-5 text-gray-400"
+                    className="absolute right-3 top-2.5 w-5 h-5 text-muted-foreground"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -169,8 +169,8 @@ export default function ContactsPage({ params }: ContactsPageProps) {
                   onClick={() => setShowFilters(!showFilters)}
                   className={`px-4 py-2 rounded-lg border transition-all text-sm ${
                     showFilters
-                      ? 'bg-neon-green/20 border-neon-green/30 text-neon-green'
-                      : 'bg-neon-green/20 border-neon-green/20 text-neon-green hover:bg-neon-green/30 hover:border-neon-green/40'
+                      ? 'bg-primary/20 border-primary/30 text-primary'
+                      : 'bg-primary/20 border-primary/20 text-primary hover:bg-primary/30 hover:border-primary/40'
                   }`}
                 >
                   <div className="flex items-center space-x-2">
@@ -211,9 +211,9 @@ export default function ContactsPage({ params }: ContactsPageProps) {
           {/* Main Content */}
           <div className="p-4 lg:p-6">
             {/* Contacts List - Full Width */}
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl">
-              <div className="p-4 border-b border-white/10">
-                <h2 className="text-lg font-semibold text-white">
+            <div className="bg-white/5 backdrop-blur-sm border border-border rounded-xl">
+              <div className="p-4 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">
                   Contacts ({pagination?.totalCount || 0})
                 </h2>
               </div>
@@ -221,8 +221,8 @@ export default function ContactsPage({ params }: ContactsPageProps) {
               <div className="divide-y divide-white/10">
                 {loading && contacts.length === 0 ? (
                   <div className="p-8 text-center">
-                    <div className="animate-spin w-8 h-8 border-2 border-neon-green/20 border-t-neon-green rounded-full mx-auto"></div>
-                    <p className="text-gray-400 mt-4">Chargement des contacts...</p>
+                    <div className="animate-spin w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full mx-auto"></div>
+                    <p className="text-muted-foreground mt-4">Chargement des contacts...</p>
                   </div>
                 ) : contacts.length === 0 ? (
                   <div className="p-8 text-center">
@@ -239,8 +239,8 @@ export default function ContactsPage({ params }: ContactsPageProps) {
                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
                       />
                     </svg>
-                    <h3 className="text-lg font-medium text-white mb-2">Aucun contact</h3>
-                    <p className="text-gray-400">
+                    <h3 className="text-lg font-medium text-foreground mb-2">Aucun contact</h3>
+                    <p className="text-muted-foreground">
                       Aucun contact ne correspond à vos critères de recherche.
                     </p>
                   </div>
@@ -262,11 +262,11 @@ export default function ContactsPage({ params }: ContactsPageProps) {
                     
                     {/* Load More */}
                     {pagination?.hasNextPage && (
-                      <div className="p-4 border-t border-white/10">
+                      <div className="p-4 border-t border-border">
                         <button
                           onClick={loadMore}
                           disabled={loading}
-                          className="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white transition-colors disabled:opacity-50"
+                          className="w-full py-2 bg-white/5 hover:bg-white/10 border border-border rounded-lg text-foreground transition-colors disabled:opacity-50"
                         >
                           {loading ? 'Chargement...' : 'Charger plus'}
                         </button>
@@ -295,17 +295,17 @@ export default function ContactsPage({ params }: ContactsPageProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ type: "spring", duration: 0.3 }}
-              className="w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-gray-900 rounded-2xl shadow-2xl"
+              className="w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-card rounded-2xl shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
-              <div className="sticky top-0 z-10 bg-gray-900/95 backdrop-blur-sm border-b border-white/10 p-4 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white">Détails du contact</h2>
+              <div className="sticky top-0 z-10 bg-card/95 backdrop-blur-sm border-b border-border p-4 flex items-center justify-between">
+                <h2 className="text-xl font-bold text-foreground">Détails du contact</h2>
                 <button
                   onClick={handleCloseModal}
                   className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                 >
-                  <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>

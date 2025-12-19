@@ -385,7 +385,7 @@ export default function CreateTemplatePage() {
                 <button
                   type="button"
                   onClick={() => addVariableAndInsert(setTextTemplateData, textTemplateData, textBodyRef)}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded text-sm transition-colors"
+                  className="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-sm transition-colors"
                 >
                   <Plus className="w-4 h-4 inline mr-1" />
                   Ajouter variable
@@ -395,7 +395,7 @@ export default function CreateTemplatePage() {
                 ref={textBodyRef}
                 value={textTemplateData.body}
                 onChange={(e) => setTextTemplateData({ ...textTemplateData, body: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50 h-32"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50 h-32"
                 placeholder="Entrez le corps de votre message..."
                 required
               />
@@ -416,7 +416,7 @@ export default function CreateTemplatePage() {
               <select
                 value={mediaTemplateData.header_type}
                 onChange={(e) => setMediaTemplateData({ ...mediaTemplateData, header_type: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
               >
                 <option value="image">Image</option>
                 <option value="video">Vidéo</option>
@@ -432,7 +432,7 @@ export default function CreateTemplatePage() {
                 type="url"
                 value={mediaTemplateData.header_url}
                 onChange={(e) => setMediaTemplateData({ ...mediaTemplateData, header_url: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                 placeholder="https://example.com/media.jpg"
                 required
               />
@@ -446,7 +446,7 @@ export default function CreateTemplatePage() {
                 <button
                   type="button"
                   onClick={() => addVariableAndInsert(setMediaTemplateData, mediaTemplateData, mediaBodyRef)}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded text-sm transition-colors"
+                  className="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-sm transition-colors"
                 >
                   <Plus className="w-4 h-4 inline mr-1" />
                   Ajouter variable
@@ -456,7 +456,7 @@ export default function CreateTemplatePage() {
                 ref={mediaBodyRef}
                 value={mediaTemplateData.body}
                 onChange={(e) => setMediaTemplateData({ ...mediaTemplateData, body: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50 h-32"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50 h-32"
                 placeholder="Entrez le corps de votre message..."
                 required
               />
@@ -470,7 +470,7 @@ export default function CreateTemplatePage() {
                 type="text"
                 value={mediaTemplateData.footer}
                 onChange={(e) => setMediaTemplateData({ ...mediaTemplateData, footer: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                 placeholder="Pied de page..."
               />
             </div>
@@ -496,14 +496,14 @@ export default function CreateTemplatePage() {
                     type="text"
                     value={variable.key}
                     onChange={(e) => updateVariable(setMediaTemplateData, mediaTemplateData, index, 'key', e.target.value)}
-                    className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     placeholder="Clé (ex: 1)"
                   />
                   <input
                     type="text"
                     value={variable.value}
                     onChange={(e) => updateVariable(setMediaTemplateData, mediaTemplateData, index, 'value', e.target.value)}
-                    className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     placeholder="Valeur (ex: John)"
                   />
                   <button
@@ -530,7 +530,7 @@ export default function CreateTemplatePage() {
                 <button
                   type="button"
                   onClick={() => addVariableAndInsert(setQuickReplyData, quickReplyData, quickReplyBodyRef)}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded text-sm transition-colors"
+                  className="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-sm transition-colors"
                 >
                   <Plus className="w-4 h-4 inline mr-1" />
                   Ajouter variable
@@ -540,7 +540,7 @@ export default function CreateTemplatePage() {
                 ref={quickReplyBodyRef}
                 value={quickReplyData.body}
                 onChange={(e) => setQuickReplyData({ ...quickReplyData, body: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50 h-32"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50 h-32"
                 placeholder="Entrez le corps de votre message..."
                 required
               />
@@ -557,7 +557,7 @@ export default function CreateTemplatePage() {
                     ...quickReplyData,
                     buttons: [...quickReplyData.buttons, { text: '' }]
                   })}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded text-sm transition-colors"
+                  className="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-sm transition-colors"
                 >
                   <Plus className="w-4 h-4 inline mr-1" />
                   Ajouter
@@ -573,7 +573,7 @@ export default function CreateTemplatePage() {
                       newButtons[index].text = e.target.value
                       setQuickReplyData({ ...quickReplyData, buttons: newButtons })
                     }}
-                    className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     placeholder="Texte du bouton"
                     required
                   />
@@ -612,14 +612,14 @@ export default function CreateTemplatePage() {
                     type="text"
                     value={variable.key}
                     onChange={(e) => updateVariable(setQuickReplyData, quickReplyData, index, 'key', e.target.value)}
-                    className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     placeholder="Clé (ex: nom)"
                   />
                   <input
                     type="text"
                     value={variable.value}
                     onChange={(e) => updateVariable(setQuickReplyData, quickReplyData, index, 'value', e.target.value)}
-                    className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     placeholder="Valeur (ex: John)"
                   />
                   <button
@@ -646,7 +646,7 @@ export default function CreateTemplatePage() {
                 type="text"
                 value={listPickerData.header}
                 onChange={(e) => setListPickerData({ ...listPickerData, header: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                 placeholder="Titre de la liste"
                 required
               />
@@ -659,7 +659,7 @@ export default function CreateTemplatePage() {
               <textarea
                 value={listPickerData.body}
                 onChange={(e) => setListPickerData({ ...listPickerData, body: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50 h-32"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50 h-32"
                 placeholder="Description de la liste"
                 required
               />
@@ -673,7 +673,7 @@ export default function CreateTemplatePage() {
                 type="text"
                 value={listPickerData.button_text}
                 onChange={(e) => setListPickerData({ ...listPickerData, button_text: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                 placeholder="Voir les options"
                 required
               />
@@ -687,7 +687,7 @@ export default function CreateTemplatePage() {
                 type="text"
                 value={listPickerData.footer}
                 onChange={(e) => setListPickerData({ ...listPickerData, footer: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                 placeholder="Pied de page..."
               />
             </div>
@@ -709,7 +709,7 @@ export default function CreateTemplatePage() {
                         newSections[sectionIndex].title = e.target.value
                         setListPickerData({ ...listPickerData, sections: newSections })
                       }}
-                      className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                      className="w-full bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                       placeholder="Titre de la section"
                       required
                     />
@@ -724,7 +724,7 @@ export default function CreateTemplatePage() {
                           newSections[sectionIndex].items[itemIndex].id = e.target.value
                           setListPickerData({ ...listPickerData, sections: newSections })
                         }}
-                        className="w-24 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                        className="w-24 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                         placeholder="ID"
                         required
                       />
@@ -736,7 +736,7 @@ export default function CreateTemplatePage() {
                           newSections[sectionIndex].items[itemIndex].title = e.target.value
                           setListPickerData({ ...listPickerData, sections: newSections })
                         }}
-                        className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                        className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                         placeholder="Titre de l'élément"
                         required
                       />
@@ -748,7 +748,7 @@ export default function CreateTemplatePage() {
                           newSections[sectionIndex].items[itemIndex].description = e.target.value
                           setListPickerData({ ...listPickerData, sections: newSections })
                         }}
-                        className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                        className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                         placeholder="Description (optionnel)"
                       />
                       <button
@@ -771,7 +771,7 @@ export default function CreateTemplatePage() {
                       newSections[sectionIndex].items.push({ id: '', title: '', description: '' })
                       setListPickerData({ ...listPickerData, sections: newSections })
                     }}
-                    className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded text-sm transition-colors"
+                    className="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-sm transition-colors"
                   >
                     <Plus className="w-4 h-4 inline mr-1" />
                     Ajouter un élément
@@ -792,7 +792,7 @@ export default function CreateTemplatePage() {
               <textarea
                 value={callToActionData.body}
                 onChange={(e) => setCallToActionData({ ...callToActionData, body: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50 h-32"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50 h-32"
                 placeholder="Entrez le corps de votre message..."
                 required
               />
@@ -809,7 +809,7 @@ export default function CreateTemplatePage() {
                     ...callToActionData,
                     buttons: [...callToActionData.buttons, { type: 'url', text: '', url: '' }]
                   })}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-3 py-1 rounded text-sm transition-colors"
+                  className="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded text-sm transition-colors"
                 >
                   <Plus className="w-4 h-4 inline mr-1" />
                   Ajouter
@@ -831,7 +831,7 @@ export default function CreateTemplatePage() {
                       }
                       setCallToActionData({ ...callToActionData, buttons: newButtons })
                     }}
-                    className="w-32 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="w-32 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                   >
                     <option value="url">URL</option>
                     <option value="phone">Téléphone</option>
@@ -844,7 +844,7 @@ export default function CreateTemplatePage() {
                       newButtons[index].text = e.target.value
                       setCallToActionData({ ...callToActionData, buttons: newButtons })
                     }}
-                    className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     placeholder="Texte du bouton"
                     required
                   />
@@ -860,7 +860,7 @@ export default function CreateTemplatePage() {
                       }
                       setCallToActionData({ ...callToActionData, buttons: newButtons })
                     }}
-                    className="flex-1 bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+                    className="flex-1 bg-input/50 border border-input rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     placeholder={button.type === 'phone' ? '+33123456789' : 'https://example.com'}
                     required
                   />
@@ -890,7 +890,7 @@ export default function CreateTemplatePage() {
               <textarea
                 value={authenticationData.body}
                 onChange={(e) => setAuthenticationData({ ...authenticationData, body: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50 h-32"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50 h-32"
                 placeholder="Votre code de vérification est {'{'}1{'}'}"
                 required
               />
@@ -906,7 +906,7 @@ export default function CreateTemplatePage() {
               <select
                 value={authenticationData.code_length}
                 onChange={(e) => setAuthenticationData({ ...authenticationData, code_length: parseInt(e.target.value) })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
               >
                 <option value={4}>4 chiffres</option>
                 <option value={6}>6 chiffres</option>
@@ -920,7 +920,7 @@ export default function CreateTemplatePage() {
                 id="security_recommendation"
                 checked={authenticationData.add_security_recommendation}
                 onChange={(e) => setAuthenticationData({ ...authenticationData, add_security_recommendation: e.target.checked })}
-                className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 rounded focus:ring-neon-green focus:ring-2"
+                className="w-4 h-4 text-primary bg-gray-800 border-gray-600 rounded focus:ring-neon-green focus:ring-2"
               />
               <label htmlFor="security_recommendation" className="text-sm text-gray-300">
                 Ajouter une recommandation de sécurité
@@ -939,7 +939,7 @@ export default function CreateTemplatePage() {
               <textarea
                 value={locationData.body}
                 onChange={(e) => setLocationData({ ...locationData, body: e.target.value })}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50 h-32"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50 h-32"
                 placeholder="Partagez votre localisation pour un service optimal"
                 required
               />
@@ -955,7 +955,7 @@ export default function CreateTemplatePage() {
       default:
         return (
           <div className="text-center py-12">
-            <p className="text-gray-400">Ce type de template n&apos;est pas encore implémenté</p>
+            <p className="text-muted-foreground">Ce type de template n&apos;est pas encore implémenté</p>
           </div>
         )
     }
@@ -963,8 +963,8 @@ export default function CreateTemplatePage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     )
   }
@@ -987,31 +987,31 @@ export default function CreateTemplatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.push(`/dashboard/accounts/${accountId}/templates`)}
-                className="p-2 rounded-lg bg-neon-green/10 hover:bg-neon-green/20 text-neon-green transition-colors"
+                className="p-2 rounded-lg bg-neon-green/10 hover:bg-primary/20 text-primary transition-colors"
               >
                 <ArrowLeft className="w-6 h-6" />
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-white">Créer {getTemplateTypeTitle()}</h1>
-                <p className="text-gray-400">Configurez votre nouveau template WhatsApp</p>
+                <h1 className="text-3xl font-bold text-foreground">Créer {getTemplateTypeTitle()}</h1>
+                <p className="text-muted-foreground">Configurez votre nouveau template WhatsApp</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => setPreviewMode(!previewMode)}
-                className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors"
+                className="bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg transition-colors"
               >
                 <Eye className="w-5 h-5 inline mr-2" />
                 {previewMode ? 'Éditer' : 'Prévisualiser'}
@@ -1056,7 +1056,7 @@ export default function CreateTemplatePage() {
                       type="text"
                       value={formData.friendly_name}
                       onChange={(e) => setFormData({ ...formData, friendly_name: e.target.value })}
-                      className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                      className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                       placeholder="Nom unique du template"
                       required
                     />
@@ -1069,7 +1069,7 @@ export default function CreateTemplatePage() {
                     <select
                       value={formData.language}
                       onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                      className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                      className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     >
                       <option value="en">Anglais</option>
                       <option value="fr">Français</option>
@@ -1087,7 +1087,7 @@ export default function CreateTemplatePage() {
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                      className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
                     >
                       <option value="MARKETING">Marketing</option>
                       <option value="UTILITY">Utilitaire</option>
@@ -1104,10 +1104,10 @@ export default function CreateTemplatePage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-neon-green inline mr-2"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-4 border-primary inline mr-2"></div>
                     ) : (
                       <Save className="w-5 h-5 inline mr-2" />
                     )}
@@ -1120,7 +1120,7 @@ export default function CreateTemplatePage() {
             {/* Right Column - Preview */}
             <div className="space-y-6">
               <div>
-                <h2 className="text-xl font-semibold text-white mb-4">Aperçu WhatsApp</h2>
+                <h2 className="text-xl font-semibold text-foreground mb-4">Aperçu WhatsApp</h2>
                 <WhatsAppPreview
                   templateType={templateType as any}
                   templateData={getCurrentTemplateData()}
@@ -1131,11 +1131,11 @@ export default function CreateTemplatePage() {
 
               {/* Variables Display */}
               <div className="bg-gray-800/50 p-4 rounded-xl border border-gray-700">
-                <h3 className="text-lg font-medium text-white mb-3">Variables de prévisualisation</h3>
+                <h3 className="text-lg font-medium text-foreground mb-3">Variables de prévisualisation</h3>
                 <div className="space-y-2">
                   {Object.entries(getPreviewVariables()).map(([key, value]) => (
                     <div key={key} className="flex items-center justify-between text-sm">
-                      <code className="text-neon-green">{`{{${key}}}:`}</code>
+                      <code className="text-primary">{`{{${key}}}:`}</code>
                       <span className="text-gray-300">{value}</span>
                     </div>
                   ))}

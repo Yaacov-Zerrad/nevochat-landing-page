@@ -20,8 +20,8 @@ export default function InputNode(props: NodeProps) {
       isEntryNode={data.isEntryNode}
     >
       <div className="space-y-2">
-        <div className="text-xs text-gray-400">User Input</div>
-        <div className="text-sm text-white bg-gray-700 p-2 rounded">
+        <div className="text-xs text-muted-foreground">User Input</div>
+        <div className="text-sm text-foreground bg-secondary p-2 rounded">
           {data.config?.input_type || 'text'} input
         </div>
       </div>

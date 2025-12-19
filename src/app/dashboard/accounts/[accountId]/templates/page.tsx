@@ -103,7 +103,7 @@ export default function TemplatesPage() {
       title: 'Réponses Rapides',
       description: 'Boutons de réponse rapide',
       icon: Zap,
-      color: 'from-green-500/10 to-emerald-400/10 border-green-500/20'
+      color: 'from-primary/10 to-primary-600/10 border-primary/20'
     },
     {
       type: 'list-picker',
@@ -137,8 +137,8 @@ export default function TemplatesPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     )
   }
@@ -148,25 +148,25 @@ export default function TemplatesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.push(`/dashboard/accounts/${accountId}`)}
-                className="p-2 rounded-lg bg-neon-green/10 hover:bg-neon-green/20 text-neon-green transition-colors"
+                className="p-2 rounded-lg bg-neon-green/10 hover:bg-primary/20 text-primary transition-colors"
               >
                 <ArrowLeft className="w-6 h-6" />
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-white">Templates WhatsApp</h1>
-                <p className="text-gray-400">Gérez vos templates de messages WhatsApp</p>
+                <h1 className="text-3xl font-bold text-foreground">Templates WhatsApp</h1>
+                <p className="text-muted-foreground">Gérez vos templates de messages WhatsApp</p>
               </div>
             </div>
           </div>
@@ -183,7 +183,7 @@ export default function TemplatesPage() {
                   const service = messagingServices.find(s => s.messaging_service_sid === e.target.value)
                   if (service) handleServiceChange(service)
                 }}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-green/50"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20/50"
               >
                 {messagingServices.map((service) => (
                   <option key={service.messaging_service_sid} value={service.messaging_service_sid}>
@@ -196,7 +196,7 @@ export default function TemplatesPage() {
 
           {/* Create Template Types */}
           <div className="mb-8">
-            <h2 className="text-xl font-semibold text-white mb-6">Créer un nouveau template</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-6">Créer un nouveau template</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {templateTypes.map((templateType) => {
                 const IconComponent = templateType.icon
@@ -210,10 +210,10 @@ export default function TemplatesPage() {
                   >
                     <div className="flex flex-col items-center text-center space-y-3">
                       <div className="p-3 rounded-lg bg-white/10">
-                        <IconComponent className="w-8 h-8 text-white" />
+                        <IconComponent className="w-8 h-8 text-foreground" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-white mb-1">
+                        <h3 className="text-lg font-semibold text-foreground mb-1">
                           {templateType.title}
                         </h3>
                         <p className="text-sm text-gray-300">
@@ -230,16 +230,16 @@ export default function TemplatesPage() {
           {/* Existing Templates */}
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">Templates existants</h2>
+              <h2 className="text-xl font-semibold text-foreground">Templates existants</h2>
               {templatesLoading && (
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-neon-green"></div>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-4 border-primary"></div>
               )}
             </div>
 
             {templates.length === 0 ? (
               <div className="text-center py-12">
                 <MessageSquare className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 text-lg">Aucun template trouvé</p>
+                <p className="text-muted-foreground text-lg">Aucun template trouvé</p>
                 <p className="text-gray-500 text-sm">Créez votre premier template ci-dessus</p>
               </div>
             ) : (
@@ -248,16 +248,16 @@ export default function TemplatesPage() {
                   <motion.div
                     key={template.sid}
                     whileHover={{ scale: 1.02 }}
-                    className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-neon-green/30 transition-all duration-300 cursor-pointer"
+                    className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-primary/30 transition-all duration-300 cursor-pointer"
                     onClick={() => router.push(`/dashboard/accounts/${accountId}/templates/${selectedService?.messaging_service_sid}/${template.friendly_name}`)}
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-lg font-semibold text-white truncate">
+                      <h3 className="text-lg font-semibold text-foreground truncate">
                         {template.friendly_name}
                       </h3>
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
                         template.status === 'approved' 
-                          ? 'bg-green-500/20 text-green-400' 
+                          ? 'bg-primary/20 text-primary' 
                           : template.status === 'pending'
                           ? 'bg-yellow-500/20 text-yellow-400'
                           : 'bg-red-500/20 text-red-400'
@@ -266,13 +266,13 @@ export default function TemplatesPage() {
                       </span>
                     </div>
                     <div className="space-y-2 mb-4">
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted-foreground">
                         <span className="font-medium">Langue:</span> {template.language}
                       </p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted-foreground">
                         <span className="font-medium">Catégorie:</span> {template.category}
                       </p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-muted-foreground">
                         <span className="font-medium">Types:</span> {template.content_types?.join(', ')}
                       </p>
                     </div>

@@ -145,8 +145,8 @@ export default function AccountFlowsPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -156,32 +156,32 @@ export default function AccountFlowsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleBackToDashboard}
-                className="text-neon-green hover:text-neon-green/80 transition-colors"
+                className="text-primary hover:text-primary/80 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Flows - {account.name}</h1>
-                <p className="text-gray-400">Gérer vos flows de conversation</p>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Flows - {account.name}</h1>
+                <p className="text-muted-foreground">Gérer vos flows de conversation</p>
               </div>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+              className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40"
             >
               + Créer un flow
             </button>
@@ -195,10 +195,10 @@ export default function AccountFlowsPage() {
                 placeholder="Rechercher un flow..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                className="w-full bg-input/50 border border-input rounded-lg px-4 py-3 pl-12 text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
               />
               <svg
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -219,11 +219,11 @@ export default function AccountFlowsPage() {
           {flows.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-6xl mb-4">🔄</div>
-              <h3 className="text-xl font-semibold text-white mb-2">Aucun flow trouvé</h3>
-              <p className="text-gray-400 mb-6">Créez votre premier flow pour commencer</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Aucun flow trouvé</h3>
+              <p className="text-muted-foreground mb-6">Créez votre premier flow pour commencer</p>
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+                className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40"
               >
                 + Créer un flow
               </button>
@@ -237,16 +237,16 @@ export default function AccountFlowsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => flow.id && handleEditFlow(flow.id)}
-                  className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-6 rounded-xl border border-gray-600 hover:border-neon-green/40 transition-all cursor-pointer"
+                  className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-6 rounded-xl border border-gray-600 hover:border-primary/40 transition-all cursor-pointer"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-semibold text-white mb-1">{flow.name}</h3>
-                      <p className="text-gray-400 text-sm">{flow.description}</p>
+                      <h3 className="text-lg font-semibold text-foreground mb-1">{flow.name}</h3>
+                      <p className="text-muted-foreground text-sm">{flow.description}</p>
                     </div>
                     <div className="flex items-center space-x-2">
                       <span className={`px-2 py-1 text-xs rounded-full ${
-                        flow.is_active ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'
+                        flow.is_active ? 'bg-primary/20 text-primary' : 'bg-gray-500/20 text-muted-foreground'
                       }`}>
                         {flow.is_active ? 'Actif' : 'Inactif'}
                       </span>
@@ -279,7 +279,7 @@ export default function AccountFlowsPage() {
                       className={`px-3 py-1 text-sm rounded transition-colors ${
                         flow.is_active
                           ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
-                          : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                          : 'bg-primary/20 text-primary hover:bg-green-500/30'
                       }`}
                     >
                       {flow.is_active ? 'Désactiver' : 'Activer'}
@@ -298,9 +298,9 @@ export default function AccountFlowsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 p-8 rounded-2xl border border-neon-green/20 max-w-md w-full mx-4"
+            className="bg-card p-8 rounded-2xl border border-primary/20 max-w-md w-full mx-4"
           >
-            <h2 className="text-2xl font-bold text-white mb-6">Créer un nouveau flow</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">Créer un nouveau flow</h2>
             
             <div className="space-y-4">
               <div>
@@ -311,7 +311,7 @@ export default function AccountFlowsPage() {
                   type="text"
                   value={newFlowName}
                   onChange={(e) => setNewFlowName(e.target.value)}
-                  className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-input border border-input rounded-lg px-4 py-3 text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                   placeholder="Ex: Support Client"
                 />
               </div>
@@ -324,7 +324,7 @@ export default function AccountFlowsPage() {
                   value={newFlowDescription}
                   onChange={(e) => setNewFlowDescription(e.target.value)}
                   rows={3}
-                  className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-input border border-input rounded-lg px-4 py-3 text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                   placeholder="Description du flow..."
                 />
               </div>
@@ -333,14 +333,14 @@ export default function AccountFlowsPage() {
             <div className="flex space-x-4 mt-8">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg transition-colors"
+                className="flex-1 bg-secondary hover:bg-secondary/80 text-foreground px-4 py-3 rounded-lg transition-colors"
               >
                 Annuler
               </button>
               <button
                 onClick={handleCreateFlow}
                 disabled={!newFlowName.trim()}
-                className="flex-1 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary px-4 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Créer
               </button>

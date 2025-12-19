@@ -45,11 +45,11 @@ export default function DevicesPage() {
       case 'connecting':
         return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
       case 'disconnected':
-        return 'text-gray-400 bg-gray-400/10 border-gray-400/20';
+        return 'text-muted-foreground bg-gray-400/10 border-gray-400/20';
       case 'error':
         return 'text-red-400 bg-red-400/10 border-red-400/20';
       default:
-        return 'text-gray-400 bg-gray-400/10 border-gray-400/20';
+        return 'text-muted-foreground bg-gray-400/10 border-gray-400/20';
     }
   };
 
@@ -99,8 +99,8 @@ export default function DevicesPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -112,26 +112,26 @@ export default function DevicesPage() {
   const connectedAccounts = accounts?.filter(account => account.is_connected).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="text-3xl font-bold text-foreground mb-2">
                 📱 Mes Appareils
               </h1>
-              <p className="text-gray-400">
+              <p className="text-muted-foreground">
                 Gérez vos appareils WhatsApp connectés et automatisez vos conversations
               </p>
             </div>
             <button
               onClick={handleConnect}
-              className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 flex items-center gap-2"
+              className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 flex items-center gap-2"
             >
               <span>➕</span>
               Nouvel appareil
@@ -148,8 +148,8 @@ export default function DevicesPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Comptes connectés</p>
-                  <p className="text-2xl font-bold text-white">{connectedAccounts}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Comptes connectés</p>
+                  <p className="text-2xl font-bold text-foreground">{connectedAccounts}</p>
                 </div>
                 <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
                   <span className="text-2xl">📶</span>
@@ -165,8 +165,8 @@ export default function DevicesPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Total comptes</p>
-                  <p className="text-2xl font-bold text-white">{accounts?.length}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Total comptes</p>
+                  <p className="text-2xl font-bold text-foreground">{accounts?.length}</p>
                 </div>
                 <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
                   <span className="text-2xl">📱</span>
@@ -182,8 +182,8 @@ export default function DevicesPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Messages envoyés</p>
-                  <p className="text-2xl font-bold text-white">0</p>
+                  <p className="text-sm font-medium text-muted-foreground">Messages envoyés</p>
+                  <p className="text-2xl font-bold text-foreground">0</p>
                 </div>
                 <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center">
                   <span className="text-2xl">💬</span>
@@ -199,8 +199,8 @@ export default function DevicesPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Contacts</p>
-                  <p className="text-2xl font-bold text-white">0</p>
+                  <p className="text-sm font-medium text-muted-foreground">Contacts</p>
+                  <p className="text-2xl font-bold text-foreground">0</p>
                 </div>
                 <div className="w-12 h-12 bg-orange-500/20 rounded-lg flex items-center justify-center">
                   <span className="text-2xl">👥</span>
@@ -211,7 +211,7 @@ export default function DevicesPage() {
 
           {/* Accounts List */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-white">Vos appareils connectés</h2>
+            <h2 className="text-xl font-semibold text-foreground">Vos appareils connectés</h2>
             
             {accounts?.length === 0 ? (
               <motion.div
@@ -221,15 +221,15 @@ export default function DevicesPage() {
                 className="bg-gray-800/50 backdrop-blur-md p-12 rounded-xl border border-gray-700/50 text-center"
               >
                 <div className="text-6xl mb-4">📱</div>
-                <h3 className="text-lg font-medium text-white mb-2">
+                <h3 className="text-lg font-medium text-foreground mb-2">
                   Aucun appareil connecté
                 </h3>
-                <p className="text-gray-400 mb-6">
+                <p className="text-muted-foreground mb-6">
                   Connectez votre premier appareil WhatsApp pour commencer à automatiser vos conversations.
                 </p>
                 <button
                   onClick={handleConnect}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40"
+                  className="bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40"
                 >
                   Connecter un appareil
                 </button>
@@ -250,10 +250,10 @@ export default function DevicesPage() {
                           <span className="text-2xl">📱</span>
                         </div>
                         <div>
-                          <h3 className="text-lg font-medium text-white">
+                          <h3 className="text-lg font-medium text-foreground">
                             {account.display_name || account.phone_number}
                           </h3>
-                          <p className="text-gray-400 text-sm">{account.phone_number}</p>
+                          <p className="text-muted-foreground text-sm">{account.phone_number}</p>
                         </div>
                       </div>
                       <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(account.status)}`}>
@@ -263,14 +263,14 @@ export default function DevicesPage() {
 
                     <div className="space-y-3">
                       {account.last_seen && (
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-muted-foreground">
                           <strong>Dernière connexion:</strong>{' '}
                           {new Date(account.last_seen).toLocaleString('fr-FR')}
                         </div>
                       )}
                       
                       {account.last_disconnect_reason && (
-                        <div className="text-sm text-gray-400">
+                        <div className="text-sm text-muted-foreground">
                           <strong>Raison de déconnexion:</strong> {account.last_disconnect_reason}
                         </div>
                       )}
@@ -305,14 +305,14 @@ export default function DevicesPage() {
                           <>
                             <button
                               onClick={() => handleReconnect(account.id)}
-                              className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 text-sm flex items-center gap-2"
+                              className="bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 text-sm flex items-center gap-2"
                             >
                               <span>📶</span>
                               Reconnecter
                             </button>
                             <button
                               onClick={() => router.push(`/dashboard/accounts/${accountId}/devices/${account.id}/settings`)}
-                              className="bg-gray-500/20 hover:bg-gray-500/30 text-gray-400 px-4 py-2 rounded-lg transition-colors border border-gray-500/20 hover:border-gray-500/40 text-sm flex items-center gap-2"
+                              className="bg-gray-500/20 hover:bg-gray-500/30 text-muted-foreground px-4 py-2 rounded-lg transition-colors border border-gray-500/20 hover:border-gray-500/40 text-sm flex items-center gap-2"
                             >
                               <span>⚙️</span>
                               Paramètres

@@ -248,18 +248,18 @@ function ConversationsPageContent() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     )
   }
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-red-500/20">
-          <h1 className="text-2xl font-bold text-white mb-4">Non autorisé</h1>
-          <p className="text-gray-400">Vous devez être connecté pour voir cette page.</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="glass glass-border p-8 rounded-2xl border border-red-500/20">
+          <h1 className="text-2xl font-bold text-foreground mb-4">Non autorisé</h1>
+          <p className="text-muted-foreground">Vous devez être connecté pour voir cette page.</p>
         </div>
       </div>
     )
@@ -293,16 +293,16 @@ function ConversationsPageContent() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-gray-900 border border-neon-green/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-card border border-primary/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
             >
-              <div className="sticky top-0 bg-gray-900 z-10 p-4 border-b border-white/10 flex justify-between items-center">
-                <h2 className="text-xl font-bold text-white">Détails du contact</h2>
+              <div className="sticky top-0 bg-card z-10 p-4 border-b border-border flex justify-between items-center">
+                <h2 className="text-xl font-bold text-foreground">Détails du contact</h2>
                 <button
                   onClick={() => {
                     setShowContactModal(false)
                     setSelectedContact(null)
                   }}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -358,25 +358,25 @@ function ConversationsPageContent() {
         )}
       </AnimatePresence>
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+      <div className="min-h-screen">
         <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-black/80 backdrop-blur-md rounded-2xl border border-neon-green/20 h-[calc(100vh-64px)] sm:h-[calc(100vh-120px)]"
+            className="glass glass-border rounded-2xl border border-primary/20 h-[calc(100vh-64px)] sm:h-[calc(100vh-120px)]"
           >
             {/* Header */}
-            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center p-4 lg:p-6 border-b border-neon-green/20">
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center p-4 lg:p-6 border-b border-primary/20">
               <div className="flex items-center space-x-4 mb-4 lg:mb-0">
                 <button
                   onClick={() => router.push(`/dashboard/accounts/${accountId}`)}
-                  className="text-neon-green hover:text-neon-green/80 transition-colors"
+                  className="text-primary hover:text-primary/80 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
-                <h1 className="text-2xl lg:text-3xl font-bold text-white">Conversations</h1>
+                <h1 className="text-2xl lg:text-3xl font-bold text-foreground">Conversations</h1>
                 <button
                   onClick={() => setShowStartConversationModal(true)}
                   className="ml-4 px-4 py-2 bg-neon-green text-black font-medium rounded-lg hover:bg-neon-green/90 transition-colors flex items-center space-x-2"
@@ -396,15 +396,15 @@ function ConversationsPageContent() {
                   placeholder="Rechercher..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-gray-800 text-white px-3 py-2 rounded-lg border border-gray-600 focus:border-neon-green focus:outline-none sm:w-64 text-sm"
+                  className="bg-input text-foreground px-3 py-2 rounded-lg border border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none sm:w-64 text-sm"
                 />
                 
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={`px-4 py-2 rounded-lg transition-colors border text-sm flex items-center space-x-2 ${
                     showFilters
-                      ? 'bg-neon-green/20 text-neon-green border-neon-green/40'
-                      : 'bg-gray-800 text-white border-gray-600 hover:bg-gray-700'
+                      ? 'bg-primary/20 text-primary border-primary/40'
+                      : 'bg-input text-foreground border-gray-600 hover:bg-gray-700'
                   }`}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -422,7 +422,7 @@ function ConversationsPageContent() {
                 {/* Connection Status */}
                 <div className="flex items-center gap-2">
                   <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></div>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-muted-foreground">
                     {isConnected ? 'Connecté' : 'Déconnecté'}
                   </span>
                 </div>
@@ -441,13 +441,13 @@ function ConversationsPageContent() {
 
             <div className="flex flex-col lg:flex-row h-[calc(100%-120px)] lg:h-[calc(100%-88px)]">
               {/* Mobile Tab Navigation */}
-              <div className="lg:hidden flex border-b border-neon-green/20">
+              <div className="lg:hidden flex border-b border-primary/20">
                 <button
                   onClick={() => setShowConversationList(true)}
                   className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
                     showConversationList
-                      ? 'text-neon-green border-b-2 border-neon-green bg-neon-green/5'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'text-primary border-b-4 border-primary bg-neon-green/5'
+                      : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <div className="flex items-center justify-center space-x-2">
@@ -456,7 +456,7 @@ function ConversationsPageContent() {
                     </svg>
                     <span>Conversations</span>
                     {conversations.reduce((sum, conv) => sum + conv.unread_count, 0) > 0 && (
-                      <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                      <span className="bg-red-500 text-foreground text-xs px-2 py-1 rounded-full">
                         {conversations.reduce((sum, conv) => sum + conv.unread_count, 0)}
                       </span>
                     )}
@@ -466,8 +466,8 @@ function ConversationsPageContent() {
                   onClick={() => setShowConversationList(false)}
                   className={`flex-1 py-3 px-4 text-sm font-medium transition-colors ${
                     !showConversationList
-                      ? 'text-neon-green border-b-2 border-neon-green bg-neon-green/5'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'text-primary border-b-4 border-primary bg-neon-green/5'
+                      : 'text-muted-foreground hover:text-foreground'
                   }`}
                   disabled={!selectedConversation}
                 >
@@ -531,8 +531,8 @@ export default function ConversationsPage() {
   if (!token) {
     // Return loading or nothing while token is being fetched
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     )
   }

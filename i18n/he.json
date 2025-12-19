@@ -85,5 +85,47 @@
   "footer": {
     "description": "פתרונות דיגיטליים מתקדמים לעסקים מכל הגדלים",
     "rights": "כל הזכויות שמורות"
+  },
+  "dashboard": {
+    "title": "בחר חשבון",
+    "subtitle": "בחר את החשבון שברצונך לעבוד איתו",
+    "signOut": "התנתק",
+    "loading": "טוען חשבונות...",
+    "noAccounts": "לא נמצאו חשבונות",
+    "noAccountsDescription": "אין לך גישה לאף חשבון כרגע.",
+    "createAccount": "צור חשבון חדש",
+    "active": "פעיל",
+    "inactive": "לא פעיל",
+    "support": "תמיכה",
+    "accountId": "מזהה חשבון",
+    "errorLoading": "שגיאה בטעינת החשבונות"
+  },
+  "theme": {
+    "light": "מצב בהיר",
+    "dark": "מצב כהה",
+    "toggle": "החלף ערכת נושא"
+  },
+  "account": {
+    "notFound": "חשבון לא נמצא",
+    "notFoundDescription": "החשבון המבוקש לא קיים או שאין לך גישה אליו.",
+    "backToAccounts": "חזרה לחשבונות",
+    "menu": {
+      "conversations": "שיחות",
+      "conversationsDesc": "נהל את שיחות הלקוחות שלך",
+      "flows": "זרימות",
+      "flowsDesc": "נהל את זרימות השיחה שלך",
+      "templates": "תבניות",
+      "templatesDesc": "נהל את תבניות WhatsApp שלך",
+      "whatsapp": "מכשירים",
+      "whatsappDesc": "נהל מכשירי WhatsApp",
+      "contacts": "אנשי קשר",
+      "contactsDesc": "נהל את רשימת אנשי הקשר שלך"
+    },
+    "stats": {
+      "activeConversations": "שיחות פעילות",
+      "activeFlows": "זרימות פעילות",
+      "responseRate": "שיעור תגובה",
+      "messagesSent": "הודעות שנשלחו"
+    }
   }
 }

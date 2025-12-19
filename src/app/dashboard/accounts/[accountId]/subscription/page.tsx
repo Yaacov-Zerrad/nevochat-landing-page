@@ -151,9 +151,9 @@ export default function SubscriptionPage() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 p-8">
+        <div className="min-h-screen p-8">
           <div className="flex items-center justify-center h-96">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+            <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
           </div>
         </div>
       </DashboardLayout>
@@ -176,7 +176,7 @@ export default function SubscriptionPage() {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 p-8">
+      <div className="min-h-screen p-8">
         <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <motion.div
@@ -185,8 +185,8 @@ export default function SubscriptionPage() {
           className="flex justify-between items-center"
         >
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">💳 Abonnement & Facturation</h1>
-            <p className="text-gray-400">Gérez votre abonnement et consultez votre historique de paiements</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">💳 Abonnement & Facturation</h1>
+            <p className="text-muted-foreground">Gérez votre abonnement et consultez votre historique de paiements</p>
           </div>
         </motion.div>
 
@@ -207,15 +207,15 @@ export default function SubscriptionPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-black/40 backdrop-blur-md rounded-xl border border-neon-green/20 p-6"
+            className="bg-black/40 backdrop-blur-md rounded-xl border border-primary/20 p-6"
           >
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">
+                <h2 className="text-2xl font-bold text-foreground mb-2">
                   {currentSubscription.plan_details.display_name}
                 </h2>
-                <p className="text-gray-400">{currentSubscription.plan_details.description}</p>
-                <p className="text-3xl font-bold text-neon-green mt-4">
+                <p className="text-muted-foreground">{currentSubscription.plan_details.description}</p>
+                <p className="text-3xl font-bold text-primary mt-4">
                   {currentSubscription.plan_details.name === 'enterprise'
                     ? 'Sur devis'
                     : parseFloat(currentSubscription.plan_details.price) === 0
@@ -227,7 +227,7 @@ export default function SubscriptionPage() {
                 <span
                   className={`px-4 py-2 rounded-full text-sm font-medium ${
                     currentSubscription.status === 'active'
-                      ? 'bg-green-500/20 text-green-400'
+                      ? 'bg-primary/20 text-primary'
                       : currentSubscription.status === 'trialing'
                       ? 'bg-blue-500/20 text-blue-400'
                       : 'bg-red-500/20 text-red-400'
@@ -238,7 +238,7 @@ export default function SubscriptionPage() {
                 {currentSubscription.plan_details.name !== 'free' && (
                   <button
                     onClick={handleManageSubscription}
-                    className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors text-sm"
+                    className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-foreground transition-colors text-sm"
                   >
                     Gérer l&apos;abonnement
                   </button>
@@ -249,10 +249,10 @@ export default function SubscriptionPage() {
             {/* Usage Statistics */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Chatbot Flows Usage */}
-              <div className="bg-black/30 rounded-lg p-4">
+              <div className="bg-secondary/50 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-white font-medium">Flows Chatbot</span>
-                  <span className="text-gray-400 text-sm">
+                  <span className="text-foreground font-medium">Flows Chatbot</span>
+                  <span className="text-muted-foreground text-sm">
                     {currentSubscription.daily_chatbot_flows_used} / {currentSubscription.plan_details.daily_chatbot_flow_limit}
                   </span>
                 </div>
@@ -268,10 +268,10 @@ export default function SubscriptionPage() {
               </div>
 
               {/* Conversations Usage */}
-              <div className="bg-black/30 rounded-lg p-4">
+              <div className="bg-secondary/50 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-white font-medium">Conversations</span>
-                  <span className="text-gray-400 text-sm">
+                  <span className="text-foreground font-medium">Conversations</span>
+                  <span className="text-muted-foreground text-sm">
                     {currentSubscription.daily_conversations_used} / {currentSubscription.plan_details.daily_conversation_limit}
                   </span>
                 </div>
@@ -290,16 +290,16 @@ export default function SubscriptionPage() {
             {/* Features */}
             <div className="mt-6 grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
-                <span className={currentSubscription.plan_details.has_customer_service ? 'text-neon-green' : 'text-gray-500'}>
+                <span className={currentSubscription.plan_details.has_customer_service ? 'text-primary' : 'text-gray-500'}>
                   {currentSubscription.plan_details.has_customer_service ? '✓' : '✗'}
                 </span>
-                <span className="text-white">Service Client</span>
+                <span className="text-foreground">Service Client</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className={currentSubscription.plan_details.has_integrations ? 'text-neon-green' : 'text-gray-500'}>
+                <span className={currentSubscription.plan_details.has_integrations ? 'text-primary' : 'text-gray-500'}>
                   {currentSubscription.plan_details.has_integrations ? '✓' : '✗'}
                 </span>
-                <span className="text-white">Intégrations</span>
+                <span className="text-foreground">Intégrations</span>
               </div>
             </div>
           </motion.div>
@@ -312,7 +312,7 @@ export default function SubscriptionPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-2xl font-bold text-white mb-6">Plans Disponibles</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">Plans Disponibles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {plans
                 .filter(plan => plan.is_active && plan.name !== currentSubscription?.plan_details.name)
@@ -324,19 +324,19 @@ export default function SubscriptionPage() {
                     transition={{ delay: 0.3 + index * 0.1 }}
                     className={`bg-black/40 backdrop-blur-md rounded-xl border p-6 ${
                       plan.name === 'professional'
-                        ? 'border-neon-green/40 ring-2 ring-neon-green/20'
-                        : 'border-white/10'
+                        ? 'border-primary/40 ring-2 ring-neon-green/20'
+                        : 'border-border'
                     }`}
                   >
                     {plan.name === 'professional' && (
-                      <span className="bg-neon-green/20 text-neon-green text-xs px-3 py-1 rounded-full mb-4 inline-block">
+                      <span className="bg-primary/20 text-primary text-xs px-3 py-1 rounded-full mb-4 inline-block">
                         Populaire
                       </span>
                     )}
-                    <h3 className="text-2xl font-bold text-white mb-2">{plan.display_name}</h3>
-                    <p className="text-gray-400 text-sm mb-4 h-12">{plan.description}</p>
+                    <h3 className="text-2xl font-bold text-foreground mb-2">{plan.display_name}</h3>
+                    <p className="text-muted-foreground text-sm mb-4 h-12">{plan.description}</p>
                     <div className="mb-6">
-                      <span className="text-4xl font-bold text-white">
+                      <span className="text-4xl font-bold text-foreground">
                         {plan.name === 'enterprise'
                           ? 'Sur devis'
                           : parseFloat(plan.price) === 0
@@ -344,30 +344,30 @@ export default function SubscriptionPage() {
                           : `$${plan.price}`}
                       </span>
                       {parseFloat(plan.price) > 0 && plan.name !== 'enterprise' && (
-                        <span className="text-gray-400 text-sm">/mois</span>
+                        <span className="text-muted-foreground text-sm">/mois</span>
                       )}
                     </div>
 
                     <div className="space-y-3 mb-6">
                       <div className="flex items-center gap-2 text-sm">
-                        <span className="text-neon-green">✓</span>
-                        <span className="text-white">{plan.daily_chatbot_flow_limit} flows/jour</span>
+                        <span className="text-primary">✓</span>
+                        <span className="text-foreground">{plan.daily_chatbot_flow_limit} flows/jour</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
-                        <span className="text-neon-green">✓</span>
-                        <span className="text-white">{plan.daily_conversation_limit} conversations/jour</span>
+                        <span className="text-primary">✓</span>
+                        <span className="text-foreground">{plan.daily_conversation_limit} conversations/jour</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
-                        <span className={plan.has_customer_service ? 'text-neon-green' : 'text-gray-500'}>
+                        <span className={plan.has_customer_service ? 'text-primary' : 'text-gray-500'}>
                           {plan.has_customer_service ? '✓' : '✗'}
                         </span>
-                        <span className="text-white">Service Client</span>
+                        <span className="text-foreground">Service Client</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
-                        <span className={plan.has_integrations ? 'text-neon-green' : 'text-gray-500'}>
+                        <span className={plan.has_integrations ? 'text-primary' : 'text-gray-500'}>
                           {plan.has_integrations ? '✓' : '✗'}
                         </span>
-                        <span className="text-white">Intégrations</span>
+                        <span className="text-foreground">Intégrations</span>
                       </div>
                     </div>
 
@@ -378,8 +378,8 @@ export default function SubscriptionPage() {
                         plan.name === 'professional'
                           ? 'bg-neon-green text-black hover:bg-neon-green/90'
                           : plan.name === 'enterprise'
-                          ? 'bg-white/10 text-white cursor-not-allowed'
-                          : 'bg-white/10 hover:bg-white/20 text-white'
+                          ? 'bg-white/10 text-foreground cursor-not-allowed'
+                          : 'bg-white/10 hover:bg-white/20 text-foreground'
                       } ${processingPlan === plan.id ? 'opacity-50 cursor-wait' : ''}`}
                     >
                       {processingPlan === plan.id ? (
@@ -406,34 +406,34 @@ export default function SubscriptionPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <h2 className="text-2xl font-bold text-white mb-6">Historique des Paiements</h2>
-            <div className="bg-black/40 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden">
+            <h2 className="text-2xl font-bold text-foreground mb-6">Historique des Paiements</h2>
+            <div className="bg-black/40 backdrop-blur-md rounded-xl border border-border overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-black/40">
                     <tr>
-                      <th className="text-left px-6 py-4 text-gray-400 font-medium">Date</th>
-                      <th className="text-left px-6 py-4 text-gray-400 font-medium">Description</th>
-                      <th className="text-left px-6 py-4 text-gray-400 font-medium">Montant</th>
-                      <th className="text-left px-6 py-4 text-gray-400 font-medium">Statut</th>
-                      <th className="text-left px-6 py-4 text-gray-400 font-medium">Méthode</th>
+                      <th className="text-left px-6 py-4 text-muted-foreground font-medium">Date</th>
+                      <th className="text-left px-6 py-4 text-muted-foreground font-medium">Description</th>
+                      <th className="text-left px-6 py-4 text-muted-foreground font-medium">Montant</th>
+                      <th className="text-left px-6 py-4 text-muted-foreground font-medium">Statut</th>
+                      <th className="text-left px-6 py-4 text-muted-foreground font-medium">Méthode</th>
                     </tr>
                   </thead>
                   <tbody>
                     {paymentHistory.map((payment) => (
                       <tr key={payment.id} className="border-t border-white/5">
-                        <td className="px-6 py-4 text-white">
+                        <td className="px-6 py-4 text-foreground">
                           {new Date(payment.created_at).toLocaleDateString('fr-FR')}
                         </td>
                         <td className="px-6 py-4 text-gray-300">{payment.description}</td>
-                        <td className="px-6 py-4 text-white font-medium">
+                        <td className="px-6 py-4 text-foreground font-medium">
                           {payment.amount} {payment.currency}
                         </td>
                         <td className="px-6 py-4">
                           <span
                             className={`px-3 py-1 rounded-full text-xs ${
                               payment.status === 'succeeded'
-                                ? 'bg-green-500/20 text-green-400'
+                                ? 'bg-primary/20 text-primary'
                                 : payment.status === 'pending'
                                 ? 'bg-yellow-500/20 text-yellow-400'
                                 : 'bg-red-500/20 text-red-400'

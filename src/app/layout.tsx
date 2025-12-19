@@ -1,38 +1,12 @@
-import type { Metadata } from 'next'
+'use client'
+
 import { Inter } from 'next/font/google'
 import './globals.css'
 import AuthProvider from '@/components/AuthProvider'
 import { AccountProvider } from '@/contexts/AccountContext'
+import { ThemeProvider } from 'next-themes'
 
 const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: 'NevoChat - Advanced Digital Solutions',
-  description: 'Professional websites and smart chatbots for your business. We develop modern web solutions with AI-powered chatbots, WhatsApp integration, and custom system integrations.',
-  keywords: 'web development, chatbots, WhatsApp integration, digital solutions, professional websites, AI chatbots',
-  authors: [{ name: 'NevoChat' }],
-  creator: 'NevoChat',
-  publisher: 'NevoChat',
-  robots: 'index, follow',
-  icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'he_IL',
-    url: 'https://nevochat.com',
-    title: 'NevoChat - Advanced Digital Solutions',
-    description: 'Professional websites and smart chatbots for your business',
-    siteName: 'NevoChat',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'NevoChat - Advanced Digital Solutions',
-    description: 'Professional websites and smart chatbots for your business',
-  },
-}
 
 export default function RootLayout({
   children,
@@ -40,13 +14,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html>
-      <body className={inter.className}>
-        <AuthProvider>
-          <AccountProvider>
-            {children}
-          </AccountProvider>
-        </AuthProvider>
+    <html suppressHydrationWarning>
+      <body className={`${inter.className}  bg-gradient-to-br from-primary-50 to-primary-200 dark:from-gray-900 dark:to-primary-700`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <AuthProvider>
+            <AccountProvider>
+              {children}
+            </AccountProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

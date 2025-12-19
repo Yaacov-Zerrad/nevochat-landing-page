@@ -110,7 +110,7 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
             animate={{ x: 0 }}
             exit={{ x: -320 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed left-0 top-0 bottom-0 w-80 bg-black/95 backdrop-blur-md border-r border-neon-green/20 z-50 overflow-y-auto"
+            className="fixed left-0 top-0 bottom-0 w-80 bg-background/95 dark:bg-gray-900/95 backdrop-blur-md border-r border-border shadow-2xl z-50 overflow-y-auto"
           >
             <div className="p-6">
               {/* Header */}
@@ -119,17 +119,17 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
                   <Link
                     href="/dashboard"
                     onClick={onClose}
-                    className="text-neon-green hover:text-neon-green/80 transition-colors"
+                    className="text-primary hover:text-primary/80 transition-colors"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                   </Link>
-                  <h2 className="text-lg font-semibold text-white truncate">
+                  <h2 className="text-lg font-semibold text-foreground truncate">
                     {accountName || 'Dashboard'}
                   </h2>
                 </div>
-                <div className="h-px bg-gradient-to-r from-neon-green/20 to-transparent"></div>
+                <div className="h-px bg-gradient-to-r from-primary/20 to-transparent"></div>
               </div>
 
               {/* Navigation Items */}
@@ -146,20 +146,20 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
                       onClick={onClose}
                       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
                         isActivePath(item.path)
-                          ? 'bg-neon-green/20 border border-neon-green/30'
-                          : 'hover:bg-white/5 border border-transparent hover:border-white/10'
+                          ? 'bg-primary/20 border border-primary/30 shadow-lg'
+                          : 'hover:bg-secondary border border-transparent hover:border-border'
                       }`}
                     >
                       <span className="text-2xl">{item.icon}</span>
                       <div className="flex-1 text-left">
                         <div className={`font-medium ${
-                          isActivePath(item.path) ? 'text-neon-green' : 'text-white group-hover:text-neon-green'
+                          isActivePath(item.path) ? 'text-primary' : 'text-foreground group-hover:text-primary'
                         }`}>
                           {item.title}
                         </div>
                       </div>
                       {isActivePath(item.path) && (
-                        <div className="w-2 h-2 bg-neon-green rounded-full"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                       )}
                     </Link>
                   </motion.div>
@@ -168,20 +168,20 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
 
               {/* Divider */}
               <div className="my-8">
-                <div className="h-px bg-gradient-to-r from-white/10 to-transparent"></div>
+                <div className="h-px bg-gradient-to-r from-border to-transparent"></div>
               </div>
 
               {/* Quick Actions */}
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Actions rapides</h3>
+                <h3 className="text-sm font-medium text-muted-foreground mb-3">Actions rapides</h3>
                 
                 <Link
                   href="/dashboard"
                   onClick={onClose}
-                  className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors group"
+                  className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-secondary transition-colors group"
                 >
-                  <span className="text-gray-400 group-hover:text-white">🏢</span>
-                  <span className="text-gray-400 group-hover:text-white text-sm">Tous les comptes</span>
+                  <span className="text-muted-foreground group-hover:text-foreground">🏢</span>
+                  <span className="text-muted-foreground group-hover:text-foreground text-sm">Tous les comptes</span>
                 </Link>
 
                 <button

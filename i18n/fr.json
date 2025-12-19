@@ -85,5 +85,47 @@
   "footer": {
     "description": "Solutions digitales avancées pour entreprises de toutes tailles",
     "rights": "Tous droits réservés"
+  },
+  "dashboard": {
+    "title": "Sélectionner un compte",
+    "subtitle": "Choisissez le compte sur lequel vous voulez travailler",
+    "signOut": "Déconnexion",
+    "loading": "Chargement des comptes...",
+    "noAccounts": "Aucun compte trouvé",
+    "noAccountsDescription": "Vous n'avez accès à aucun compte pour le moment.",
+    "createAccount": "Créer un nouveau compte",
+    "active": "actif",
+    "inactive": "inactif",
+    "support": "Support",
+    "accountId": "ID Compte",
+    "errorLoading": "Erreur lors du chargement des comptes"
+  },
+  "theme": {
+    "light": "Mode Clair",
+    "dark": "Mode Sombre",
+    "toggle": "Changer le thème"
+  },
+  "account": {
+    "notFound": "Compte non trouvé",
+    "notFoundDescription": "Le compte demandé n'existe pas ou vous n'y avez pas accès.",
+    "backToAccounts": "Retour aux comptes",
+    "menu": {
+      "conversations": "Conversations",
+      "conversationsDesc": "Gérer vos conversations clients",
+      "flows": "Flows",
+      "flowsDesc": "Gérer vos flows de conversation",
+      "templates": "Templates",
+      "templatesDesc": "Gérer vos templates WhatsApp",
+      "whatsapp": "Appareils",
+      "whatsappDesc": "Gérer les appareils WhatsApp",
+      "contacts": "Contacts",
+      "contactsDesc": "Gérer votre liste de contacts"
+    },
+    "stats": {
+      "activeConversations": "Conversations actives",
+      "activeFlows": "Flows actifs",
+      "responseRate": "Taux de réponse",
+      "messagesSent": "Messages envoyés"
+    }
   }
 }

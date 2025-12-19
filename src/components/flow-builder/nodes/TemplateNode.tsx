@@ -18,8 +18,8 @@ export default function TemplateNode(props: NodeProps) {
     
     return (
       <div className="space-y-1">
-        <div className="text-xs text-gray-400">Template</div>
-        <div className="text-sm text-white font-medium truncate">
+        <div className="text-xs text-muted-foreground">Template</div>
+        <div className="text-sm text-foreground font-medium truncate">
           {templateName}
         </div>
         {messagingServiceSid && (

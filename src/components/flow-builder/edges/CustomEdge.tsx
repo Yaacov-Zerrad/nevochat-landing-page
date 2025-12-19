@@ -29,7 +29,7 @@ export default function CustomEdge({
 
   const edgeStyle = {
     ...style,
-    stroke: selected ? '#10b981' : '#6b7280',
+    stroke: selected ? 'hsl(199, 89%, 48%)' : '#6b7280',
     strokeWidth: selected ? 3 : 2,
   };
 
@@ -78,7 +78,7 @@ export default function CustomEdge({
               px-2 py-1 rounded text-xs cursor-pointer
               ${selected 
                 ? 'bg-neon-green text-black font-medium' 
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                : 'bg-secondary text-gray-300 hover:bg-gray-600'
               }
               border border-gray-600 transition-colors
             `}

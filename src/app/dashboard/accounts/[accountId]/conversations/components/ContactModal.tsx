@@ -44,14 +44,14 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-gray-900 border border-neon-green/30 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
+        className="bg-card border border-primary/30 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto"
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-white">Détails du contact</h2>
+          <h2 className="text-xl font-bold text-foreground">Détails du contact</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -64,14 +64,14 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
           {/* Name */}
           <div className="bg-gray-800/50 rounded-xl p-4">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-neon-green/20 rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
               <div>
-                <p className="text-sm text-gray-400">Nom</p>
-                <p className="text-white font-semibold">{contact.name}</p>
+                <p className="text-sm text-muted-foreground">Nom</p>
+                <p className="text-foreground font-semibold">{contact.name}</p>
               </div>
             </div>
           </div>
@@ -86,8 +86,8 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Téléphone</p>
-                  <p className="text-white font-semibold">{contact.phone_number}</p>
+                  <p className="text-sm text-muted-foreground">Téléphone</p>
+                  <p className="text-foreground font-semibold">{contact.phone_number}</p>
                 </div>
               </div>
             </div>
@@ -103,8 +103,8 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Email</p>
-                  <p className="text-white font-semibold">{contact.email}</p>
+                  <p className="text-sm text-muted-foreground">Email</p>
+                  <p className="text-foreground font-semibold">{contact.email}</p>
                 </div>
               </div>
             </div>
@@ -118,8 +118,8 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
                   {getCountryFlag(contact.additional_attributes.country_code)}
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Pays</p>
-                  <p className="text-white font-semibold">{contact.additional_attributes.country}</p>
+                  <p className="text-sm text-muted-foreground">Pays</p>
+                  <p className="text-foreground font-semibold">{contact.additional_attributes.country}</p>
                   {contact.additional_attributes.country_code && (
                     <p className="text-xs text-gray-500">{contact.additional_attributes.country_code}</p>
                   )}
@@ -138,8 +138,8 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Type</p>
-                  <p className="text-white font-semibold capitalize">{contact.additional_attributes.type}</p>
+                  <p className="text-sm text-muted-foreground">Type</p>
+                  <p className="text-foreground font-semibold capitalize">{contact.additional_attributes.type}</p>
                 </div>
               </div>
             </div>
@@ -148,14 +148,14 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
           {/* Additional Attributes */}
           {contact.additional_attributes && Object.keys(contact.additional_attributes).filter(key => !['type', 'country', 'country_code'].includes(key)).length > 0 && (
             <div className="bg-gray-800/50 rounded-xl p-4">
-              <h3 className="text-sm text-gray-400 mb-3">Attributs supplémentaires</h3>
+              <h3 className="text-sm text-muted-foreground mb-3">Attributs supplémentaires</h3>
               <div className="space-y-2">
                 {Object.entries(contact.additional_attributes)
                   .filter(([key]) => !['type', 'country', 'country_code'].includes(key))
                   .map(([key, value]) => (
                     <div key={key} className="flex justify-between">
-                      <span className="text-gray-400 capitalize">{key.replace('_', ' ')}:</span>
-                      <span className="text-white">{String(value)}</span>
+                      <span className="text-muted-foreground capitalize">{key.replace('_', ' ')}:</span>
+                      <span className="text-foreground">{String(value)}</span>
                     </div>
                   ))}
               </div>
@@ -165,12 +165,12 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
           {/* Custom Attributes */}
           {contact.custom_attributes && Object.keys(contact.custom_attributes).length > 0 && (
             <div className="bg-gray-800/50 rounded-xl p-4">
-              <h3 className="text-sm text-gray-400 mb-3">Attributs personnalisés</h3>
+              <h3 className="text-sm text-muted-foreground mb-3">Attributs personnalisés</h3>
               <div className="space-y-2">
                 {Object.entries(contact.custom_attributes).map(([key, value]) => (
                   <div key={key} className="flex justify-between">
-                    <span className="text-gray-400 capitalize">{key.replace('_', ' ')}:</span>
-                    <span className="text-white">{String(value)}</span>
+                    <span className="text-muted-foreground capitalize">{key.replace('_', ' ')}:</span>
+                    <span className="text-foreground">{String(value)}</span>
                   </div>
                 ))}
               </div>
@@ -182,13 +182,13 @@ export const ContactModal = ({ contact, isOpen, onClose }: ContactModalProps) =>
             <div className="bg-gray-800/50 rounded-xl p-4">
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-gray-500/20 rounded-full flex items-center justify-center">
-                  <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">Créé le</p>
-                  <p className="text-white font-semibold">{new Date(contact.created_at).toLocaleString('fr-FR', {
+                  <p className="text-sm text-muted-foreground">Créé le</p>
+                  <p className="text-foreground font-semibold">{new Date(contact.created_at).toLocaleString('fr-FR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric',

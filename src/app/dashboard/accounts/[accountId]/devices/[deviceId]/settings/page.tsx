@@ -81,8 +81,8 @@ export default function DeviceSettingsPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-neon-green"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-4 border-primary"></div>
       </div>
     );
   }
@@ -92,26 +92,26 @@ export default function DeviceSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-2xl mx-auto bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-neon-green/20"
+          className="max-w-2xl mx-auto glass glass-border p-8 rounded-2xl border border-primary/20"
         >
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <button
               onClick={handleBack}
-              className="text-neon-green hover:text-neon-green/80 transition-colors"
+              className="text-primary hover:text-primary/80 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-white">⚙️ Paramètres WhatsApp</h1>
-              <p className="text-gray-400 mt-2">
+              <h1 className="text-3xl font-bold text-foreground">⚙️ Paramètres WhatsApp</h1>
+              <p className="text-muted-foreground mt-2">
                 Configuration du compte {account.phone_number}
               </p>
             </div>
@@ -119,14 +119,14 @@ export default function DeviceSettingsPage() {
 
           {/* Account Info */}
           <div className="bg-gray-800/50 backdrop-blur-md p-6 rounded-xl border border-gray-700/50 mb-6">
-            <h2 className="text-lg font-semibold text-white mb-4">📋 Informations du compte</h2>
+            <h2 className="text-lg font-semibold text-foreground mb-4">📋 Informations du compte</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-gray-400">Numéro de téléphone:</span>
-                <p className="text-white font-medium">{account?.phone_number}</p>
+                <span className="text-muted-foreground">Numéro de téléphone:</span>
+                <p className="text-foreground font-medium">{account?.phone_number}</p>
               </div>
               <div>
-                <span className="text-gray-400">Statut:</span>
+                <span className="text-muted-foreground">Statut:</span>
                 <p className={`font-medium ${
                   account?.is_connected ? 'text-green-400' : 'text-red-400'
                 }`}>
@@ -134,12 +134,12 @@ export default function DeviceSettingsPage() {
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Créé le:</span>
-                <p className="text-white">{formatDate(account?.created_at)}</p>
+                <span className="text-muted-foreground">Créé le:</span>
+                <p className="text-foreground">{formatDate(account?.created_at)}</p>
               </div>
               <div>
-                <span className="text-gray-400">Dernière connexion:</span>
-                <p className="text-white">
+                <span className="text-muted-foreground">Dernière connexion:</span>
+                <p className="text-foreground">
                   {account?.last_seen ? formatDate(account?.last_seen) : 'Jamais'}
                 </p>
               </div>
@@ -149,7 +149,7 @@ export default function DeviceSettingsPage() {
           {/* Settings Form */}
           <form onSubmit={handleSave} className="space-y-6">
             <div className="bg-gray-800/50 backdrop-blur-md p-6 rounded-xl border border-gray-700/50">
-              <h2 className="text-lg font-semibold text-white mb-4">🏷️ Paramètres généraux</h2>
+              <h2 className="text-lg font-semibold text-foreground mb-4">🏷️ Paramètres généraux</h2>
               
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -160,9 +160,9 @@ export default function DeviceSettingsPage() {
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="Mon compte WhatsApp Business"
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
                 />
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Ce nom sera affiché dans le dashboard pour identifier ce compte.
                 </p>
               </div>
@@ -179,7 +179,7 @@ export default function DeviceSettingsPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="flex-1 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-6 py-3 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50"
+                className="flex-1 bg-primary/20 hover:bg-primary/30 text-primary px-6 py-3 rounded-lg transition-colors border border-primary/20 hover:border-primary/40 disabled:opacity-50"
               >
                 {saving ? 'Sauvegarde...' : 'Sauvegarder'}
               </button>
@@ -216,10 +216,10 @@ export default function DeviceSettingsPage() {
             >
               <div className="text-center">
                 <div className="text-6xl mb-4">⚠️</div>
-                <h3 className="text-xl font-bold text-white mb-4">
+                <h3 className="text-xl font-bold text-foreground mb-4">
                   Confirmer la suppression
                 </h3>
-                <p className="text-gray-400 mb-6">
+                <p className="text-muted-foreground mb-6">
                   Êtes-vous sûr de vouloir supprimer ce compte WhatsApp ? 
                   Cette action est irréversible.
                 </p>

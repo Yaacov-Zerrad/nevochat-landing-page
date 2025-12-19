@@ -112,8 +112,8 @@ interface MessagesSectionProps {
 }
 
 const statusLabels = {
-  0: { label: 'Ouvert', color: 'bg-green-500/20 text-green-400' },
-  1: { label: 'Résolu', color: 'bg-gray-500/20 text-gray-400' },
+  0: { label: 'Ouvert', color: 'bg-primary/20 text-primary' },
+  1: { label: 'Résolu', color: 'bg-gray-500/20 text-muted-foreground' },
   2: { label: 'En attente', color: 'bg-yellow-500/20 text-yellow-400' },
   3: { label: 'Fermé', color: 'bg-red-500/20 text-red-400' }
 }
@@ -145,7 +145,7 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
                 className="max-w-[200px] sm:max-w-xs max-h-48 sm:max-h-64 rounded-lg border border-gray-600/30 cursor-pointer hover:opacity-80 transition-opacity object-cover"
                 onClick={() => window.open(attachment.file_url, '_blank')}
               />
-              <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+              <div className="absolute bottom-2 left-2 bg-black/70 text-foreground text-xs px-2 py-1 rounded">
                 {attachment.filename}
               </div>
             </div>
@@ -162,7 +162,7 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
               >
                 Votre navigateur ne supporte pas la lecture vidéo.
               </video>
-              <div className="text-xs text-gray-400 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 {attachment.filename} ({formatFileSize(attachment.file_size)})
               </div>
             </div>
@@ -176,7 +176,7 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                 </svg>
-                <span className="text-xs sm:text-sm text-white truncate">{attachment.filename}</span>
+                <span className="text-xs sm:text-sm text-foreground truncate">{attachment.filename}</span>
               </div>
               <audio
                 src={attachment.file_url}
@@ -185,7 +185,7 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
               >
                 Votre navigateur ne supporte pas la lecture audio.
               </audio>
-              <div className="text-xs text-gray-400 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 {formatFileSize(attachment.file_size)}
               </div>
             </div>
@@ -202,12 +202,12 @@ const MessageAttachments = ({ attachments }: { attachments: MessageAttachment[] 
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs sm:text-sm text-white truncate">{attachment.filename}</p>
-                <p className="text-xs text-gray-400">{formatFileSize(attachment.file_size)}</p>
+                <p className="text-xs sm:text-sm text-foreground truncate">{attachment.filename}</p>
+                <p className="text-xs text-muted-foreground">{formatFileSize(attachment.file_size)}</p>
               </div>
               <button
                 onClick={() => window.open(attachment.file_url, '_blank')}
-                className="text-neon-green hover:text-neon-green/80 transition-colors flex-shrink-0"
+                className="text-primary hover:text-primary/80 transition-colors flex-shrink-0"
                 title="Télécharger"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,13 +295,13 @@ export const MessagesSection = ({
       {selectedConversation ? (
         <>
           {/* Conversation Header */}
-          <div className="p-2 sm:p-3 lg:p-4 border-b border-neon-green/20 bg-gradient-to-r from-gray-800/50 to-gray-900/30 flex-shrink-0">
+          <div className="p-2 sm:p-3 lg:p-4 border-b border-gray-200 dark:border-primary/20 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800/50 dark:to-gray-900/30 flex-shrink-0">
             <div className="flex justify-between items-start gap-2">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2 mb-1.5 sm:mb-2">
                   <button
                     onClick={onShowConversationList}
-                    className="lg:hidden text-neon-green hover:text-neon-green/80 transition-colors p-1 rounded-lg hover:bg-neon-green/10 flex-shrink-0"
+                    className="lg:hidden text-primary hover:text-primary/80 transition-colors p-1 rounded-lg hover:bg-neon-green/10 flex-shrink-0"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -310,32 +310,32 @@ export const MessagesSection = ({
                   
                   {/* Contact Avatar and Name */}
                   <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-neon-green/20 to-emerald-500/20 rounded-full flex items-center justify-center border border-neon-green/30 flex-shrink-0">
-                      <span className="text-neon-green font-semibold text-sm sm:text-base">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-neon-green/30 to-emerald-500/30 dark:from-neon-green/20 dark:to-emerald-500/20 rounded-full flex items-center justify-center border-2 border-primary/40 dark:border-primary/30 flex-shrink-0">
+                      <span className="text-primary font-semibold text-sm sm:text-base">
                         {selectedConversation.contact.name ? selectedConversation.contact.name.charAt(0).toUpperCase() : '?'}
                       </span>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h2 className="text-sm sm:text-base lg:text-lg font-bold text-white truncate">
+                      <h2 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 dark:text-gray-100 truncate">
                         {selectedConversation.contact.name || 'Contact inconnu'}
                       </h2>
                       {selectedConversation.contact.phone_number && (
-                        <p className="text-xs text-gray-400 truncate">{selectedConversation.contact.phone_number}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{selectedConversation.contact.phone_number}</p>
                       )}
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 lg:gap-2 text-xs">
-                  <span className="bg-gray-700/50 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-gray-400">#{selectedConversation.display_id}</span>
-                  <span className="bg-blue-500/20 text-blue-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full truncate max-w-[120px] sm:max-w-none">{selectedConversation.inbox.name}</span>
+                  <span className="bg-gray-200 dark:bg-gray-700/50 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-gray-700 dark:text-gray-300 font-medium">#{selectedConversation.display_id}</span>
+                  <span className="bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full truncate max-w-[120px] sm:max-w-none font-medium">{selectedConversation.inbox.name}</span>
                   {selectedConversation.assignee && (
-                    <span className="bg-purple-500/20 text-purple-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full truncate max-w-[100px] sm:max-w-none">
+                    <span className="bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full truncate max-w-[100px] sm:max-w-none font-medium">
                       {selectedConversation.assignee.display_name || selectedConversation.assignee.name}
                     </span>
                   )}
                   {selectedConversation.contact.additional_attributes?.country && (
-                    <span className="bg-orange-500/20 text-orange-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs">
+                    <span className="bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-400 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-medium">
                       {selectedConversation.contact.additional_attributes.country_code && 
                         getCountryFlag(selectedConversation.contact.additional_attributes.country_code)
                       } <span className="hidden sm:inline">{selectedConversation.contact.additional_attributes.country}</span>
@@ -348,7 +348,7 @@ export const MessagesSection = ({
                 {/* Contact Details Button */}
                 <button
                   onClick={() => onShowContactModal(selectedConversation.contact)}
-                  className="bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-2 py-1 sm:px-3 rounded-lg text-xs transition-colors border border-neon-green/20 hover:border-neon-green/40 flex items-center space-x-1"
+                  className="bg-primary/20 hover:bg-primary/30 text-primary px-2 py-1 sm:px-3 rounded-lg text-xs transition-colors border border-primary/20 hover:border-primary/40 flex items-center space-x-1"
                 >
                   <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -387,12 +387,12 @@ export const MessagesSection = ({
             {messagesLoading ? (
               <div className="flex justify-center items-center h-32">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neon-green mx-auto mb-2"></div>
-                  <p className="text-gray-400 text-sm">Chargement des messages...</p>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-4 border-primary mx-auto mb-2"></div>
+                  <p className="text-muted-foreground text-sm">Chargement des messages...</p>
                 </div>
               </div>
             ) : messages.length === 0 ? (
-              <div className="flex-1 flex items-center justify-center text-gray-400 p-6 text-center">
+              <div className="flex-1 flex items-center justify-center text-muted-foreground p-6 text-center">
                 <div>
                   <svg className="w-16 h-16 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -414,7 +414,7 @@ export const MessagesSection = ({
                       {/* Séparateur de date (style WhatsApp) */}
                       {showDateSeparator && (
                         <div className="flex justify-center my-3 sm:my-4">
-                          <div className="bg-gray-700/50 backdrop-blur-sm text-gray-300 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs font-medium shadow-md border border-gray-600/30">
+                          <div className="bg-gray-200 dark:bg-gray-700/50 backdrop-blur-sm text-gray-700 dark:text-gray-300 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs font-medium shadow-md border border-gray-300 dark:border-gray-600/30">
                             {getDateLabel(message.created_at)}
                           </div>
                         </div>
@@ -427,10 +427,10 @@ export const MessagesSection = ({
                       >
                       {!isUser && (
                         <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          showAvatar ? 'bg-gray-600' : 'opacity-0'
+                          showAvatar ? 'bg-gray-300 dark:bg-gray-600' : 'opacity-0'
                         }`}>
                           {showAvatar && message.sender_name && (
-                            <span className="text-white text-xs font-medium">
+                            <span className="text-gray-700 dark:text-gray-200 text-xs font-medium">
                               {message.sender_name.charAt(0).toUpperCase()}
                             </span>
                           )}
@@ -439,14 +439,14 @@ export const MessagesSection = ({
                       
                       <div className={`max-w-[85%] sm:max-w-[75%] lg:max-w-md ${isUser ? 'order-first' : ''}`}>
                         {showAvatar && !isUser && message.sender_name && (
-                          <p className="text-xs text-gray-400 mb-1 ml-2">{message.sender_name}</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400 mb-1 ml-2 font-medium">{message.sender_name}</p>
                         )}
                         
                         <div
                           className={`px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-2xl shadow-lg ${
                             isUser
-                              ? 'bg-gradient-to-r from-neon-green/20 to-emerald-500/20 text-white border border-neon-green/20'
-                              : 'bg-gray-700/80 text-white border border-gray-600/30'
+                              ? 'bg-gradient-to-r from-primary-100 to-primary-200 dark:from-primary-950 dark:to-primary-800 text-gray-900 dark:text-white border-2 border-primary/50 dark:border-primary/40'
+                              : 'bg-primary-200 dark:bg-primary-950 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600/50'
                           } ${
                             isUser 
                               ? 'rounded-br-md' 
@@ -461,7 +461,7 @@ export const MessagesSection = ({
                           <MessageAttachments attachments={message.attachments || []} />
                           
                           <div className="flex justify-end mt-1.5 sm:mt-2">
-                            <span className="text-xs text-gray-300 opacity-70">
+                            <span className="text-xs text-gray-700 dark:text-gray-200 opacity-80 font-medium">
                               {formatTime(message.created_at)}
                             </span>
                           </div>
@@ -470,10 +470,10 @@ export const MessagesSection = ({
                       
                       {isUser && (
                         <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          showAvatar ? 'bg-neon-green/20 border border-neon-green/30' : 'opacity-0'
+                          showAvatar ? 'bg-primary/30 dark:bg-primary/20 border-2 border-primary/50 dark:border-primary/30' : 'opacity-0'
                         }`}>
                           {showAvatar && message.sender_name && (
-                            <span className="text-neon-green text-xs font-medium">
+                            <span className="text-primary text-xs font-medium">
                               {message.sender_name.charAt(0).toUpperCase()}
                             </span>
                           )}
@@ -488,7 +488,7 @@ export const MessagesSection = ({
           </div>
 
           {/* Message Input */}
-          <div className="p-2 sm:p-3 lg:p-4 border-t border-neon-green/20 bg-gray-800/30 flex-shrink-0">
+          <div className="p-2 sm:p-3 lg:p-4 border-t border-gray-200 dark:border-primary/20 bg-gray-50 dark:bg-gray-800/30 flex-shrink-0">
             <div className="flex items-end gap-1.5 sm:gap-2">
               <div className="flex-1 relative">
                 <textarea
@@ -502,7 +502,7 @@ export const MessagesSection = ({
                   }}
                   placeholder="Message..."
                   rows={1}
-                  className="w-full bg-gray-700/80 text-white px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl border border-gray-600/50 focus:border-neon-green/50 focus:outline-none text-sm resize-none overflow-hidden backdrop-blur-sm"
+                  className="w-full bg-white dark:bg-gray-700/80 text-gray-900 dark:text-gray-100 px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl border-2 border-gray-300 dark:border-gray-600/50 focus:border-primary focus:ring-2 focus:ring-primary/30 dark:focus:ring-primary/20 focus:outline-none text-sm resize-none overflow-hidden backdrop-blur-sm placeholder-gray-500 dark:placeholder-gray-400"
                   style={{
                     minHeight: '40px',
                     maxHeight: '120px',
@@ -514,7 +514,7 @@ export const MessagesSection = ({
               <button
                 onClick={onSendMessage}
                 disabled={!newMessage.trim()}
-                className="bg-gradient-to-r from-neon-green/20 to-emerald-500/20 hover:from-neon-green/30 hover:to-emerald-500/30 disabled:from-gray-600/20 disabled:to-gray-600/20 disabled:text-gray-400 text-neon-green p-2.5 sm:p-3 rounded-2xl transition-all border border-neon-green/20 hover:border-neon-green/40 disabled:border-gray-600/20 flex items-center justify-center min-w-[40px] h-[40px] shadow-lg disabled:shadow-none flex-shrink-0"
+                className="bg-gradient-to-r from-neon-green/30 to-emerald-500/30 hover:from-neon-green/40 hover:to-emerald-500/40 dark:from-neon-green/20 dark:to-emerald-500/20 dark:hover:from-neon-green/30 dark:hover:to-emerald-500/30 disabled:from-gray-300 disabled:to-gray-300 dark:disabled:from-gray-600/20 dark:disabled:to-gray-600/20 disabled:text-gray-500 dark:disabled:text-muted-foreground text-primary p-2.5 sm:p-3 rounded-2xl transition-all border-2 border-primary/40 hover:border-primary/60 dark:border-primary/20 dark:hover:border-primary/40 disabled:border-gray-400 dark:disabled:border-gray-600/20 flex items-center justify-center min-w-[40px] h-[40px] shadow-lg disabled:shadow-none flex-shrink-0"
                 title={newMessage.trim() ? "Envoyer le message" : "Tapez un message"}
               >
                 <svg className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${newMessage.trim() ? 'rotate-0' : 'rotate-45'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -524,13 +524,13 @@ export const MessagesSection = ({
             </div>
             
             {/* Quick actions - Hidden on mobile for cleaner interface */}
-            <div className="hidden sm:flex items-center justify-between mt-2 text-xs text-gray-400">
+            <div className="hidden sm:flex items-center justify-between mt-2 text-xs text-gray-600 dark:text-gray-400">
               <div className="flex items-center space-x-4">
                 <span>Maj+Entrée pour nouvelle ligne</span>
               </div>
               <div className="flex items-center space-x-2">
                 {selectedConversation.status !== 0 && (
-                  <span className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">
+                  <span className="bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded-full font-medium">
                     Conversation {statusLabels[selectedConversation.status as keyof typeof statusLabels].label.toLowerCase()}
                   </span>
                 )}
@@ -539,7 +539,7 @@ export const MessagesSection = ({
           </div>
         </>
       ) : (
-        <div className="flex-1 flex items-center justify-center text-gray-400 p-6 text-center">
+        <div className="flex-1 flex items-center justify-center text-muted-foreground p-6 text-center">
           <div>
             <svg className="w-12 h-12 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />

@@ -20,8 +20,8 @@ export default function MessageNode(props: NodeProps) {
       isEntryNode={data.isEntryNode}
     >
       <div className="space-y-2">
-        <div className="text-xs text-gray-400">Message</div>
-        <div className="text-sm text-white bg-gray-700 p-2 rounded max-h-20 overflow-hidden">
+        <div className="text-xs text-muted-foreground">Message</div>
+        <div className="text-sm text-foreground bg-secondary p-2 rounded max-h-20 overflow-hidden">
           {data.config?.message || 'No message configured'}
         </div>
       </div>

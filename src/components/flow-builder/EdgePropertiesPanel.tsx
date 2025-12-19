@@ -188,13 +188,13 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
       case 'condition':
         return (
           <div className="space-y-4">
-            <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
+            <div className="bg-secondary rounded-lg p-4 border border-gray-600">
               <AdvancedConditionsBuilder
                 conditions={advancedConditions}
                 onChange={handleAdvancedConditionsChange}
               />
             </div>
-            <div className="text-xs text-gray-400 bg-gray-700 rounded p-2 border border-gray-600">
+            <div className="text-xs text-muted-foreground bg-secondary rounded p-2 border border-gray-600">
               <strong>Advanced Conditions:</strong> Create complex validation rules using multiple condition types 
               with AND/OR logic. These conditions will be evaluated when the flow reaches this edge.
             </div>
@@ -211,10 +211,10 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
               type="text"
               value={conditionConfig.keywords?.join(', ') || ''}
               onChange={(e) => handleConditionConfigChange('keywords', e.target.value.split(',').map(k => k.trim()).filter(Boolean))}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+              className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground placeholder-muted-foreground focus:border-neon-green focus:outline-none"
               placeholder="e.g., yes, ok, sure"
             />
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-muted-foreground">
               The edge will be taken if the user message contains any of these keywords.
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
                 type="text"
                 value={conditionConfig.intent_name || ''}
                 onChange={(e) => handleConditionConfigChange('intent_name', e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground placeholder-muted-foreground focus:border-neon-green focus:outline-none"
                 placeholder="e.g., greeting, support, booking"
               />
             </div>
@@ -246,10 +246,10 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
                 step="0.1"
                 value={conditionConfig.confidence_threshold || 0.8}
                 onChange={(e) => handleConditionConfigChange('confidence_threshold', parseFloat(e.target.value))}
-                className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground placeholder-muted-foreground focus:border-neon-green focus:outline-none"
               />
             </div>
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-muted-foreground">
               The edge will be taken if the detected intent matches with sufficient confidence.
             </div>
           </div>
@@ -265,24 +265,24 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
               type="text"
               value={conditionConfig.expected_input || ''}
               onChange={(e) => handleConditionConfigChange('expected_input', e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+              className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground placeholder-muted-foreground focus:border-neon-green focus:outline-none"
               placeholder="Leave empty to accept any user input"
             />
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-muted-foreground">
               The edge will be taken if the user provides any input (or specific input if specified).
             </div>
           </div>
         );
       case 'wait_user_reply':
         return (
-          <div className="text-sm text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+          <div className="text-sm text-muted-foreground bg-secondary rounded p-3 border border-gray-600">
             This edge will be taken when the bot is waiting for a user reply.
           </div>
         );
       
       default:
         return (
-          <div className="text-sm text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+          <div className="text-sm text-muted-foreground bg-secondary rounded p-3 border border-gray-600">
             This edge will always be taken when the flow reaches this point.
           </div>
         );
@@ -292,10 +292,10 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
   return (
     <div className="h-full flex flex-col">
       <div className="flex items-center justify-between p-4 border-b border-gray-600">
-        <h3 className="text-lg font-semibold text-white">Edge Properties</h3>
+        <h3 className="text-lg font-semibold text-foreground">Edge Properties</h3>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-white transition-colors"
+          className="text-muted-foreground hover:text-foreground transition-colors"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -320,7 +320,7 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
             type="text"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
-            className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+            className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground placeholder-muted-foreground focus:border-neon-green focus:outline-none"
             placeholder="Edge label (optional)"
           />
         </div>
@@ -333,7 +333,7 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
           <select
             value={conditionType}
             onChange={(e) => setConditionType(e.target.value)}
-            className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+            className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
           >
             {CONDITION_TYPES.map((type) => (
               <option key={type.value} value={type.value}>
@@ -352,8 +352,8 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
                 onClick={() => setActiveTab('config')}
                 className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                   activeTab === 'config'
-                    ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-primary/20 text-primary border border-primary/20'
+                    : 'bg-secondary text-gray-300 hover:bg-gray-600'
                 }`}
               >
                 Configuration
@@ -362,8 +362,8 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
                 onClick={() => setActiveTab('docs')}
                 className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                   activeTab === 'docs'
-                    ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-primary/20 text-primary border border-primary/20'
+                    : 'bg-secondary text-gray-300 hover:bg-gray-600'
                 }`}
               >
                 Help
@@ -392,10 +392,10 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
             type="number"
             value={priority}
             onChange={(e) => setPriority(parseInt(e.target.value) || 0)}
-            className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-neon-green focus:outline-none"
+            className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground placeholder-muted-foreground focus:border-neon-green focus:outline-none"
             placeholder="0"
           />
-          <p className="text-xs text-gray-400">Higher priority edges are evaluated first</p>
+          <p className="text-xs text-muted-foreground">Higher priority edges are evaluated first</p>
         </div>
       </div>
 
@@ -403,7 +403,7 @@ export default function EdgePropertiesPanel({ edge, onUpdateEdge, onClose, onDel
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg transition-colors border border-primary/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? 'Saving...' : 'Apply Changes'}
         </button>

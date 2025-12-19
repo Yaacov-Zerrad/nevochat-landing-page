@@ -61,7 +61,7 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
-      className="border-b border-white/10 bg-white/5 backdrop-blur-sm"
+      className="border-b border-border bg-white/5 backdrop-blur-sm"
     >
       <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -73,7 +73,7 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
             <select
               value={localFilters.status}
               onChange={(e) => handleFilterChange('status', e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+              className="w-full bg-white/5 border border-border rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-neon-green/50"
             >
               {statusOptions.map((option) => (
                 <option key={option.value} value={option.value} className="bg-gray-800">
@@ -91,7 +91,7 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
             <select
               value={localFilters.contact_type}
               onChange={(e) => handleFilterChange('contact_type', e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+              className="w-full bg-white/5 border border-border rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-neon-green/50"
             >
               {contactTypeOptions.map((option) => (
                 <option key={option.value} value={option.value} className="bg-gray-800">
@@ -111,7 +111,7 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
               placeholder="ex: FR, US, CA"
               value={localFilters.country_code}
               onChange={(e) => handleFilterChange('country_code', e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-neon-green/50"
+              className="w-full bg-white/5 border border-border rounded-lg px-3 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:border-neon-green/50"
             />
           </div>
 
@@ -126,7 +126,7 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
                 const value = e.target.value === 'null' ? null : e.target.value === 'true'
                 handleFilterChange('has_conversations', value)
               }}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+              className="w-full bg-white/5 border border-border rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-neon-green/50"
             >
               <option value="null" className="bg-gray-800">Tous</option>
               <option value="true" className="bg-gray-800">Avec conversations</option>
@@ -143,7 +143,7 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
               type="date"
               value={localFilters.created_after}
               onChange={(e) => handleFilterChange('created_after', e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+              className="w-full bg-white/5 border border-border rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-neon-green/50"
             />
           </div>
 
@@ -155,16 +155,16 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
               type="date"
               value={localFilters.created_before}
               onChange={(e) => handleFilterChange('created_before', e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-neon-green/50"
+              className="w-full bg-white/5 border border-border rounded-lg px-3 py-2 text-foreground focus:outline-none focus:border-neon-green/50"
             />
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/10">
+        <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
           <button
             onClick={handleReset}
-            className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+            className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             Réinitialiser
           </button>
@@ -172,13 +172,13 @@ export function ContactFilters({ filters, onFiltersChange, onClose }: ContactFil
           <div className="flex items-center space-x-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white hover:bg-white/10 transition-colors"
+              className="px-4 py-2 bg-white/5 border border-border rounded-lg text-foreground hover:bg-white/10 transition-colors"
             >
               Annuler
             </button>
             <button
               onClick={handleApply}
-              className="px-6 py-2 bg-neon-green/20 border border-neon-green/30 rounded-lg text-neon-green hover:bg-neon-green/30 transition-colors"
+              className="px-6 py-2 bg-primary/20 border border-primary/30 rounded-lg text-primary hover:bg-primary/30 transition-colors"
             >
               Appliquer
             </button>

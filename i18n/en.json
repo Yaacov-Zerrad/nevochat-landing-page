@@ -85,5 +85,47 @@
   "footer": {
     "description": "Advanced digital solutions for businesses of all sizes",
     "rights": "All rights reserved"
+  },
+  "dashboard": {
+    "title": "Select an Account",
+    "subtitle": "Choose the account you want to work with",
+    "signOut": "Sign Out",
+    "loading": "Loading accounts...",
+    "noAccounts": "No accounts found",
+    "noAccountsDescription": "You don't have access to any accounts at the moment.",
+    "createAccount": "Create New Account",
+    "active": "active",
+    "inactive": "inactive",
+    "support": "Support",
+    "accountId": "Account ID",
+    "errorLoading": "Error loading accounts"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "toggle": "Toggle Theme"
+  },
+  "account": {
+    "notFound": "Account not found",
+    "notFoundDescription": "The requested account does not exist or you don't have access to it.",
+    "backToAccounts": "Back to accounts",
+    "menu": {
+      "conversations": "Conversations",
+      "conversationsDesc": "Manage your customer conversations",
+      "flows": "Flows",
+      "flowsDesc": "Manage your conversation flows",
+      "templates": "Templates",
+      "templatesDesc": "Manage your WhatsApp templates",
+      "whatsapp": "Devices",
+      "whatsappDesc": "Manage WhatsApp devices",
+      "contacts": "Contacts",
+      "contactsDesc": "Manage your contact list"
+    },
+    "stats": {
+      "activeConversations": "Active conversations",
+      "activeFlows": "Active flows",
+      "responseRate": "Response rate",
+      "messagesSent": "Messages sent"
+    }
   }
 }

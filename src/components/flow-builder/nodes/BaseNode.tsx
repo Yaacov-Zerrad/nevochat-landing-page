@@ -11,8 +11,8 @@ interface BaseNodeProps extends NodeProps {
 
 export default function BaseNode({ data, selected, icon, color, children, onSetAsEntry, isEntryNode }: BaseNodeProps) {
   const borderClass = selected ? `border-neon-green shadow-neon-green/50` : 'border-gray-600';
-  const headerClass = `bg-neon-green/20`;
-  const iconClass = 'text-neon-green';
+  const headerClass = `bg-primary/20`;
+  const iconClass = 'text-primary';
   
   const handleSetAsEntry = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -41,7 +41,7 @@ export default function BaseNode({ data, selected, icon, color, children, onSetA
       {!isEntryNode && (
         <button
           onClick={handleSetAsEntry}
-          className="absolute -top-2 -right-2 bg-gray-600 hover:bg-yellow-400 hover:text-black text-white text-xs px-2 py-1 rounded-full transition-colors"
+          className="absolute -top-2 -right-2 bg-gray-600 hover:bg-yellow-400 hover:text-black text-foreground text-xs px-2 py-1 rounded-full transition-colors"
           title="Set as entry node"
         >
           SET START
@@ -61,9 +61,9 @@ export default function BaseNode({ data, selected, icon, color, children, onSetA
           {icon}
         </div>
         <div className="flex-1">
-          <h3 className="text-white font-medium text-sm">{data.label}</h3>
+          <h3 className="text-foreground font-medium text-sm">{data.label}</h3>
           {data.description && (
-            <p className="text-gray-400 text-xs">{data.description}</p>
+            <p className="text-muted-foreground text-xs">{data.description}</p>
           )}
         </div>
       </div>

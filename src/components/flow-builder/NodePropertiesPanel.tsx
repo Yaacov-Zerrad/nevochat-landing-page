@@ -234,7 +234,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 value={config.message || ''}
                 onChange={(e) => updateConfig('message', e.target.value)}
                 rows={4}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none"
                 placeholder="Enter your message..."
               />
             </div>
@@ -255,7 +255,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 value={config.prompt || ''}
                 onChange={(e) => updateConfig('prompt', e.target.value)}
                 rows={3}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none"
                 placeholder="What do you want to ask the user?"
               />
             </div>
@@ -266,7 +266,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
               <select
                 value={config.input_type || 'text'}
                 onChange={(e) => updateConfig('input_type', e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
               >
                 <option value="text">Text</option>
                 <option value="email">Email</option>
@@ -283,7 +283,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 type="text"
                 value={config.input_key || ''}
                 onChange={(e) => updateConfig('input_key', e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="Variable name to store input"
               />
             </div>
@@ -294,7 +294,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
         return (
           <div className="space-y-6">
             {/* Advanced Conditions Builder */}
-            <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
+            <div className="bg-secondary rounded-lg p-4 border border-gray-600">
               <AdvancedConditionsBuilder
                 conditions={advancedConditions}
                 onChange={setAdvancedConditions}
@@ -303,13 +303,13 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
 
             {/* Branches Configuration */}
             <div className="space-y-4">
-              <h4 className="text-sm font-medium text-white">Flow Branches</h4>
+              <h4 className="text-sm font-medium text-foreground">Flow Branches</h4>
               <div className="space-y-3">
                 {branches.map((branch, index) => (
-                  <div key={index} className="bg-gray-700 rounded-lg p-3 border border-gray-600">
+                  <div key={index} className="bg-secondary rounded-lg p-3 border border-gray-600">
                     <div className="grid grid-cols-3 gap-3">
                       <div>
-                        <label className="block text-xs font-medium text-gray-400 mb-1">
+                        <label className="block text-xs font-medium text-muted-foreground mb-1">
                           Branch Name
                         </label>
                         <input
@@ -320,12 +320,12 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                             newBranches[index] = { ...branch, name: e.target.value };
                             setBranches(newBranches);
                           }}
-                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                           placeholder="Branch name"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-400 mb-1">
+                        <label className="block text-xs font-medium text-muted-foreground mb-1">
                           When Conditions
                         </label>
                         <select
@@ -335,14 +335,14 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                             newBranches[index] = { ...branch, conditions_met: e.target.value === 'true' };
                             setBranches(newBranches);
                           }}
-                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                         >
                           <option value="true">Are Met</option>
                           <option value="false">Are Not Met</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-400 mb-1">
+                        <label className="block text-xs font-medium text-muted-foreground mb-1">
                           Next Node
                         </label>
                         <select
@@ -352,7 +352,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                             newBranches[index] = { ...branch, next_node: e.target.value };
                             setBranches(newBranches);
                           }}
-                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                         >
                           <option value="">Select next node...</option>
                           {availableNodes.map((availableNode) => (
@@ -370,13 +370,13 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                             newBranches[index] = { ...branch, next_node: e.target.value };
                             setBranches(newBranches);
                           }}
-                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none mt-1"
+                          className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none mt-1"
                           placeholder="Or enter node ID manually"
                         />
                       </div>
                     </div>
                     <div className="mt-2">
-                      <label className="block text-xs font-medium text-gray-400 mb-1">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">
                         Optional Message
                       </label>
                       <input
@@ -387,7 +387,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                           newBranches[index] = { ...branch, message: e.target.value };
                           setBranches(newBranches);
                         }}
-                        className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-white focus:border-neon-green focus:outline-none"
+                        className="w-full bg-gray-600 border border-gray-500 rounded px-2 py-1 text-sm text-foreground focus:border-neon-green focus:outline-none"
                         placeholder="Optional message to display"
                       />
                     </div>
@@ -398,14 +398,14 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
               <div className="flex space-x-2">
                 <button
                   onClick={() => setBranches([...branches, { name: `branch_${branches.length + 1}`, conditions_met: true, next_node: '' }])}
-                  className="px-3 py-1 bg-gray-600 hover:bg-gray-500 text-gray-300 hover:text-white rounded text-sm transition-colors"
+                  className="px-3 py-1 bg-gray-600 hover:bg-gray-500 text-gray-300 hover:text-foreground rounded text-sm transition-colors"
                 >
                   + Add Branch
                 </button>
                 {branches.length > 2 && (
                   <button
                     onClick={() => setBranches(branches.slice(0, -1))}
-                    className="px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded text-sm transition-colors"
+                    className="px-3 py-1 bg-red-600 hover:bg-red-500 text-foreground rounded text-sm transition-colors"
                   >
                     Remove Last
                   </button>
@@ -414,7 +414,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
             </div>
 
             {/* Help Text */}
-            <div className="text-xs text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+            <div className="text-xs text-muted-foreground bg-secondary rounded p-3 border border-gray-600">
               <strong>How it works:</strong> The advanced conditions above will be evaluated. 
               Based on whether they pass or fail, the flow will follow the corresponding branch to the next node.
             </div>
@@ -432,7 +432,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 type="text"
                 value={config.function_name || ''}
                 onChange={(e) => updateConfig('function_name', e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="Function to execute"
               />
             </div>
@@ -451,7 +451,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   }
                 }}
                 rows={4}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none font-mono text-xs"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none font-mono text-xs"
                 placeholder='{"param1": "value1"}'
               />
             </div>
@@ -469,7 +469,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 type="url"
                 value={config.url || ''}
                 onChange={(e) => updateConfig('url', e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="https://api.example.com/webhook"
               />
             </div>
@@ -480,7 +480,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
               <select
                 value={config.method || 'POST'}
                 onChange={(e) => updateConfig('method', e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
               >
                 <option value="GET">GET</option>
                 <option value="POST">POST</option>
@@ -504,7 +504,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   }
                 }}
                 rows={3}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none font-mono text-xs"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none font-mono text-xs"
                 placeholder='{"Content-Type": "application/json"}'
               />
             </div>
@@ -529,7 +529,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">Hours</label>
+                    <label className="block text-xs text-muted-foreground mb-1">Hours</label>
                     <input
                       type="number"
                       value={Math.floor((config.seconds || config.delay_seconds || 1) / 3600)}
@@ -542,11 +542,11 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                       }}
                       min="0"
                       max="23"
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                      className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">Minutes</label>
+                    <label className="block text-xs text-muted-foreground mb-1">Minutes</label>
                     <input
                       type="number"
                       value={Math.floor(((config.seconds || config.delay_seconds || 1) % 3600) / 60)}
@@ -559,11 +559,11 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                       }}
                       min="0"
                       max="59"
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                      className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">Seconds</label>
+                    <label className="block text-xs text-muted-foreground mb-1">Seconds</label>
                     <input
                       type="number"
                       value={(config.seconds || config.delay_seconds || 1) % 60}
@@ -576,7 +576,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                       }}
                       min="0"
                       max="59"
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                      className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     />
                   </div>
                 </div>
@@ -594,11 +594,11 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                       name="blocking"
                       checked={config.blocking !== false}
                       onChange={() => updateConfig('blocking', true)}
-                      className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                      className="text-primary focus:ring-neon-green focus:ring-offset-gray-800"
                     />
                     <div>
-                      <span className="text-white">Blocking Delay</span>
-                      <p className="text-xs text-gray-400">Flow stops and waits for the delay</p>
+                      <span className="text-foreground">Blocking Delay</span>
+                      <p className="text-xs text-muted-foreground">Flow stops and waits for the delay</p>
                     </div>
                   </label>
                   <label className="flex items-center space-x-3">
@@ -607,11 +607,11 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                       name="blocking"
                       checked={config.blocking === false}
                       onChange={() => updateConfig('blocking', false)}
-                      className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                      className="text-primary focus:ring-neon-green focus:ring-offset-gray-800"
                     />
                     <div>
-                      <span className="text-white">Non-blocking Delay</span>
-                      <p className="text-xs text-gray-400">Flow continues, delay runs in background</p>
+                      <span className="text-foreground">Non-blocking Delay</span>
+                      <p className="text-xs text-muted-foreground">Flow continues, delay runs in background</p>
                     </div>
                   </label>
                 </div>
@@ -621,7 +621,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
             {/* Advanced Configuration for Non-blocking */}
             {config.blocking === false && (
               <div className="border-t border-gray-600 pt-6 space-y-4">
-                <h4 className="text-sm font-medium text-white flex items-center">
+                <h4 className="text-sm font-medium text-foreground flex items-center">
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -637,7 +637,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   <select
                     value={config.timing_mode || 'fixed_delay'}
                     onChange={(e) => updateConfig('timing_mode', e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                   >
                     <option value="fixed_delay">Fixed Delay</option>
                     <option value="delay_from_last_message">Reset on User Message</option>
@@ -647,7 +647,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
 
                 {/* Absolute Date Configuration */}
                 {config.timing_mode === 'absolute_date' && (
-                  <div className="space-y-4 bg-gray-700 p-4 rounded-lg border border-gray-600">
+                  <div className="space-y-4 bg-secondary p-4 rounded-lg border border-gray-600">
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         Execute At
@@ -656,10 +656,10 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                         type="text"
                         value={config.execute_at || ''}
                         onChange={(e) => updateConfig('execute_at', e.target.value)}
-                        className="w-full bg-gray-600 border border-gray-500 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none font-mono text-sm"
+                        className="w-full bg-gray-600 border border-gray-500 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none font-mono text-sm"
                         placeholder="{{context.appointment_datetime}} or 2024-12-25T10:00:00"
                       />
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         Use template variables like {`{{context.appointment_datetime}}`} or ISO date format
                       </p>
                     </div>
@@ -670,7 +670,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                       <select
                         value={config.timezone || 'UTC'}
                         onChange={(e) => updateConfig('timezone', e.target.value)}
-                        className="w-full bg-gray-600 border border-gray-500 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                        className="w-full bg-gray-600 border border-gray-500 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                       >
                         <option value="UTC">UTC</option>
                         <option value="Europe/Paris">Europe/Paris</option>
@@ -685,18 +685,18 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
 
                 {/* Dynamic Delay Configuration */}
                 {config.timing_mode === 'delay_from_last_message' && (
-                  <div className="space-y-4 bg-gray-700 p-4 rounded-lg border border-gray-600">
+                  <div className="space-y-4 bg-secondary p-4 rounded-lg border border-gray-600">
                     <div className="flex items-center justify-between">
                       <label className="flex items-center space-x-3">
                         <input
                           type="checkbox"
                           checked={config.reset_on_user_response !== false}
                           onChange={(e) => updateConfig('reset_on_user_response', e.target.checked)}
-                          className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                          className="text-primary focus:ring-neon-green focus:ring-offset-gray-800"
                         />
                         <div>
-                          <span className="text-white">Reset on User Response</span>
-                          <p className="text-xs text-gray-400">Restart delay timer when user sends a message</p>
+                          <span className="text-foreground">Reset on User Response</span>
+                          <p className="text-xs text-muted-foreground">Restart delay timer when user sends a message</p>
                         </div>
                       </label>
                     </div>
@@ -706,11 +706,11 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                           type="checkbox"
                           checked={config.cancel_on_user_response === true}
                           onChange={(e) => updateConfig('cancel_on_user_response', e.target.checked)}
-                          className="text-neon-green focus:ring-neon-green focus:ring-offset-gray-800"
+                          className="text-primary focus:ring-neon-green focus:ring-offset-gray-800"
                         />
                         <div>
-                          <span className="text-white">Cancel on User Response</span>
-                          <p className="text-xs text-gray-400">Cancel delay entirely if user responds</p>
+                          <span className="text-foreground">Cancel on User Response</span>
+                          <p className="text-xs text-muted-foreground">Cancel delay entirely if user responds</p>
                         </div>
                       </label>
                     </div>
@@ -730,7 +730,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                         ...config.scheduled_action, 
                         type: e.target.value 
                       })}
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                      className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     >
                       <option value="continue_flow">Continue Flow</option>
                       <option value="message">Send Message</option>
@@ -750,7 +750,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                           content: e.target.value 
                         })}
                         rows={3}
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
+                        className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none"
                         placeholder="Message to send after delay..."
                       />
                     </div>
@@ -767,7 +767,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                           ...config.scheduled_action, 
                           restart_from_node: e.target.value 
                         })}
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                        className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                       >
                         <option value="">Select node...</option>
                         {availableNodes.map(node => (
@@ -792,7 +792,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
           <div className="space-y-6">
             {/* Basic Contact Fields */}
             <div className="space-y-4">
-              <h4 className="text-sm font-medium text-white">Basic Contact Information</h4>
+              <h4 className="text-sm font-medium text-foreground">Basic Contact Information</h4>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -803,7 +803,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                     type="text"
                     value={config.name || ''}
                     onChange={(e) => updateConfig('name', e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     placeholder="First name"
                   />
                 </div>
@@ -816,7 +816,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                     type="text"
                     value={config.last_name || ''}
                     onChange={(e) => updateConfig('last_name', e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     placeholder="Last name"
                   />
                 </div>
@@ -831,7 +831,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                     type="email"
                     value={config.email || ''}
                     onChange={(e) => updateConfig('email', e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     placeholder="email@example.com"
                   />
                 </div>
@@ -844,7 +844,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                     type="tel"
                     value={config.phone_number || ''}
                     onChange={(e) => updateConfig('phone_number', e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     placeholder="+1234567890"
                   />
                 </div>
@@ -859,7 +859,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                     type="text"
                     value={config.location || ''}
                     onChange={(e) => updateConfig('location', e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     placeholder="City, State"
                   />
                 </div>
@@ -872,7 +872,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                     type="text"
                     value={config.country_code || ''}
                     onChange={(e) => updateConfig('country_code', e.target.value)}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                    className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                     placeholder="US"
                   />
                 </div>
@@ -886,7 +886,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   type="text"
                   value={config.identifier || ''}
                   onChange={(e) => updateConfig('identifier', e.target.value)}
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                  className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                   placeholder="Unique identifier"
                 />
               </div>
@@ -894,7 +894,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
 
             {/* Additional Attributes */}
             <div className="border-t border-gray-600 pt-6 space-y-4">
-              <h4 className="text-sm font-medium text-white">Additional Attributes</h4>
+              <h4 className="text-sm font-medium text-foreground">Additional Attributes</h4>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Additional Attributes (JSON)
@@ -904,14 +904,14 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   value={additionalAttributesText}
                   onChange={(e) => handleAdditionalAttributesChange(e.target.value)}
                   rows={4}
-                  className={`w-full bg-gray-700 border rounded-lg px-3 py-2 text-white focus:outline-none resize-none font-mono text-xs ${
+                  className={`w-full bg-secondary border rounded-lg px-3 py-2 text-foreground focus:outline-none resize-none font-mono text-xs ${
                     jsonErrors.additional 
                       ? 'border-red-500 focus:border-red-400' 
                       : 'border-gray-600 focus:border-neon-green'
                   }`}
                   placeholder='{"source": "website", "campaign": "summer2024"}'
                 />
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Add custom attributes that are not part of the main contact fields
                 </p>
               </div>
@@ -919,7 +919,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
 
             {/* Custom Attributes */}
             <div className="border-t border-gray-600 pt-6 space-y-4">
-              <h4 className="text-sm font-medium text-white">Custom Attributes</h4>
+              <h4 className="text-sm font-medium text-foreground">Custom Attributes</h4>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Custom Attributes (JSON)
@@ -929,21 +929,21 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   value={customAttributesText}
                   onChange={(e) => handleCustomAttributesChange(e.target.value)}
                   rows={4}
-                  className={`w-full bg-gray-700 border rounded-lg px-3 py-2 text-white focus:outline-none resize-none font-mono text-xs ${
+                  className={`w-full bg-secondary border rounded-lg px-3 py-2 text-foreground focus:outline-none resize-none font-mono text-xs ${
                     jsonErrors.custom 
                       ? 'border-red-500 focus:border-red-400' 
                       : 'border-gray-600 focus:border-neon-green'
                   }`}
                   placeholder='{"subscription_tier": "premium", "tags": ["vip", "priority"]}'
                 />
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Custom business-specific attributes for contact segmentation
                 </p>
               </div>
             </div>
 
             {/* Help Text */}
-            <div className="text-xs text-gray-400 bg-gray-700 rounded p-3 border border-gray-600">
+            <div className="text-xs text-muted-foreground bg-secondary rounded p-3 border border-gray-600">
               <strong>Note:</strong> Only filled fields will be updated. Empty fields will be ignored.
               Additional and custom attributes will be merged with existing values.
             </div>
@@ -961,7 +961,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 value={config.message || ''}
                 onChange={(e) => updateConfig('message', e.target.value)}
                 rows={3}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none"
                 placeholder="Flow completed message..."
               />
             </div>
@@ -970,7 +970,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
 
       default:
         return (
-          <div className="text-gray-400 text-center py-4">
+          <div className="text-muted-foreground text-center py-4">
             No configuration available for this node type.
           </div>
         );
@@ -981,10 +981,10 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-600">
-        <h3 className="text-white font-semibold">Node Properties</h3>
+        <h3 className="text-foreground font-semibold">Node Properties</h3>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-white transition-colors"
+          className="text-muted-foreground hover:text-foreground transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1012,7 +1012,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 type="text"
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
                 placeholder="Node label"
               />
             </div>
@@ -1025,7 +1025,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={2}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none resize-none"
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none"
                 placeholder="Optional description"
               />
             </div>
@@ -1040,8 +1040,8 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   onClick={() => setActiveTab('config')}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     activeTab === 'config'
-                      ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      ? 'bg-primary/20 text-primary border border-primary/20'
+                      : 'bg-secondary text-gray-300 hover:bg-gray-600'
                   }`}
                 >
                   Configuration
@@ -1050,8 +1050,8 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
                   onClick={() => setActiveTab('docs')}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     activeTab === 'docs'
-                      ? 'bg-neon-green/20 text-neon-green border border-neon-green/20'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      ? 'bg-primary/20 text-primary border border-primary/20'
+                      : 'bg-secondary text-gray-300 hover:bg-gray-600'
                   }`}
                 >
                   Documentation
@@ -1097,7 +1097,7 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full bg-neon-green/20 hover:bg-neon-green/30 text-neon-green px-4 py-2 rounded-lg transition-colors border border-neon-green/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-primary/20 hover:bg-primary/30 text-primary px-4 py-2 rounded-lg transition-colors border border-primary/20 hover:border-neon-green/40 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? 'Saving...' : 'Apply Changes'}
         </button>
@@ -1244,12 +1244,12 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
           Messaging Service
         </label>
         {loadingServices ? (
-          <div className="text-gray-400 text-sm">Loading messaging services...</div>
+          <div className="text-muted-foreground text-sm">Loading messaging services...</div>
         ) : messagingServices.length > 0 ? (
           <select
             value={config.messaging_service_sid || ''}
             onChange={(e) => handleServiceChange(e.target.value)}
-            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+            className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
           >
             <option value="">Select a messaging service ({messagingServices.length} available)</option>
             {messagingServices.map((service) => (
@@ -1259,7 +1259,7 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
             ))}
           </select>
         ) : (
-          <div className="text-gray-400 text-sm">No messaging services found</div>
+          <div className="text-muted-foreground text-sm">No messaging services found</div>
         )}
       </div>
 
@@ -1270,12 +1270,12 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
             Template ({templates.length} available)
           </label>
           {loadingTemplates ? (
-            <div className="text-gray-400 text-sm">Loading templates...</div>
+            <div className="text-muted-foreground text-sm">Loading templates...</div>
           ) : (
             <select
               value={config.template_name || ''}
               onChange={(e) => handleTemplateChange(e.target.value)}
-              className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:border-neon-green focus:outline-none"
+              className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none"
             >
               <option value="">Select a template</option>
               {templates.map((template, index) => (
@@ -1290,7 +1290,7 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
 
       {/* Show template selector even when no service selected if templates exist */}
       {!config.messaging_service_sid && templates.length === 0 && messagingServices.length > 0 && (
-        <div className="text-sm text-gray-400 bg-gray-800 p-3 rounded">
+        <div className="text-sm text-muted-foreground bg-gray-800 p-3 rounded">
           Please select a messaging service first to load templates.
         </div>
       )}
@@ -1301,11 +1301,11 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Template Preview
           </label>
-          <div className="bg-gray-700 border border-gray-600 rounded-lg p-3">
-            <div className="text-xs text-gray-400 mb-2">
+          <div className="bg-secondary border border-gray-600 rounded-lg p-3">
+            <div className="text-xs text-muted-foreground mb-2">
               Category: {selectedTemplate.category} | Language: {selectedTemplate.language}
             </div>
-            <div className="text-sm text-white whitespace-pre-wrap">
+            <div className="text-sm text-foreground whitespace-pre-wrap">
               {selectedTemplate.body}
             </div>
           </div>
@@ -1321,14 +1321,14 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
           <div className="space-y-3">
             {Object.entries(variables).map(([varName, value]) => (
               <div key={varName}>
-                <label className="block text-xs text-gray-400 mb-1">
+                <label className="block text-xs text-muted-foreground mb-1">
                   {varName}
                 </label>
                 <input
                   type="text"
                   value={value}
                   onChange={(e) => handleVariableChange(varName, e.target.value)}
-                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:border-neon-green focus:outline-none text-sm"
+                  className="w-full bg-secondary border border-gray-600 rounded px-3 py-2 text-foreground focus:border-neon-green focus:outline-none text-sm"
                   placeholder={`Value for ${varName}`}
                 />
               </div>
@@ -1348,7 +1348,7 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
               type="checkbox"
               checked={config.track_delivery || false}
               onChange={(e) => updateConfig('track_delivery', e.target.checked)}
-              className="rounded bg-gray-700 border-gray-600 text-neon-green focus:ring-neon-green"
+              className="rounded bg-secondary border-gray-600 text-primary focus:ring-neon-green"
             />
             <span className="text-sm text-gray-300">Track delivery status</span>
           </label>
@@ -1357,7 +1357,7 @@ function TemplateNodeConfig({ config, updateConfig, accountId }: {
               type="checkbox"
               checked={config.allow_replies || true}
               onChange={(e) => updateConfig('allow_replies', e.target.checked)}
-              className="rounded bg-gray-700 border-gray-600 text-neon-green focus:ring-neon-green"
+              className="rounded bg-secondary border-gray-600 text-primary focus:ring-neon-green"
             />
             <span className="text-sm text-gray-300">Allow replies</span>
           </label>

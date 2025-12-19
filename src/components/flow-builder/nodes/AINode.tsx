@@ -20,8 +20,8 @@ export default function AINode(props: NodeProps) {
       isEntryNode={data.isEntryNode}
     >
       <div className="space-y-2">
-        <div className="text-xs text-gray-400">AI Response</div>
-        <div className="text-sm text-white bg-gray-700 p-2 rounded max-h-20 overflow-hidden">
+        <div className="text-xs text-muted-foreground">AI Response</div>
+        <div className="text-sm text-foreground bg-secondary p-2 rounded max-h-20 overflow-hidden">
           {data.config?.prompt?.slice(0, 200) || 'No prompt configured'}
         </div>
       </div>

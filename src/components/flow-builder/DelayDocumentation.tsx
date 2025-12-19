@@ -4,15 +4,15 @@ export default function DelayDocumentation() {
   return (
     <div className="space-y-6 text-sm">
       <div>
-        <h3 className="text-lg font-semibold text-white mb-3">Delay Node Configuration</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-3">Delay Node Configuration</h3>
         <p className="text-gray-300 mb-4">
           Delay nodes can pause flow execution or schedule future actions. Choose between blocking and non-blocking modes.
         </p>
       </div>
 
       <div className="space-y-4">
-        <div className="bg-gray-700 p-4 rounded-lg border border-gray-600">
-          <h4 className="font-medium text-white mb-2">🚫 Blocking Delay</h4>
+        <div className="bg-secondary p-4 rounded-lg border border-gray-600">
+          <h4 className="font-medium text-foreground mb-2">🚫 Blocking Delay</h4>
           <p className="text-gray-300 mb-2">
             Traditional delay that stops the flow execution and waits for the specified time.
           </p>
@@ -21,8 +21,8 @@ export default function DelayDocumentation() {
           </div>
         </div>
 
-        <div className="bg-gray-700 p-4 rounded-lg border border-gray-600">
-          <h4 className="font-medium text-white mb-2">⚡ Non-blocking Delay</h4>
+        <div className="bg-secondary p-4 rounded-lg border border-gray-600">
+          <h4 className="font-medium text-foreground mb-2">⚡ Non-blocking Delay</h4>
           <p className="text-gray-300 mb-2">
             Schedules future actions in the background while the flow continues immediately.
           </p>
@@ -35,7 +35,7 @@ export default function DelayDocumentation() {
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-medium text-white">Timing Modes</h4>
+        <h4 className="font-medium text-foreground">Timing Modes</h4>
         
         <div className="space-y-3">
           <div className="bg-blue-900/30 p-3 rounded border border-blue-700">
@@ -71,7 +71,7 @@ export default function DelayDocumentation() {
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-medium text-white">Template Variables</h4>
+        <h4 className="font-medium text-foreground">Template Variables</h4>
         <p className="text-gray-300 text-xs mb-3">
           Use context variables in your delay configuration:
         </p>
@@ -93,11 +93,11 @@ export default function DelayDocumentation() {
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-medium text-white">Use Cases</h4>
+        <h4 className="font-medium text-foreground">Use Cases</h4>
         
         <div className="space-y-3 text-xs">
           <div className="bg-gray-800 p-3 rounded">
-            <h5 className="text-white mb-1">📅 Appointment Reminder</h5>
+            <h5 className="text-foreground mb-1">📅 Appointment Reminder</h5>
             <p className="text-gray-300 mb-2">Send reminder 1 hour before appointment</p>
             <div className="text-blue-300 font-mono">
               Timing: Absolute Date<br />
@@ -106,7 +106,7 @@ export default function DelayDocumentation() {
           </div>
 
           <div className="bg-gray-800 p-3 rounded">
-            <h5 className="text-white mb-1">💬 Inactivity Follow-up</h5>
+            <h5 className="text-foreground mb-1">💬 Inactivity Follow-up</h5>
             <p className="text-gray-300 mb-2">Ask if user needs help after 30min of silence</p>
             <div className="text-blue-300 font-mono">
               Timing: Reset on User Message<br />
@@ -116,7 +116,7 @@ export default function DelayDocumentation() {
           </div>
 
           <div className="bg-gray-800 p-3 rounded">
-            <h5 className="text-white mb-1">🔄 Follow-up Sequence</h5>
+            <h5 className="text-foreground mb-1">🔄 Follow-up Sequence</h5>
             <p className="text-gray-300 mb-2">Multiple follow-ups at different intervals</p>
             <div className="text-blue-300 font-mono">
               Delay 1 day → Message → Delay 3 days → Message → End
