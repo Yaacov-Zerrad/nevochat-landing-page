@@ -62,6 +62,7 @@ export interface UseAccountWebSocketReturn {
   markAsRead: (conversationId: number) => void;
   startTyping: (conversationId: number) => void;
   stopTyping: (conversationId: number) => void;
+  toggleMode: (conversationId: number) => void;
   reconnect: () => void;
 }
 
@@ -250,6 +251,16 @@ export function useAccountWebSocket(
     }
   }, [send]);
 
+  // Toggle conversation mode
+  const toggleMode = useCallback((conversationId: number) => {
+    send({
+      type: 'toggle_mode',
+      data: {
+        conversation_id: conversationId,
+      },
+    });
+  }, [send]);
+
   // Cleanup typing timeouts on unmount
   useEffect(() => {
     const timeouts = typingTimeoutRef.current;
@@ -268,6 +279,7 @@ export function useAccountWebSocket(
     markAsRead,
     startTyping,
     stopTyping,
+    toggleMode,
     reconnect,
   };
 }

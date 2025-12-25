@@ -4,8 +4,7 @@ export interface SubscriptionPlan {
   display_name: string;
   description: string;
   price: string;
-  daily_chatbot_flow_limit: number;
-  daily_conversation_limit: number;
+  monthly_conversation_limit: number;
   has_customer_service: boolean;
   has_integrations: boolean;
   is_active: boolean;
@@ -20,8 +19,7 @@ export interface AccountSubscription {
   current_period_start: string | null;
   current_period_end: string | null;
   trial_end: string | null;
-  daily_chatbot_flows_used: number;
-  daily_conversations_used: number;
+  monthly_conversations_used: number;
   last_reset_date: string;
   created_at: string;
   updated_at: string;

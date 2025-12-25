@@ -38,6 +38,7 @@ interface Contact {
   }
   created_at?: string
   updated_at?: string
+  mode?: 'ai' | 'human'
 }
 
 interface User {
@@ -86,6 +87,7 @@ export interface Conversation {
   unread_count: number
   uuid: string
   identifier?: string
+  mode?: 'ai' | 'human'
 }
 
 interface ConversationsListProps {

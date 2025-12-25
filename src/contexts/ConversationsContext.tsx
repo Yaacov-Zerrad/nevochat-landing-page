@@ -59,6 +59,7 @@ interface ConversationsContextValue {
   markAsRead: (conversationId: number) => void;
   startTyping: (conversationId: number) => void;
   stopTyping: (conversationId: number) => void;
+  toggleMode: (conversationId: number) => void;
   refreshConversations: () => Promise<void>;
   loadMoreMessages: (conversationId: number) => Promise<void>;
 }
@@ -114,13 +115,13 @@ export function ConversationsProvider({
     console.log('[ConversationsContext] Updated conversation:', conversation.id);
     
     setConversations(prev => {
-      return prev.map(c => c.id === conversation.id ? conversation : c);
+      return prev.map(c => c.id === conversation.id ? { ...c, ...conversation } : c);
     });
     
     // Update selected conversation if it's the one that was updated
     setSelectedConversation(prev => {
       if (prev?.id === conversation.id) {
-        return conversation;
+        return { ...prev, ...conversation };
       }
       return prev;
     });
@@ -232,6 +233,7 @@ export function ConversationsProvider({
     markAsRead: wsMarkAsRead,
     startTyping: wsStartTyping,
     stopTyping: wsStopTyping,
+    toggleMode: wsToggleMode,
     reconnect,
   } = useAccountWebSocket({
     accountId,
@@ -289,6 +291,10 @@ export function ConversationsProvider({
     wsStopTyping(conversationId);
   }, [wsStopTyping]);
 
+  const toggleMode = useCallback((conversationId: number) => {
+    wsToggleMode(conversationId);
+  }, [wsToggleMode]);
+
   const refreshConversations = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -304,7 +310,24 @@ export function ConversationsProvider({
       });
       
       const data = await conversationAPI.getConversations(accountId, params);
-      setConversations(data.results || data);
+      const newConversations = data.results || data;
+      setConversations(newConversations);
+      
+      // Update selected conversation if it exists in the new list
+      if (selectedConversationRef.current) {
+        const updatedConv = newConversations.find((c: Conversation) => c.id === selectedConversationRef.current?.id);
+        if (updatedConv) {
+          setSelectedConversation(prev => {
+            if (!prev) return updatedConv;
+            // Merge new data but preserve messages if they exist in prev but not in updatedConv
+            return {
+              ...prev,
+              ...updatedConv,
+              messages: prev.messages || updatedConv.messages
+            };
+          });
+        }
+      }
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load conversations');
@@ -369,6 +392,7 @@ export function ConversationsProvider({
     markAsRead,
     startTyping,
     stopTyping,
+    toggleMode,
     refreshConversations,
     loadMoreMessages,
   }), [
@@ -388,6 +412,7 @@ export function ConversationsProvider({
     markAsRead,
     startTyping,
     stopTyping,
+    toggleMode,
     refreshConversations,
     loadMoreMessages,
   ]);

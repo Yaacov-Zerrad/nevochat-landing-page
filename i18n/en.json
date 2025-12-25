@@ -127,5 +127,42 @@
       "responseRate": "Response rate",
       "messagesSent": "Messages sent"
     }
+  },
+  "pricing": {
+    "title": "Our Pricing",
+    "subtitle": "Choose the plan that suits you",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "To get started",
+        "price": "0",
+        "features": [
+          "150 conversations per month",
+          "No customer support",
+          "Manual mode after limit"
+        ]
+      },
+      "professional": {
+        "name": "Professional",
+        "description": "For growing businesses",
+        "price": "100",
+        "features": [
+          "1000 conversations per month",
+          "Customer support included",
+          "Manual mode after limit"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "For large accounts",
+        "price": "Contact us",
+        "features": [
+          "Unlimited conversations",
+          "Priority support",
+          "Custom integrations"
+        ]
+      }
+    },
+    "manualModeNote": "Note: Once the monthly conversation limit is reached, the chatbot switches to manual mode and stops replying automatically."
   }
 }

@@ -12,8 +12,7 @@ interface SubscriptionPlan {
   display_name: string
   description: string
   price: string
-  daily_chatbot_flow_limit: number
-  daily_conversation_limit: number
+  monthly_conversation_limit: number
   has_customer_service: boolean
   has_integrations: boolean
   is_active: boolean
@@ -27,8 +26,7 @@ interface AccountSubscription {
   status: string
   current_period_start: string | null
   current_period_end: string | null
-  daily_chatbot_flows_used: number
-  daily_conversations_used: number
+  monthly_conversations_used: number
   last_reset_date: string
   created_at: string
   updated_at: string
@@ -160,17 +158,10 @@ export default function SubscriptionPage() {
     )
   }
 
-  const chatbotUsagePercent = currentSubscription
-    ? getUsagePercentage(
-        currentSubscription.daily_chatbot_flows_used,
-        currentSubscription.plan_details.daily_chatbot_flow_limit
-      )
-    : 0
-
   const conversationUsagePercent = currentSubscription
     ? getUsagePercentage(
-        currentSubscription.daily_conversations_used,
-        currentSubscription.plan_details.daily_conversation_limit
+        currentSubscription.monthly_conversations_used,
+        currentSubscription.plan_details.monthly_conversation_limit
       )
     : 0
 
@@ -247,32 +238,13 @@ export default function SubscriptionPage() {
             </div>
 
             {/* Usage Statistics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Chatbot Flows Usage */}
-              <div className="bg-secondary/50 rounded-lg p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-foreground font-medium">Flows Chatbot</span>
-                  <span className="text-muted-foreground text-sm">
-                    {currentSubscription.daily_chatbot_flows_used} / {currentSubscription.plan_details.daily_chatbot_flow_limit}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-3">
-                  <div
-                    className={`h-3 rounded-full transition-all ${getUsageColor(chatbotUsagePercent)}`}
-                    style={{ width: `${chatbotUsagePercent}%` }}
-                  ></div>
-                </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  Renouvellement quotidien • {Math.floor((100 - chatbotUsagePercent))}% restant
-                </p>
-              </div>
-
+            <div className="grid grid-cols-1 gap-6">
               {/* Conversations Usage */}
               <div className="bg-secondary/50 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-foreground font-medium">Conversations</span>
                   <span className="text-muted-foreground text-sm">
-                    {currentSubscription.daily_conversations_used} / {currentSubscription.plan_details.daily_conversation_limit}
+                    {currentSubscription.monthly_conversations_used} / {currentSubscription.plan_details.monthly_conversation_limit}
                   </span>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-3">
@@ -282,7 +254,7 @@ export default function SubscriptionPage() {
                   ></div>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  Renouvellement quotidien • {Math.floor((100 - conversationUsagePercent))}% restant
+                  Renouvellement mensuel • {Math.floor((100 - conversationUsagePercent))}% restant
                 </p>
               </div>
             </div>
@@ -351,11 +323,7 @@ export default function SubscriptionPage() {
                     <div className="space-y-3 mb-6">
                       <div className="flex items-center gap-2 text-sm">
                         <span className="text-primary">✓</span>
-                        <span className="text-foreground">{plan.daily_chatbot_flow_limit} flows/jour</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="text-primary">✓</span>
-                        <span className="text-foreground">{plan.daily_conversation_limit} conversations/jour</span>
+                        <span className="text-foreground">{plan.monthly_conversation_limit} conversations/mois</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <span className={plan.has_customer_service ? 'text-primary' : 'text-gray-500'}>

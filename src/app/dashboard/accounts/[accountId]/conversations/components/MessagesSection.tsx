@@ -21,6 +21,7 @@ interface Contact {
   }
   created_at?: string
   updated_at?: string
+  mode?: 'ai' | 'human'
 }
 
 interface User {
@@ -69,6 +70,7 @@ interface Conversation {
   unread_count: number
   uuid: string
   identifier?: string
+  mode?: 'ai' | 'human'
 }
 
 interface MessageAttachment {
@@ -109,6 +111,7 @@ interface MessagesSectionProps {
   onUpdateConversationStatus: (conversationId: number, status: number) => void
   onShowContactModal: (contact: Contact) => void
   showConversationList: boolean
+  onToggleMode?: (type: 'contact' | 'conversation', id: number) => void
 }
 
 const statusLabels = {
@@ -232,7 +235,8 @@ export const MessagesSection = ({
   onShowConversationList,
   onUpdateConversationStatus,
   onShowContactModal,
-  showConversationList
+  showConversationList,
+  onToggleMode
 }: MessagesSectionProps) => {
   // Fonction pour formater l'heure uniquement
   const formatTime = (dateString: string) => {
@@ -341,6 +345,29 @@ export const MessagesSection = ({
                       } <span className="hidden sm:inline">{selectedConversation.contact.additional_attributes.country}</span>
                     </span>
                   )}
+                  {/* Mode Indicators */}
+                  <button
+                    onClick={() => onToggleMode?.('conversation', selectedConversation.id)}
+                    title={`Cliquez pour passer en mode ${selectedConversation.mode === 'human' ? 'AI' : 'Humain'}`}
+                    className={`px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-medium transition-colors ${
+                      selectedConversation.mode === 'human'
+                        ? 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-500/30'
+                        : 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-500/30'
+                    }`}
+                  >
+                    Conv: {selectedConversation.mode === 'human' ? 'Humain' : 'AI'}
+                  </button>
+                  <button
+                    onClick={() => onToggleMode?.('contact', selectedConversation.contact.id)}
+                    title={`Cliquez pour passer le contact en mode ${selectedConversation.contact.mode === 'human' ? 'AI' : 'Humain'}`}
+                    className={`px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-medium transition-colors ${
+                      selectedConversation.contact.mode === 'human'
+                        ? 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-500/30'
+                        : 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-500/30'
+                    }`}
+                  >
+                    Contact: {selectedConversation.contact.mode === 'human' ? 'Humain' : 'AI'}
+                  </button>
                 </div>
               </div>
               

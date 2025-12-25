@@ -98,11 +98,31 @@ function ConversationsPageContent() {
     messages: wsMessages,
     setSelectedConversation,
     isConnected,
-    sendMessage: wsSendMessage,
-    updateConversationStatus: wsUpdateStatus,
+    sendMessage,
+    updateConversationStatus,
+    markAsRead,
+    startTyping,
+    stopTyping,
     refreshConversations,
     updateFilters,
+    toggleMode,
   } = useConversations()
+
+  const handleToggleMode = async (type: 'contact' | 'conversation', id: number) => {
+    try {
+      if (type === 'conversation') {
+        // Use WebSocket for conversation mode toggle
+        toggleMode(id);
+      } else {
+        // Use REST API for contact mode toggle
+        await conversationAPI.toggleContactMode(id);
+        // Refresh conversations to get updated mode
+        refreshConversations();
+      }
+    } catch (error) {
+      console.error('Error toggling mode:', error);
+    }
+  };
   
   // Local state for UI
   const [newMessage, setNewMessage] = useState('')
@@ -225,18 +245,10 @@ function ConversationsPageContent() {
     if (!wsSelectedConversation || !newMessage.trim()) return
     
     try {
-      wsSendMessage(wsSelectedConversation.id, newMessage.trim())
+      sendMessage(wsSelectedConversation.id, newMessage.trim())
       setNewMessage('')
     } catch (error) {
       console.error('Error sending message:', error)
-    }
-  }
-
-  const updateConversationStatus = async (conversationId: number, newStatus: number) => {
-    try {
-      wsUpdateStatus(conversationId, newStatus)
-    } catch (error) {
-      console.error('Error updating conversation status:', error)
     }
   }
 
@@ -510,6 +522,7 @@ function ConversationsPageContent() {
                   setShowContactModal(true)
                 }}
                 showConversationList={showConversationList}
+                onToggleMode={handleToggleMode}
               />
             </div>
           </motion.div>

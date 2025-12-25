@@ -444,6 +444,16 @@ export const conversationAPI = {
     return response.data;
   },
 
+  async toggleContactMode(contactId: number): Promise<{ detail: string; mode: string }> {
+    const response = await api.post(`/api/chatbot/contacts/${contactId}/toggle-mode/`);
+    return response.data;
+  },
+
+  async toggleConversationMode(conversationId: number): Promise<{ detail: string; mode: string }> {
+    const response = await api.post(`/api/chatbot/conversations/${conversationId}/toggle-mode/`);
+    return response.data;
+  },
+
   async getInboxes(accountId: number): Promise<{
     results: Array<{
       id: number;
