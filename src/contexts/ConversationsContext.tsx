@@ -317,15 +317,7 @@ export function ConversationsProvider({
       if (selectedConversationRef.current) {
         const updatedConv = newConversations.find((c: Conversation) => c.id === selectedConversationRef.current?.id);
         if (updatedConv) {
-          setSelectedConversation(prev => {
-            if (!prev) return updatedConv;
-            // Merge new data but preserve messages if they exist in prev but not in updatedConv
-            return {
-              ...prev,
-              ...updatedConv,
-              messages: prev.messages || updatedConv.messages
-            };
-          });
+          setSelectedConversation(updatedConv);
         }
       }
       
