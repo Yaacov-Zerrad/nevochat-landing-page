@@ -136,31 +136,31 @@
         "name": "Gratuit",
         "description": "Pour commencer",
         "price": "0",
-        "features": [
-          "150 conversations par mois",
-          "Pas de support client",
-          "Mode manuel après limite"
-        ]
+        "features": {
+          "0": "150 conversations par mois",
+          "1": "Pas de support client",
+          "2": "Mode manuel après limite"
+        }
       },
       "professional": {
         "name": "Professionnel",
         "description": "Pour les entreprises en croissance",
         "price": "100",
-        "features": [
-          "1000 conversations par mois",
-          "Support client inclus",
-          "Mode manuel après limite"
-        ]
+        "features": {
+          "0": "1000 conversations par mois",
+          "1": "Support client inclus",
+          "2": "Mode manuel après limite"
+        }
       },
       "enterprise": {
         "name": "Entreprise",
         "description": "Pour les grands comptes",
         "price": "Sur devis",
-        "features": [
-          "Conversations illimitées",
-          "Support prioritaire",
-          "Intégrations personnalisées"
-        ]
+        "features": {
+          "0": "Conversations illimitées",
+          "1": "Support prioritaire",
+          "2": "Intégrations personnalisées"
+        }
       }
     },
     "manualModeNote": "Note : Une fois la limite de conversations mensuelle atteinte, le chatbot passe en mode manuel et ne répond plus automatiquement."
