@@ -36,6 +36,7 @@ import DelayNode from '@/components/flow-builder/nodes/DelayNode';
 import EndNode from '@/components/flow-builder/nodes/EndNode';
 import TemplateNode from '@/components/flow-builder/nodes/TemplateNode';
 import UpdateContactNode from '@/components/flow-builder/nodes/UpdateContactNode';
+import NotifyAgentsNode from '@/components/flow-builder/nodes/NotifyAgentsNode';
 
 // Import custom edges
 import CustomEdge from '@/components/flow-builder/edges/CustomEdge';
@@ -59,6 +60,7 @@ const nodeTypes: NodeTypes = {
   end: EndNode,
   template: TemplateNode,
   update_contact: UpdateContactNode,
+  notify_agents: NotifyAgentsNode,
 };
 
 const edgeTypes: EdgeTypes = {

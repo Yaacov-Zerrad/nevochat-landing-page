@@ -1,7 +1,7 @@
 export interface FlowNode {
   id: number;
   node_id: string;
-  node_type: 'message' | 'ai' | 'function' | 'condition' | 'input' | 'webhook' | 'delay' | 'end' | 'template';
+  node_type: 'message' | 'ai' | 'function' | 'condition' | 'input' | 'webhook' | 'delay' | 'end' | 'template' | 'update_contact' | 'notify_agents';
   position_x: number;
   position_y: number;
   config: Record<string, any>;

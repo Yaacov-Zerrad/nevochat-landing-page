@@ -241,6 +241,27 @@ export default function NodePropertiesPanel({ node, onUpdateNode, onClose, onDel
           </div>
         );
 
+      case 'notify_agents':
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Notification Message
+              </label>
+              <textarea
+                value={config.message || ''}
+                onChange={(e) => updateConfig('message', e.target.value)}
+                rows={4}
+                className="w-full bg-secondary border border-gray-600 rounded-lg px-3 py-2 text-foreground focus:border-neon-green focus:outline-none resize-none"
+                placeholder="Enter notification message for agents... (supports {{variables}})"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                This message will be sent to all agents in the Support account. You can use variables like {'{{contact.name}'}.
+              </p>
+            </div>
+          </div>
+        );
+
       case 'ai':
         return <AINodeConfig config={config} updateConfig={updateConfig} />;
 
