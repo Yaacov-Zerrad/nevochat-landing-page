@@ -70,25 +70,14 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
       icon: '👤',
       path: `/dashboard/accounts/${accountId}/users`,
       color: 'text-indigo-400'
+    },
+    {
+      title: 'Analytique',
+      icon: '📈',
+      path: `/dashboard/accounts/${accountId}/analytics`,
+      color: 'text-green-400'
     }
-    // {
-    //   title: 'Integrations',
-    //   icon: '🔗',
-    //   path: `/dashboard/accounts/${accountId}/integrations`,
-    //   color: 'text-teal-400'
-    // },
-    // {
-    //   title: 'Settings',
-    //   icon: '⚙️',
-    //   path: `/dashboard/accounts/${accountId}/settings`,
-    //   color: 'text-orange-400'
-    // },
-    // {
-    //   title: 'Team',
-    //   icon: '👥',
-    //   path: `/dashboard/accounts/${accountId}/team`,
-    //   color: 'text-indigo-400'
-    // }
+
   ]
 
 

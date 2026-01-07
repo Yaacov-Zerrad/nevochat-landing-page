@@ -9,6 +9,8 @@ import { Account } from '@/types/account'
 import ThemeToggle from '@/components/ThemeToggle'
 import LanguageToggle from '@/components/LanguageToggle'
 import { useTranslations } from 'next-intl'
+import { analyticsAPI, ConversationMetrics, FlowMetrics } from '@/lib/api'
+import { format, subDays } from 'date-fns'
 
 export default function AccountDashboard() {
   const { data: session, status } = useSession()
@@ -19,6 +21,12 @@ export default function AccountDashboard() {
   const tDashboard = useTranslations('dashboard')
   const [account, setAccount] = useState<Account | null>(null)
   const [loading, setLoading] = useState(true)
+  const [metrics, setMetrics] = useState({
+    activeConversations: 0,
+    activeFlows: 0,
+    responseRate: 0,
+    messagesSent: 0
+  })
   const { fetchAccountById } = useAccount()
 
   const fetchAccount = useCallback(async () => {
@@ -33,6 +41,50 @@ export default function AccountDashboard() {
     }
   }, [accountId, fetchAccountById])
 
+  const fetchMetrics = useCallback(async () => {
+    try {
+      const dateRange = {
+        start_date: format(subDays(new Date(), 29), 'yyyy-MM-dd'),
+        end_date: format(new Date(), 'yyyy-MM-dd'),
+      }
+
+      // Fetch conversation and flow metrics in parallel
+      const [conversationData, flowData] = await Promise.all([
+        analyticsAPI.getMetrics(parseInt(accountId), {
+          metric: 'conversations',
+          ...dateRange,
+          granularity: 'day',
+        }) as Promise<ConversationMetrics>,
+        analyticsAPI.getMetrics(parseInt(accountId), {
+          metric: 'flows',
+          ...dateRange,
+          granularity: 'day',
+        }) as Promise<FlowMetrics>,
+      ])
+
+      // Calculate metrics from the data
+      const activeConversations = conversationData.summary.active_conversations || 0
+      const activeFlows = flowData.summary.total_flows || 0
+      
+      // Calculate response rate (resolved / total * 100)
+      const responseRate = conversationData.summary.total_conversations > 0
+        ? Math.round((conversationData.summary.resolved_conversations / conversationData.summary.total_conversations) * 100)
+        : 0
+      
+      // Get total messages from time series data
+      const messagesSent = conversationData.time_series.reduce((sum, day) => sum + (day.total || 0), 0)
+
+      setMetrics({
+        activeConversations,
+        activeFlows,
+        responseRate,
+        messagesSent,
+      })
+    } catch (error) {
+      console.error('Failed to fetch metrics:', error)
+    }
+  }, [accountId])
+
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin')
@@ -41,8 +93,9 @@ export default function AccountDashboard() {
 
     if (status === 'authenticated') {
       fetchAccount()
+      fetchMetrics()
     }
-  }, [status, router, fetchAccount])
+  }, [status, router, fetchAccount, fetchMetrics])
 
   const handleNavigation = (path: string) => {
     router.push(`/dashboard/accounts/${accountId}${path}`)
@@ -128,6 +181,13 @@ export default function AccountDashboard() {
       path: `/users`,
       gradient: 'from-orange-500 to-red-500'
     },
+    {
+      title: t('menu.analytics'),
+      description: t('menu.analyticsDesc'),
+      icon: '📈',
+      ipath: `/analytics`,
+      gradient: 'from-green-500 to-emerald-500'
+    }
   ]
 
   return (
@@ -232,7 +292,7 @@ export default function AccountDashboard() {
             <div className="card bg-gradient-to-br from-blue-500/10 to-blue-600/10 border-blue-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-3xl font-bold text-blue-500 dark:text-blue-400">-</div>
+                  <div className="text-3xl font-bold text-blue-500 dark:text-blue-400">{metrics.activeConversations}</div>
                   <div className="text-sm text-muted-foreground mt-1">{t('stats.activeConversations')}</div>
                 </div>
                 <svg className="w-8 h-8 text-blue-500/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +304,7 @@ export default function AccountDashboard() {
             <div className="card bg-gradient-to-br from-purple-500/10 to-purple-600/10 border-purple-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-3xl font-bold text-purple-500 dark:text-purple-400">-</div>
+                  <div className="text-3xl font-bold text-purple-500 dark:text-purple-400">{metrics.activeFlows}</div>
                   <div className="text-sm text-muted-foreground mt-1">{t('stats.activeFlows')}</div>
                 </div>
                 <svg className="w-8 h-8 text-purple-500/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -256,7 +316,7 @@ export default function AccountDashboard() {
             <div className="card bg-gradient-to-br from-green-500/10 to-green-600/10 border-green-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-3xl font-bold text-green-500 dark:text-green-400">-</div>
+                  <div className="text-3xl font-bold text-green-500 dark:text-green-400">{metrics.responseRate}%</div>
                   <div className="text-sm text-muted-foreground mt-1">{t('stats.responseRate')}</div>
                 </div>
                 <svg className="w-8 h-8 text-green-500/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -268,7 +328,7 @@ export default function AccountDashboard() {
             <div className="card bg-gradient-to-br from-orange-500/10 to-orange-600/10 border-orange-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-3xl font-bold text-orange-500 dark:text-orange-400">-</div>
+                  <div className="text-3xl font-bold text-orange-500 dark:text-orange-400">{metrics.messagesSent.toLocaleString()}</div>
                   <div className="text-sm text-muted-foreground mt-1">{t('stats.messagesSent')}</div>
                 </div>
                 <svg className="w-8 h-8 text-orange-500/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">

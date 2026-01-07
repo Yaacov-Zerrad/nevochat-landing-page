@@ -749,4 +749,107 @@ export const paymentAPI = {
   },
 };
 
+// Analytics API endpoints
+export interface AnalyticsMetricParams {
+  metric: 'conversations' | 'contacts' | 'flows';
+  start_date?: string; // YYYY-MM-DD
+  end_date?: string; // YYYY-MM-DD
+  granularity?: 'day' | 'week' | 'month';
+}
+
+export interface ConversationMetrics {
+  metric: 'conversations';
+  start_date: string;
+  end_date: string;
+  granularity: string;
+  summary: {
+    total_conversations: number;
+    active_conversations: number;
+    resolved_conversations: number;
+    pending_conversations: number;
+    closed_conversations: number;
+    ai_conversations: number;
+    human_conversations: number;
+  };
+  time_series: Array<{
+    date: string;
+    total: number;
+    active: number;
+    resolved: number;
+    pending: number;
+    closed: number;
+    ai_mode: number;
+    human_mode: number;
+  }>;
+}
+
+export interface ContactMetrics {
+  metric: 'contacts';
+  start_date: string;
+  end_date: string;
+  granularity: string;
+  summary: {
+    total_contacts: number;
+    new_contacts: number;
+    active_contacts: number;
+    blocked_contacts: number;
+    ai_contacts: number;
+    human_contacts: number;
+  };
+  time_series: Array<{
+    date: string;
+    total: number;
+    blocked: number;
+    ai_mode: number;
+    human_mode: number;
+  }>;
+}
+
+export interface FlowMetrics {
+  metric: 'flows';
+  start_date: string;
+  end_date: string;
+  granularity: string;
+  summary: {
+    total_flows: number;
+    active_flows: number;
+    total_executions: number;
+    running_executions: number;
+    completed_executions: number;
+    failed_executions: number;
+    stopped_executions: number;
+  };
+  time_series: Array<{
+    date: string;
+    total: number;
+    running: number;
+    completed: number;
+    failed: number;
+    stopped: number;
+  }>;
+  executions_by_flow: Array<{
+    flow_id: number;
+    flow_name: string;
+    total: number;
+    running: number;
+    completed: number;
+    failed: number;
+    stopped: number;
+  }>;
+}
+
+export type AnalyticsMetrics = ConversationMetrics | ContactMetrics | FlowMetrics;
+
+export const analyticsAPI = {
+  async getMetrics(
+    accountId: number,
+    params: AnalyticsMetricParams
+  ): Promise<AnalyticsMetrics> {
+    const response = await api.get(`/api/cw/api/${accountId}/analytics/metrics/`, {
+      params,
+    });
+    return response.data;
+  },
+};
+
 export default api;
