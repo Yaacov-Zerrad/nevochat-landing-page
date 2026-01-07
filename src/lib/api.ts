@@ -218,6 +218,31 @@ export const accountAPI = {
     const response = await api.get('/api/users/accounts/');
     return response.data;
   },
+
+  async getAccount(accountId: number): Promise<any> {
+    const response = await api.get(`/api/accounts/${accountId}/`);
+    return response.data;
+  },
+
+  // Account Users Management
+  async getAccountUsers(accountId: number): Promise<any[]> {
+    const response = await api.get(`/api/accounts/${accountId}/users/`);
+    return response.data;
+  },
+
+  async addUserToAccount(accountId: number, data: { email: string; role?: number }): Promise<any> {
+    const response = await api.post(`/api/accounts/${accountId}/users/`, data);
+    return response.data;
+  },
+
+  async updateAccountUser(accountId: number, userId: number, data: { role?: number; availability?: number; auto_offline?: boolean }): Promise<any> {
+    const response = await api.patch(`/api/accounts/${accountId}/users/${userId}/`, data);
+    return response.data;
+  },
+
+  async removeUserFromAccount(accountId: number, userId: number): Promise<void> {
+    await api.delete(`/api/accounts/${accountId}/users/${userId}/`);
+  },
 };
 
 // User API endpoints

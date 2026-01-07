@@ -31,7 +31,7 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
     },
     {
       title: 'Appareils',
-      icon: '�',
+      icon: '📱',
       path: `/dashboard/accounts/${accountId}/devices`,
       color: 'text-green-400'
     },
@@ -65,6 +65,12 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
       path: `/dashboard/accounts/${accountId}/subscription`,
       color: 'text-yellow-400'
     },
+    {
+      title: 'Utilisateurs',
+      icon: '👤',
+      path: `/dashboard/accounts/${accountId}/users`,
+      color: 'text-indigo-400'
+    }
     // {
     //   title: 'Integrations',
     //   icon: '🔗',

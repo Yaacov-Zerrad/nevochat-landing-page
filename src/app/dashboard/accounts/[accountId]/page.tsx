@@ -113,6 +113,21 @@ export default function AccountDashboard() {
       path: `/devices`,
       gradient: 'from-green-500 to-emerald-500'
     },
+    {
+      // abonement
+      title: t('menu.subscription'),
+      description: t('menu.subscriptionDesc'),
+      icon: '💳',
+      path: `/subscription`,
+      gradient: 'from-yellow-500 to-amber-500'
+    },
+    {
+      title: t('menu.users'),
+      description: t('menu.usersDesc'),
+      icon: '👥',
+      path: `/users`,
+      gradient: 'from-orange-500 to-red-500'
+    },
   ]
 
   return (
