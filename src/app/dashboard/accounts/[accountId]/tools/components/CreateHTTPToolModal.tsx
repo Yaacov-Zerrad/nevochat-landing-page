@@ -167,7 +167,11 @@ export default function CreateHTTPToolModal({
         throw new Error('Account ID is required');
       }
 
-      await accountToolAPI.create(session!.accessToken, {
+      if (!session?.accessToken) {
+        throw new Error('Session is required');
+      }
+
+      await accountToolAPI.create(session.accessToken, {
         account: parseInt(accountId),
         name: normalizeToolName(name),
         description: description.trim(),
