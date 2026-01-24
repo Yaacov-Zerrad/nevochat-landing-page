@@ -102,13 +102,7 @@ export default function ToolsPage() {
   const [selectedTool, setSelectedTool] = useState<AccountTool | null>(null);
   const [toolToEdit, setToolToEdit] = useState<AccountTool | null>(null);
 
-  // Load data
-  useEffect(() => {
-    if (session?.accessToken && accountId) {
-      loadData();
-    }
-  }, [session, accountId, activeTab, selectedCategory, toolTypeFilter, loadData]);
-
+  // Load data function
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -138,7 +132,16 @@ export default function ToolsPage() {
     } finally {
       setLoading(false);
     }
-  }, [activeTab, selectedCategory, toolTypeFilter, session, accountId, showToast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, selectedCategory, toolTypeFilter, session, accountId]);
+
+  // Load data on mount and when dependencies change
+  useEffect(() => {
+    if (session?.accessToken && accountId) {
+      loadData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.accessToken, accountId, activeTab, selectedCategory, toolTypeFilter]);
 
   const handleCreateFromTemplate = (template: ToolTemplate) => {
     setSelectedTemplate(template);
