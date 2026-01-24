@@ -55,7 +55,7 @@ export default function CreateAccountModal({ isOpen, onClose, onSuccess }: Creat
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm"
             onClick={handleClose}
           />
           
@@ -64,14 +64,14 @@ export default function CreateAccountModal({ isOpen, onClose, onSuccess }: Creat
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-md bg-black/90 backdrop-blur-md border border-neon-green/20 rounded-2xl p-6"
+            className="relative w-full max-w-md glass glass-border rounded-2xl p-6 shadow-2xl"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Créer un nouveau compte</h2>
+              <h2 className="text-2xl font-bold text-foreground">Créer un nouveau compte</h2>
               <button
                 onClick={handleClose}
                 disabled={isSubmitting}
-                className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+                className="text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -87,7 +87,7 @@ export default function CreateAccountModal({ isOpen, onClose, onSuccess }: Creat
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="accountName" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="accountName" className="block text-sm font-medium text-foreground mb-2">
                   Nom du compte *
                 </label>
                 <input
@@ -97,7 +97,7 @@ export default function CreateAccountModal({ isOpen, onClose, onSuccess }: Creat
                   onChange={(e) => setAccountName(e.target.value)}
                   placeholder="Entrez le nom du compte"
                   disabled={isSubmitting}
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green disabled:opacity-50"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 disabled:opacity-50 transition-colors"
                   required
                 />
               </div>
@@ -107,18 +107,18 @@ export default function CreateAccountModal({ isOpen, onClose, onSuccess }: Creat
                   type="button"
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="flex-1 px-4 py-3 bg-gray-600/20 hover:bg-gray-600/30 text-gray-300 rounded-lg transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-3 bg-secondary/20 hover:bg-secondary/30 text-foreground border border-secondary/30 rounded-lg transition-colors disabled:opacity-50"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting || !accountName.trim()}
-                  className="flex-1 px-4 py-3 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green border border-neon-green/20 hover:border-neon-green/40 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="flex-1 px-4 py-3 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 hover:border-primary/40 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-medium"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-neon-green mr-2"></div>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
                       Création...
                     </>
                   ) : (

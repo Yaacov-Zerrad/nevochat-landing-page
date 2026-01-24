@@ -137,10 +137,10 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
       case 1:
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-neon-green mb-4">Informations de base</h3>
+            <h3 className="text-lg font-semibold text-primary mb-4">Informations de base</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Nom du compte *
               </label>
               <input
@@ -148,19 +148,19 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 placeholder="Nom de votre entreprise"
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Secteur d&apos;activité *
               </label>
               <select
                 value={formData.business_sector}
                 onChange={(e) => handleInputChange('business_sector', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               >
                 <option value="">Sélectionnez un secteur</option>
@@ -177,7 +177,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             {formData.business_sector === 'autre' && (
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Précisez votre secteur
                 </label>
                 <input
@@ -185,23 +185,23 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                   value={formData.business_sector_other}
                   onChange={(e) => handleInputChange('business_sector_other', e.target.value)}
                   placeholder="Votre secteur d'activité"
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Objectifs principaux (sélection multiple) *
               </label>
               <div className="space-y-2">
-                {['Support client', 'Génération de leads', 'Ventes', 'Information produit', 'Prise de rendez-vous', 'Autre'].map(obj => (
-                  <label key={obj} className="flex items-center space-x-2 text-gray-300 cursor-pointer">
+                {['Support client', 'Ventes', 'Information produit', 'Prise de rendez-vous', 'Autre'].map(obj => (
+                  <label key={obj} className="flex items-center space-x-2 text-foreground cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.objectives.includes(obj)}
                       onChange={() => handleCheckboxChange('objectives', obj)}
-                      className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 rounded focus:ring-neon-green"
+                      className="w-4 h-4 text-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
                     />
                     <span>{obj}</span>
                   </label>
@@ -211,7 +211,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             {formData.objectives.includes('Autre') && (
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Précisez vos objectifs
                 </label>
                 <textarea
@@ -219,7 +219,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                   onChange={(e) => handleInputChange('objectives_other', e.target.value)}
                   placeholder="Décrivez vos objectifs spécifiques"
                   rows={3}
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 />
               </div>
             )}
@@ -229,16 +229,16 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
       case 2:
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-neon-green mb-4">Ton et Communication</h3>
+            <h3 className="text-lg font-semibold text-primary mb-4">Ton et Communication</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Ton de communication préféré *
               </label>
               <select
                 value={formData.tone}
                 onChange={(e) => handleInputChange('tone', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               >
                 <option value="">Sélectionnez un ton</option>
@@ -251,13 +251,13 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Niveau de langage souhaité *
               </label>
               <select
                 value={formData.language_level}
                 onChange={(e) => handleInputChange('language_level', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               >
                 <option value="">Sélectionnez un niveau</option>
@@ -268,13 +268,13 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Longueur de réponse préférée *
               </label>
               <select
                 value={formData.response_length}
                 onChange={(e) => handleInputChange('response_length', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               >
                 <option value="">Sélectionnez une longueur</option>
@@ -286,7 +286,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 L&apos;assistant doit-il utiliser des emojis ? *
               </label>
               <div className="space-y-2">
@@ -295,14 +295,14 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                   { value: 'moderement', label: 'Oui, modérément' },
                   { value: 'jamais', label: 'Non, jamais' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center space-x-2 text-gray-300 cursor-pointer">
+                  <label key={option.value} className="flex items-center space-x-2 text-foreground cursor-pointer">
                     <input
                       type="radio"
                       name="use_emojis"
                       value={option.value}
                       checked={formData.use_emojis === option.value}
                       onChange={(e) => handleInputChange('use_emojis', e.target.value)}
-                      className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 focus:ring-neon-green"
+                      className="w-4 h-4 text-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 focus:ring-primary"
                     />
                     <span>{option.label}</span>
                   </label>
@@ -315,20 +315,20 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
       case 3:
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-neon-green mb-4">Audience et Clients</h3>
+            <h3 className="text-lg font-semibold text-primary mb-4">Audience et Clients</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Clients principaux (sélection multiple) *
               </label>
               <div className="space-y-2">
                 {['Particuliers (B2C)', 'Entreprises (B2B)', 'Les deux'].map(audience => (
-                  <label key={audience} className="flex items-center space-x-2 text-gray-300 cursor-pointer">
+                  <label key={audience} className="flex items-center space-x-2 text-foreground cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.target_audience.includes(audience)}
                       onChange={() => handleCheckboxChange('target_audience', audience)}
-                      className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 rounded focus:ring-neon-green"
+                      className="w-4 h-4 text-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
                     />
                     <span>{audience}</span>
                   </label>
@@ -337,13 +337,13 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Tranche d&apos;âge principale *
               </label>
               <select
                 value={formData.age_range}
                 onChange={(e) => handleInputChange('age_range', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               >
                 <option value="">Sélectionnez une tranche d&apos;âge</option>
@@ -356,17 +356,17 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Langues de communication (sélection multiple) *
               </label>
               <div className="space-y-2">
-                {['Français', 'Anglais', 'Espagnol', 'Arabe', 'Hébreu', 'Autre'].map(lang => (
-                  <label key={lang} className="flex items-center space-x-2 text-gray-300 cursor-pointer">
+                {['Français', 'Anglais', 'Espagnol', 'Arabe', 'Autre'].map(lang => (
+                  <label key={lang} className="flex items-center space-x-2 text-foreground cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.languages.includes(lang)}
                       onChange={() => handleCheckboxChange('languages', lang)}
-                      className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 rounded focus:ring-neon-green"
+                      className="w-4 h-4 text-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
                     />
                     <span>{lang}</span>
                   </label>
@@ -376,7 +376,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             {formData.languages.includes('Autre') && (
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Précisez les langues
                 </label>
                 <input
@@ -384,19 +384,19 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                   value={formData.languages_other}
                   onChange={(e) => handleInputChange('languages_other', e.target.value)}
                   placeholder="Autres langues"
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Fuseau horaire des clients *
               </label>
               <select
                 value={formData.timezone}
                 onChange={(e) => handleInputChange('timezone', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 required
               >
                 <option value="">Sélectionnez un fuseau horaire</option>
@@ -412,10 +412,10 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
       case 4:
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-neon-green mb-4">Contenu et Personnalité</h3>
+            <h3 className="text-lg font-semibold text-primary mb-4">Contenu et Personnalité</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Produits/Services principaux à promouvoir
               </label>
               <textarea
@@ -423,12 +423,12 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 onChange={(e) => handleInputChange('main_products_services', e.target.value)}
                 placeholder="Listez vos produits ou services clés"
                 rows={3}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Mots-clés ou termes spécifiques à utiliser
               </label>
               <textarea
@@ -436,12 +436,12 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 onChange={(e) => handleInputChange('keywords', e.target.value)}
                 placeholder="Termes techniques, jargon métier, expressions favorites"
                 rows={2}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Mots ou sujets à éviter absolument
               </label>
               <textarea
@@ -449,22 +449,22 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 onChange={(e) => handleInputChange('words_to_avoid', e.target.value)}
                 placeholder="Sujets sensibles, termes concurrents, etc."
                 rows={2}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Traits de personnalité souhaités (sélection multiple)
               </label>
               <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
                 {['Patient', 'Proactif', 'Humoristique', 'Direct', 'Rassurant', 'Créatif'].map(trait => (
-                  <label key={trait} className="flex items-center space-x-2 text-gray-300 cursor-pointer">
+                  <label key={trait} className="flex items-center space-x-2 text-foreground cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.personality_traits.includes(trait)}
                       onChange={() => handleCheckboxChange('personality_traits', trait)}
-                      className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 rounded focus:ring-neon-green"
+                      className="w-4 h-4 text-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
                     />
                     <span>{trait}</span>
                   </label>
@@ -473,7 +473,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Réaction face à une demande hors sujet
               </label>
               <textarea
@@ -481,7 +481,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 onChange={(e) => handleInputChange('offtopic_behavior', e.target.value)}
                 placeholder="Ex: Rediriger poliment vers les sujets appropriés"
                 rows={2}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
               />
             </div>
           </div>
@@ -490,10 +490,10 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
       case 5:
         return (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-neon-green mb-4">Fonctionnalités et Règles</h3>
+            <h3 className="text-lg font-semibold text-primary mb-4">Fonctionnalités et Règles</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Gestion des demandes urgentes
               </label>
               <textarea
@@ -501,18 +501,18 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 onChange={(e) => handleInputChange('urgent_requests_handling', e.target.value)}
                 placeholder="Ex: Escalader vers un humain, proposer un callback immédiat"
                 rows={2}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Action si l&apos;assistant ne sait pas répondre *
               </label>
               <select
                 value={formData.unknown_answer_handling}
                 onChange={(e) => handleInputChange('unknown_answer_handling', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               >
                 <option value="">Sélectionnez une action</option>
@@ -523,17 +523,17 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Fonctionnalités spécifiques nécessaires (sélection multiple)
               </label>
               <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
                 {['Prise de RDV', 'Devis automatique', 'Suivi de commande', 'FAQ dynamique', 'Collecte de feedback'].map(feature => (
-                  <label key={feature} className="flex items-center space-x-2 text-gray-300 cursor-pointer">
+                  <label key={feature} className="flex items-center space-x-2 text-foreground cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.needed_features.includes(feature)}
                       onChange={() => handleCheckboxChange('needed_features', feature)}
-                      className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 rounded focus:ring-neon-green"
+                      className="w-4 h-4 text-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
                     />
                     <span>{feature}</span>
                   </label>
@@ -542,17 +542,17 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Informations à collecter systématiquement (sélection multiple)
               </label>
               <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
                 {['Nom', 'Email', 'Téléphone', 'Entreprise', 'Budget', 'Deadline'].map(info => (
-                  <label key={info} className="flex items-center space-x-2 text-gray-300 cursor-pointer">
+                  <label key={info} className="flex items-center space-x-2 text-foreground cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.info_to_collect.includes(info)}
                       onChange={() => handleCheckboxChange('info_to_collect', info)}
-                      className="w-4 h-4 text-neon-green bg-gray-800 border-gray-600 rounded focus:ring-neon-green"
+                      className="w-4 h-4 text-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-primary"
                     />
                     <span>{info}</span>
                   </label>
@@ -561,13 +561,13 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Format de présentation des informations *
               </label>
               <select
                 value={formData.info_presentation_format}
                 onChange={(e) => handleInputChange('info_presentation_format', e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
                 required
               >
                 <option value="">Sélectionnez un format</option>
@@ -579,7 +579,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Limitations ou règles spécifiques
               </label>
               <textarea
@@ -587,7 +587,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                 onChange={(e) => handleInputChange('specific_rules', e.target.value)}
                 placeholder="Ex: Ne jamais donner de prix sans qualification, toujours demander le budget, etc."
                 rows={3}
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-neon-green focus:ring-1 focus:ring-neon-green"
+                className="w-full px-4 py-3 bg-white dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors"
               />
             </div>
           </div>
@@ -607,7 +607,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm"
             onClick={handleClose}
           />
           
@@ -616,17 +616,17 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-3xl bg-black/90 backdrop-blur-md border border-neon-green/20 rounded-2xl p-6 max-h-[90vh] overflow-y-auto"
+            className="relative w-full max-w-3xl glass glass-border rounded-2xl p-6 max-h-[90vh] overflow-y-auto shadow-2xl"
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-white">Créer un nouveau compte</h2>
-                <p className="text-sm text-gray-400 mt-1">Étape {currentStep} sur {totalSteps}</p>
+                <h2 className="text-2xl font-bold text-foreground">Créer un nouveau compte</h2>
+                <p className="text-sm text-muted-foreground mt-1">Étape {currentStep} sur {totalSteps}</p>
               </div>
               <button
                 onClick={handleClose}
                 disabled={isSubmitting}
-                className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+                className="text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -636,9 +636,9 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
 
             {/* Progress bar */}
             <div className="mb-6">
-              <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+              <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-gradient-to-r from-neon-green to-emerald-400 transition-all duration-300"
+                  className="h-full bg-gradient-to-r from-primary to-primary-600 transition-all duration-300"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 />
               </div>
@@ -657,13 +657,13 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
               </div>
 
               {/* Navigation buttons */}
-              <div className="flex gap-3 pt-4 border-t border-gray-700">
+              <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 {currentStep > 1 && (
                   <button
                     type="button"
                     onClick={prevStep}
                     disabled={isSubmitting}
-                    className="px-4 py-3 bg-gray-600/20 hover:bg-gray-600/30 text-gray-300 rounded-lg transition-colors disabled:opacity-50"
+                    className="px-4 py-3 bg-secondary/20 hover:bg-secondary/30 text-foreground border border-secondary/30 rounded-lg transition-colors disabled:opacity-50"
                   >
                     ← Précédent
                   </button>
@@ -673,7 +673,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                   type="button"
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="px-4 py-3 bg-gray-600/20 hover:bg-gray-600/30 text-gray-300 rounded-lg transition-colors disabled:opacity-50"
+                  className="px-4 py-3 bg-secondary/20 hover:bg-secondary/30 text-foreground border border-secondary/30 rounded-lg transition-colors disabled:opacity-50"
                 >
                   Annuler
                 </button>
@@ -685,7 +685,7 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                     type="button"
                     onClick={nextStep}
                     disabled={isSubmitting}
-                    className="px-6 py-3 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green border border-neon-green/20 hover:border-neon-green/40 rounded-lg transition-colors disabled:opacity-50"
+                    className="px-6 py-3 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 hover:border-primary/40 rounded-lg transition-colors disabled:opacity-50 font-medium"
                   >
                     Suivant →
                   </button>
@@ -693,11 +693,11 @@ export default function CreateAccountModalDetailed({ isOpen, onClose, onSuccess 
                   <button
                     type="submit"
                     disabled={isSubmitting || !formData.name.trim()}
-                    className="px-6 py-3 bg-neon-green/20 hover:bg-neon-green/30 text-neon-green border border-neon-green/20 hover:border-neon-green/40 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="px-6 py-3 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 hover:border-primary/40 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-medium"
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-neon-green mr-2"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
                         Création en cours...
                       </>
                     ) : (

@@ -265,9 +265,14 @@ export default function CreateToolModal({
 
     setLoading(true);
     try {
+      if (!session?.accessToken) {
+        showToast('Session expired. Please log in again.', 'error');
+        return;
+      }
+
       if (isEditMode && existingTool) {
         // Update existing tool
-        await accountToolAPI.update(session!.accessToken, existingTool.id, {
+        await accountToolAPI.update(session.accessToken, existingTool.id, {
           name: normalizeToolName(name),
           description: description.trim(),
           tool_type: existingTool.tool_type,
@@ -276,7 +281,7 @@ export default function CreateToolModal({
         showToast('Tool updated successfully', 'success');
       } else if (template) {
         // Create new tool
-        await accountToolAPI.create(session!.accessToken, {
+        await accountToolAPI.create(session.accessToken, {
           account: parseInt(accountId),
           template: template.id,
           name: normalizeToolName(name),

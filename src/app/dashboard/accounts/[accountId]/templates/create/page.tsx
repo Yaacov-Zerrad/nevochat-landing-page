@@ -1076,7 +1076,6 @@ export default function CreateTemplatePage() {
                       <option value="es">Espagnol</option>
                       <option value="de">Allemand</option>
                       <option value="it">Italien</option>
-                      <option value="he">Hébreu</option>
                     </select>
                   </div>
 
