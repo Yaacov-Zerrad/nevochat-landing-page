@@ -4,19 +4,46 @@ import { useState, useEffect } from 'react';
 import { Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const languages = [
+const allLanguages = [
   { code: 'fr', label: 'Français', flag: '🇫🇷' },
   { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'he', label: 'עברית', flag: '🇮🇱' },
+  { code: 'he', label: 'עברית', flag: '🇮🇱', countryRestricted: 'IL' },
 ];
 
 export default function LanguageToggle() {
   const [currentLocale, setCurrentLocale] = useState<'en' | 'fr' | 'he'>('fr');
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [userCountry, setUserCountry] = useState<string | null>(null);
+  const [languages, setLanguages] = useState(allLanguages);
 
   useEffect(() => {
     setMounted(true);
+    
+    // Détecter le pays de l'utilisateur
+    const detectCountry = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        setUserCountry(data.country_code);
+        
+        // Filtrer les langues selon le pays
+        const availableLanguages = allLanguages.filter(lang => {
+          if (lang.countryRestricted) {
+            return data.country_code === lang.countryRestricted;
+          }
+          return true;
+        });
+        setLanguages(availableLanguages);
+      } catch (error) {
+        console.error('Erreur de détection du pays:', error);
+        // En cas d'erreur, afficher toutes les langues sauf l'hébreu
+        setLanguages(allLanguages.filter(lang => !lang.countryRestricted));
+      }
+    };
+    
+    detectCountry();
+    
     const savedLocale = localStorage.getItem('locale') as 'en' | 'fr' | 'he' | null;
     if (savedLocale && ['en', 'fr', 'he'].includes(savedLocale)) {
       setCurrentLocale(savedLocale);

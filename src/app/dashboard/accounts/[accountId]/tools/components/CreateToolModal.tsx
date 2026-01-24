@@ -41,7 +41,7 @@ interface CreateToolModalProps {
     name: string;
     description: string;
     variables: Record<string, any>;
-    tool_type: string;
+    tool_type: 'http' | 'python';
     parameters_schema?: {
       type: string;
       properties: Record<string, {
