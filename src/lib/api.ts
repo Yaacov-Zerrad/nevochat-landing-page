@@ -852,4 +852,181 @@ export const analyticsAPI = {
   },
 };
 
+// Tool Category API
+export interface ToolCategory {
+  id: number;
+  name: string;
+  description: string;
+  icon?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export const toolCategoryAPI = {
+  async list(): Promise<ToolCategory[]> {
+    const response = await api.get('/api/flow-builder/tool-categories/');
+    return response.data;
+  },
+
+  async get(id: number): Promise<ToolCategory> {
+    const response = await api.get(`/api/flow-builder/tool-categories/${id}/`);
+    return response.data;
+  },
+};
+
+// Tool Template API
+export interface ToolTemplate {
+  id: number;
+  category: number;
+  category_name?: string;
+  name: string;
+  description: string;
+  tool_type: 'http' | 'python';
+  icon?: string;
+  template_config: any;
+  variables_schema: Array<{
+    name: string;
+    type: string;
+    description: string;
+    required: boolean;
+    default?: any;
+  }>;
+  parameters_schema?: any;
+  requirements?: string[];
+  usage_count: number;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export const toolTemplateAPI = {
+  async list(params?: { 
+    category?: number; 
+    tool_type?: string; 
+    search?: string;
+    is_featured?: boolean;
+  }): Promise<ToolTemplate[]> {
+    const response = await api.get('/api/flow-builder/tool-templates/', { params });
+    return response.data;
+  },
+
+  async get(id: number): Promise<ToolTemplate> {
+    const response = await api.get(`/api/flow-builder/tool-templates/${id}/`);
+    return response.data;
+  },
+
+  async useTemplate(id: number): Promise<void> {
+    await api.post(`/api/flow-builder/tool-templates/${id}/use_template/`);
+  },
+
+  async getBuiltinPythonTools(): Promise<any[]> {
+    const response = await api.get('/api/flow-builder/tool-templates/builtin_python_tools/');
+    return response.data;
+  },
+};
+
+// Account Tool API
+export interface AccountTool {
+  id: number;
+  account: number;
+  template?: number;
+  template_name?: string;
+  name: string;
+  description: string;
+  tool_type: 'http' | 'python';
+  config: any;
+  parameters_schema?: any;
+  is_active: boolean;
+  created_by?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateAccountToolData {
+  account: number;
+  template?: number;
+  name: string;
+  description: string;
+  tool_type: 'http' | 'python';
+  variables?: any;
+  config?: any;
+  parameters_schema?: any;
+  is_active?: boolean;
+}
+
+export const accountToolAPI = {
+  async list(
+    token: string,
+    params?: { 
+      account?: number;
+      tool_type?: string;
+      search?: string;
+      is_enabled?: boolean;
+    }
+  ): Promise<AccountTool[]> {
+    const response = await api.get('/api/flow-builder/account-tools/', {
+      params,
+      headers: { Authorization: `Token ${token}` },
+    });
+    return response.data;
+  },
+
+  async get(token: string, id: number): Promise<AccountTool> {
+    const response = await api.get(`/api/flow-builder/account-tools/${id}/`, {
+      headers: { Authorization: `Token ${token}` },
+    });
+    return response.data;
+  },
+
+  async create(token: string, data: CreateAccountToolData): Promise<AccountTool> {
+    const response = await api.post('/api/flow-builder/account-tools/', data, {
+      headers: { Authorization: `Token ${token}` },
+    });
+    return response.data;
+  },
+
+  async update(
+    token: string,
+    id: number,
+    data: Partial<CreateAccountToolData>
+  ): Promise<AccountTool> {
+    const response = await api.patch(`/api/flow-builder/account-tools/${id}/`, data, {
+      headers: { Authorization: `Token ${token}` },
+    });
+    return response.data;
+  },
+
+  async delete(token: string, id: number): Promise<void> {
+    await api.delete(`/api/flow-builder/account-tools/${id}/`, {
+      headers: { Authorization: `Token ${token}` },
+    });
+  },
+
+  async test(token: string, id: number, parameters: any): Promise<any> {
+    const response = await api.post(
+      `/api/flow-builder/account-tools/${id}/test_tool/`,
+      { parameters },
+      {
+        headers: { Authorization: `Token ${token}` },
+      }
+    );
+    return response.data;
+  },
+
+  async duplicate(token: string, id: number, newName?: string): Promise<AccountTool> {
+    const response = await api.post(
+      `/api/flow-builder/account-tools/${id}/duplicate/`,
+      { name: newName },
+      {
+        headers: { Authorization: `Token ${token}` },
+      }
+    );
+    return response.data;
+  },
+
+  async toggleEnabled(token: string, id: number, isActive: boolean): Promise<AccountTool> {
+    return this.update(token, id, { is_active: isActive });
+  },
+};
+
 export default api;

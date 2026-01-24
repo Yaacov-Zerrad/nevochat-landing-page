@@ -187,6 +187,13 @@ export default function AccountDashboard() {
       icon: '📈',
       path: `/analytics`,
       gradient: 'from-green-500 to-emerald-500'
+    },
+    {
+      title: t('menu.tools'),
+      description: t('menu.toolsDesc'),
+      icon: '🧰',
+      path: `/tools`,
+      gradient: 'from-yellow-500 to-amber-500'
     }
   ]
 

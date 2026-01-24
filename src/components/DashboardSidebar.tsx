@@ -76,8 +76,13 @@ export default function DashboardSidebar({ isOpen, accountId, accountName, onClo
       icon: '📈',
       path: `/dashboard/accounts/${accountId}/analytics`,
       color: 'text-green-400'
+    },
+    {
+      title: 'Tools',
+      icon: '🧰',
+      path: `/dashboard/accounts/${accountId}/tools`,
+      color: 'text-yellow-400'
     }
-
   ]
 
 

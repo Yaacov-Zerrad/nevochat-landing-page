@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useSession } from 'next-auth/react';
+import { useParams } from 'next/navigation';
+import { accountToolAPI, AccountTool } from '@/lib/api';
 
 interface PromptModalProps {
   isOpen: boolean;
@@ -99,9 +102,52 @@ function PromptModal({ isOpen, onClose, prompt, onSave }: PromptModalProps) {
 
 export default function AINodeConfig({ config, updateConfig }: AINodeConfigProps) {
   const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
+  const [availableTools, setAvailableTools] = useState<AccountTool[]>([]);
+  const [loadingTools, setLoadingTools] = useState(false);
+  const { data: session } = useSession();
+  const params = useParams();
+  const accountId = params?.accountId as string;
+
+  // Load available tools for this account
+  useEffect(() => {
+    const loadTools = async () => {
+      if (!session?.accessToken || !accountId) return;
+
+      setLoadingTools(true);
+      try {
+        const tools = await accountToolAPI.list(session.accessToken, {
+          account: parseInt(accountId),
+          is_enabled: true,
+        });
+        setAvailableTools(tools);
+      } catch (error) {
+        console.error('Error loading tools:', error);
+      } finally {
+        setLoadingTools(false);
+      }
+    };
+
+    loadTools();
+  }, [session, accountId]);
 
   const handlePromptSave = (newPrompt: string) => {
     updateConfig('prompt', newPrompt);
+  };
+
+  const handleToolToggle = (toolName: string) => {
+    const currentTools = config.enabled_tools || [];
+    const isSelected = currentTools.includes(toolName);
+
+    if (isSelected) {
+      // Remove tool
+      updateConfig(
+        'enabled_tools',
+        currentTools.filter((name: string) => name !== toolName)
+      );
+    } else {
+      // Add tool
+      updateConfig('enabled_tools', [...currentTools, toolName]);
+    }
   };
 
   const getPromptPreview = (prompt: string) => {
@@ -177,6 +223,85 @@ export default function AINodeConfig({ config, updateConfig }: AINodeConfigProps
           <option value="0.7">0.7</option>
           <option value="1.0">1.0</option>
         </select>
+      </div>
+
+      {/* Tools Selection */}
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-2">
+          Available Tools
+        </label>
+        <div className="text-xs text-gray-400 mb-2">
+          Select which tools the AI can use in this node
+        </div>
+
+        {loadingTools ? (
+          <div className="text-sm text-gray-400 py-4 text-center">
+            Loading tools...
+          </div>
+        ) : availableTools.length === 0 ? (
+          <div className="bg-secondary border border-gray-600 rounded-lg px-3 py-3 text-sm text-gray-400">
+            No tools available.{' '}
+            <a
+              href={`/dashboard/accounts/${accountId}/tools`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Create tools
+            </a>
+          </div>
+        ) : (
+          <div className="space-y-2 max-h-60 overflow-y-auto bg-secondary border border-gray-600 rounded-lg p-3">
+            {availableTools.map((tool) => {
+              const isSelected = (config.enabled_tools || []).includes(tool.name);
+              
+              return (
+                <label
+                  key={tool.id}
+                  className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                    isSelected
+                      ? 'bg-primary/10 border border-primary/30'
+                      : 'bg-gray-700 hover:bg-gray-600 border border-transparent'
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => handleToolToggle(tool.name)}
+                    className="mt-1 rounded border-gray-500 text-primary focus:ring-primary focus:ring-offset-0"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-foreground text-sm">
+                        {tool.name}
+                      </span>
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded ${
+                          tool.tool_type === 'http'
+                            ? 'bg-blue-500/20 text-blue-400'
+                            : 'bg-purple-500/20 text-purple-400'
+                        }`}
+                      >
+                        {tool.tool_type.toUpperCase()}
+                      </span>
+                    </div>
+                    {tool.description && (
+                      <p className="text-xs text-gray-400 mt-1">
+                        {tool.description}
+                      </p>
+                    )}
+                  </div>
+                </label>
+              );
+            })}
+          </div>
+        )}
+
+        {availableTools.length > 0 && (
+          <div className="mt-2 text-xs text-gray-400">
+            {(config.enabled_tools || []).length} tool(s) selected
+          </div>
+        )}
       </div>
 
       {/* Prompt Modal */}
