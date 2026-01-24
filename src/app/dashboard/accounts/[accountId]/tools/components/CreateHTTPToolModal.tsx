@@ -163,6 +163,10 @@ export default function CreateHTTPToolModal({
           : {}),
       };
 
+      if (!accountId) {
+        throw new Error('Account ID is required');
+      }
+
       await accountToolAPI.create(session!.accessToken, {
         account: parseInt(accountId),
         name: normalizeToolName(name),
