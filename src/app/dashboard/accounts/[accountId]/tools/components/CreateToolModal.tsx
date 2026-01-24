@@ -3,36 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { X, AlertCircle, Plus, Trash2 } from 'lucide-react';
-import { accountToolAPI, toolTemplateAPI } from '@/lib/api';
+import { accountToolAPI, toolTemplateAPI, ToolTemplate } from '@/lib/api';
 import { useToast } from '@/hooks/useToast';
-
-interface ToolTemplate {
-  id: number;
-  name: string;
-  description: string;
-  tool_type: 'http' | 'python';
-  variables_schema: Array<{
-    name: string;
-    type: string;
-    item_type?: string;
-    description: string;
-    required: boolean;
-    default?: any;
-  }>;
-  requirements: Array<{
-    type: string;
-    provider: string;
-    description: string;
-  }>;
-  parameters_schema?: {
-    type: string;
-    properties: Record<string, {
-      type: string;
-      description: string;
-    }>;
-    required?: string[];
-  };
-}
 
 interface CreateToolModalProps {
   template?: ToolTemplate;
@@ -347,7 +319,7 @@ export default function CreateToolModal({
         </div>
 
         {/* Requirements Warning */}
-        {!isEditMode && template?.requirements?.length > 0 && (
+        {!isEditMode && template?.requirements && template.requirements.length > 0 && (
           <div className="mx-6 mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
@@ -493,7 +465,7 @@ export default function CreateToolModal({
                             ? 'border-red-500'
                             : 'border-gray-300 dark:border-gray-600'
                         }`}
-                        placeholder={varDef.default?.toString() || ''}
+                        placeholder={'default' in varDef && varDef.default ? varDef.default.toString() : ''}
                       />
                     ) : (
                       <textarea
@@ -507,7 +479,7 @@ export default function CreateToolModal({
                             ? 'border-red-500'
                             : 'border-gray-300 dark:border-gray-600'
                         }`}
-                        placeholder={varDef.default?.toString() || ''}
+                        placeholder={'default' in varDef && varDef.default ? varDef.default.toString() : ''}
                       />
                     )}
 

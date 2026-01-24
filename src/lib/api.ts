@@ -856,8 +856,10 @@ export const analyticsAPI = {
 export interface ToolCategory {
   id: number;
   name: string;
+  slug?: string;
   description: string;
   icon?: string;
+  tools_count?: number;
   created_at: string;
   updated_at: string;
 }
@@ -887,12 +889,17 @@ export interface ToolTemplate {
   variables_schema: Array<{
     name: string;
     type: string;
+    item_type?: string;
     description: string;
     required: boolean;
     default?: any;
   }>;
   parameters_schema?: any;
-  requirements?: string[];
+  requirements?: Array<{
+    type: string;
+    provider: string;
+    description: string;
+  }>;
   usage_count: number;
   is_featured: boolean;
   created_at: string;
@@ -935,6 +942,7 @@ export interface AccountTool {
   description: string;
   tool_type: 'http' | 'python';
   config: any;
+  variables: Record<string, any>;
   parameters_schema?: any;
   is_active: boolean;
   created_by?: number;

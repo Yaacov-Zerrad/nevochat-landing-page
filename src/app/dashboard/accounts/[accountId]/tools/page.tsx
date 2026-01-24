@@ -21,49 +21,11 @@ import {
   Edit,
 } from 'lucide-react';
 
-import { accountToolAPI, toolTemplateAPI, toolCategoryAPI } from '@/lib/api';
+import { accountToolAPI, toolTemplateAPI, toolCategoryAPI, ToolCategory, ToolTemplate, AccountTool } from '@/lib/api';
 import CreateToolModal from './components/CreateToolModal';
 import CreateHTTPToolModal from './components/CreateHTTPToolModal';
 import TestToolModal from './components/TestToolModal';
 import { useToast } from '@/hooks/useToast';
-
-interface ToolCategory {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  icon: string;
-  tools_count: number;
-}
-
-interface ToolTemplate {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  tool_type: 'http' | 'python';
-  category_name: string;
-  is_public: boolean;
-  usage_count: number;
-}
-
-interface AccountTool {
-  id: number;
-  name: string;
-  description: string;
-  tool_type: 'http' | 'python';
-  template_name: string | null;
-  is_active: boolean;
-  variables: Record<string, any>;
-  parameters_schema?: {
-    type: string;
-    properties: Record<string, {
-      type: string;
-      description: string;
-    }>;
-    required?: string[];
-  };
-}
 
 // Convert snake_case to Camel Case for display
 const snakeToCamelCase = (str: string): string => {
@@ -112,7 +74,7 @@ export default function ToolsPage() {
         const [categoriesData, templatesData] = await Promise.all([
           toolCategoryAPI.list(),
           toolTemplateAPI.list({
-            category: selectedCategory || undefined,
+            category: selectedCategory ? parseInt(selectedCategory) : undefined,
             tool_type: toolTypeFilter !== 'all' ? toolTypeFilter : undefined,
           }),
         ]);
@@ -120,8 +82,9 @@ export default function ToolsPage() {
         setTemplates(templatesData);
       } else {
         // Load my tools
-        const toolsData = await accountToolAPI.list(session!.accessToken, {
-          account: accountId,
+        if (!session?.accessToken) return;
+        const toolsData = await accountToolAPI.list(session.accessToken, {
+          account: parseInt(accountId),
           tool_type: toolTypeFilter !== 'all' ? toolTypeFilter : undefined,
         });
         setMyTools(toolsData);
@@ -159,9 +122,10 @@ export default function ToolsPage() {
 
   const handleDeleteTool = async (toolId: number) => {
     if (!confirm('Are you sure you want to delete this tool?')) return;
+    if (!session?.accessToken) return;
 
     try {
-      await accountToolAPI.delete(session!.accessToken, toolId);
+      await accountToolAPI.delete(session.accessToken, toolId);
       showToast('Tool deleted successfully', 'success');
       loadData();
     } catch (error) {
@@ -173,9 +137,10 @@ export default function ToolsPage() {
   const handleDuplicateTool = async (tool: AccountTool) => {
     const newName = prompt('Enter name for duplicated tool:', `${tool.name} (copy)`);
     if (!newName) return;
+    if (!session?.accessToken) return;
 
     try {
-      await accountToolAPI.duplicate(session!.accessToken, tool.id, newName);
+      await accountToolAPI.duplicate(session.accessToken, tool.id, newName);
       showToast('Tool duplicated successfully', 'success');
       loadData();
     } catch (error) {
@@ -185,8 +150,10 @@ export default function ToolsPage() {
   };
 
   const handleToggleActive = async (tool: AccountTool) => {
+    if (!session?.accessToken) return;
+
     try {
-      await accountToolAPI.update(session!.accessToken, tool.id, {
+      await accountToolAPI.update(session.accessToken, tool.id, {
         is_active: !tool.is_active,
       });
       showToast(`Tool ${tool.is_active ? 'disabled' : 'enabled'}`, 'success');
@@ -310,9 +277,9 @@ export default function ToolsPage() {
             {categories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setSelectedCategory(category.slug)}
+                onClick={() => setSelectedCategory(category.slug || null)}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
-                  selectedCategory === category.slug
+                  selectedCategory === (category.slug || null)
                     ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
@@ -356,8 +323,8 @@ export default function ToolsPage() {
       {/* Modals */}
       {showCreateModal && (selectedTemplate || toolToEdit) && (
         <CreateToolModal
-          template={selectedTemplate}
-          existingTool={toolToEdit}
+          template={selectedTemplate || undefined}
+          existingTool={toolToEdit || undefined}
           accountId={accountId}
           onClose={() => {
             setShowCreateModal(false);
@@ -384,9 +351,10 @@ export default function ToolsPage() {
         />
       )}
 
-      {showTestModal && selectedTool && (
+      {showTestModal && selectedTool && selectedTool.parameters_schema && (
         <TestToolModal
-          tool={selectedTool}
+          tool={selectedTool as typeof selectedTool & { parameters_schema: any }}
+          accountId={accountId}
           onClose={() => {
             setShowTestModal(false);
             setSelectedTool(null);

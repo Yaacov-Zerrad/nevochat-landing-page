@@ -114,6 +114,10 @@ export default function TestToolModal({ tool, accountId, onClose }: TestToolModa
 
   const handleTest = async () => {
     if (!validate()) return;
+    if (!session?.accessToken) {
+      showToast('Authentication required', 'error');
+      return;
+    }
 
     setLoading(true);
     setResult(null);
@@ -141,7 +145,7 @@ export default function TestToolModal({ tool, accountId, onClose }: TestToolModa
         processedParams[key] = value;
       });
 
-      const response = await accountToolAPI.test(session!.accessToken, tool.id, processedParams);
+      const response = await accountToolAPI.test(session.accessToken, tool.id, processedParams);
 
       setResult({
         success: true,
